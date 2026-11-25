@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HerTech | A UK Community for Women in Tech</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--ink:#382f34;--muted:#665961;--green:#643f52;--line:#e4d9df;--paper:#faf6f8;--lime:#f6dde8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 system-ui,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #9b576f;outline-offset:3px}button{border:1px solid var(--line);border-radius:10px;background:white;padding:8px 14px;color:inherit}.primary{background:var(--green);color:white;border-color:var(--green);font-weight:650}header{background:#fff;border-bottom:1px solid var(--line)}.bar{max-width:1160px;margin:auto;padding:15px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}.brand{display:flex;gap:10px;align-items:center;font-size:21px;font-weight:800;border:0;padding:0;letter-spacing:-.6px}.mark{border-radius:10px;background:var(--green);color:var(--lime);width:39px;height:39px;display:grid;place-items:center}.bar nav{display:flex;gap:5px}.bar nav button{border:0}.bar nav button[aria-current=true]{background:#f3e4eb;color:var(--green);font-weight:700}.account{margin-left:auto;display:flex;gap:8px}.wrap{max-width:1160px;margin:auto;padding:29px 24px 50px}.hero{position:relative;overflow:hidden;background:#1e4538;color:white;border-radius:22px;padding:38px 40px;margin-bottom:30px;min-height:245px;isolation:isolate}.hero:after{content:"";position:absolute;z-index:-1;right:4%;top:-45%;width:340px;height:420px;border:1px solid #aacc85;border-radius:50%;transform:rotate(32deg);box-shadow:0 0 0 22px #ffffff0c,0 0 0 45px #ffffff0c,0 0 0 69px #ffffff0c}.hero small{color:var(--lime);font-weight:680;letter-spacing:.09em}.hero h1{font-size:clamp(29px,5vw,49px);line-height:1.17;margin:13px 0;letter-spacing:-.045em}.hero p{color:#e0ebdf;margin:0 0 19px}.hero button{background:var(--lime);border:0;color:#203628;font-weight:750}.grid{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(240px,1fr);gap:22px;align-items:start}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}.topline h2{margin:0;font-size:26px}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0 15px}.tabs button,.tag{border-radius:40px;padding:4px 11px;font-size:13px}.tabs button[aria-pressed=true]{background:#f2e1e9;color:var(--green);border-color:#e5cbd8}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:19px 22px;margin-bottom:11px}.card h3{margin:7px 0;font-size:19px;line-height:1.45}.link{border:0;padding:0;text-align:left;font:inherit;color:inherit;background:none}.link:hover{text-decoration:underline}.tag{background:#eee8ec;color:var(--green);display:inline-block}.meta,.summary,small{color:var(--muted)}.meta{font-size:13px;margin-top:10px}.summary{margin:4px 0;white-space:pre-wrap;overflow-wrap:anywhere}.sidebar h2{font-size:17px;margin:0 0 7px}.sidebar p{margin:6px 0 13px}.sidebar .points{background:#f1e9ee}.ticket{background:#f6e8ee}.balance{font-size:34px;line-height:1.2;color:var(--green);font-weight:800}.detail{max-width:760px;margin:auto}.detail h1{font-size:29px;line-height:1.35;overflow-wrap:anywhere}.detail .back{margin-bottom:12px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.voted{background:#f2e1e9;color:var(--green)}.winner{color:var(--green);font-weight:700}.empty{border:1px dashed var(--line);padding:20px;border-radius:12px;color:var(--muted)}dialog{border:1px solid var(--line);border-radius:18px;width:min(510px,calc(100% - 28px));padding:24px;color:var(--ink)}dialog::backdrop{background:#34242e88}dialog h2{margin:0 0 7px}label{display:block;font-weight:650;margin-top:12px}input,textarea,select{width:100%;padding:9px 10px;border:1px solid #c5b7bf;border-radius:8px;background:white;color:var(--ink)}textarea{min-height:100px;resize:vertical}.checkbox{display:flex;gap:9px;align-items:flex-start;font-weight:500}.checkbox input{width:auto;margin-top:6px}.form-note{font-size:13px;color:var(--muted)}#notice{position:fixed;bottom:18px;right:18px;z-index:2;background:#543747;color:white;border-radius:10px;padding:10px 14px;max-width:calc(100% - 36px)}#notice:empty{display:none}footer{font-size:13px;color:var(--muted);margin-top:25px;border-top:1px solid var(--line);padding-top:14px}@media(max-width:740px){.bar,.wrap{padding-left:15px;padding-right:15px}.bar{gap:9px}.bar nav{order:3;width:100%}.hero{padding:24px 20px}.grid{grid-template-columns:1fr}.card{padding:15px}.account button{padding:6px 9px}}
+.home{max-width:920px;margin:auto}.ask-panel{padding:38px 40px;background:#f1dce6;border:1px solid #e8ccd9;border-radius:20px}.ask-panel h1{margin:0 0 17px;font-size:clamp(25px,5vw,38px);letter-spacing:-.04em}.ask-panel form{display:flex;align-items:center;gap:9px;background:white;border:1px solid #d9bcca;padding:7px;border-radius:12px}.ask-panel input{min-width:0;border:0}.ask-panel button{flex:none}.hot{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:15px 0 30px}.hot strong{font-size:13px;color:var(--muted);margin-right:4px}.hot button{border-radius:30px;font-size:13px;padding:5px 11px}.section-title{font-size:23px;margin:0 0 12px}.event-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}.event-cards .card{margin:0}.map-frame{width:100%;height:340px;border:1px solid var(--line);border-radius:14px;background:#f1e9ee}.map-link{font-size:13px;color:var(--green)}.event-list{margin-top:18px}.event-list h2{margin:0;font-size:18px}.event-list a{color:var(--green)}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}@media(max-width:550px){.bar nav{flex-wrap:wrap}.bar nav button{padding:7px 9px}.ask-panel{padding:24px 14px}.ask-panel form{gap:3px}.ask-panel button{padding:7px 9px}.event-cards{grid-template-columns:1fr}.map-frame{height:300px}}
+.ask-panel{background:linear-gradient(125deg,#edd3df,#f5e4eb 64%,#e7e2e7);padding:43px 42px}.ask-panel .intro{margin:-7px 0 22px;color:#614954}.ask-panel form{display:block;padding:13px;border-radius:16px;background:#fffafd;box-shadow:0 8px 24px #63344b0c}.ask-panel textarea{display:block;border:0;background:transparent;min-height:158px;padding:13px;resize:vertical;font-size:16px;line-height:1.55}.ask-panel textarea::placeholder{color:#75646e}.ask-panel textarea:focus-visible{outline:2px solid #9b576f;outline-offset:-2px}.ask-panel .actions{justify-content:flex-end;margin:8px 0 0}.ask-panel .primary{padding:9px 19px}.hot button{background:#fffafd}.mark{background:#6b4a5d;color:#f6dde8}@media(max-width:550px){.ask-panel{padding:24px 15px}.ask-panel textarea{min-height:140px}.ask-panel form{padding:8px}}
+.event-pin{background:#643f52;color:white;border:2px solid white;border-radius:50%;display:grid;place-items:center;font-weight:750;box-shadow:0 1px 5px #382f3480}.event-pin.approx{background:#fffafd;color:#643f52;border-color:#643f52}.leaflet-popup-content a{color:#643f52}.social-footer{margin-top:32px;padding:18px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:10px}.social-footer span{background:#f2e1e9;border-radius:22px;padding:5px 12px}.profile-lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}.profile-lists ul,.comment-list{padding:0;list-style:none;margin:8px 0}.profile-lists li,.comment-list li{border-top:1px solid var(--line);padding:8px 0}.member-link{color:var(--green);font-weight:650}.comment-list .summary{margin:2px 0}@media(max-width:520px){.profile-lists{grid-template-columns:1fr}}.activity-heading{font-size:18px;margin:0 0 8px}.activity-list{list-style:none;margin:0;padding:0}.activity-list li{border-top:1px solid var(--line);padding:9px 0;overflow-wrap:anywhere}.activity-list li:last-child{padding-bottom:0}.activity-list p{margin-top:3px}.exchange-head{background:#f0dce6;padding:23px;border-radius:16px;margin-bottom:16px}.exchange-head h1{margin:0;font-size:29px}.exchange-head p{margin:8px 0 0}.exchange-dates{display:grid;grid-template-columns:1fr 1fr;gap:10px}.exchange-dates[hidden]{display:none}.exchange-dates label{margin:0}.exchange-date-filter .actions{margin-top:15px}.exchange-body{overflow-wrap:anywhere} @media(max-width:520px){.exchange-dates{grid-template-columns:1fr}}.exchange-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin:10px 0}.exchange-gallery img{display:block;width:100%;height:clamp(90px,19vw,165px);object-fit:cover;border-radius:9px;background:#f1e9ee}.exchange-preview img{height:85px}.exchange-gallery button{padding:0;border:0;background:transparent}.exchange-full-image{display:block;width:100%;max-height:65vh;object-fit:contain}.exchange-feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,215px),1fr));gap:16px}.exchange-tile{display:block;overflow:hidden;border-radius:15px;border:1px solid var(--line);background:#fff;color:var(--ink);text-decoration:none}.exchange-tile:hover h3{text-decoration:underline}.exchange-cover{display:grid;place-items:center;aspect-ratio:4/3;background:#f1e9ee;color:var(--muted);font-size:13px}.exchange-cover img{display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover}.exchange-caption{padding:11px 14px}.exchange-caption h3{font-size:17px;margin:0;overflow-wrap:anywhere}.exchange-caption p{margin:3px 0 0;color:var(--muted);overflow-wrap:anywhere}@media(max-width:520px){.exchange-feed{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.exchange-caption{padding:9px}.exchange-caption h3{font-size:15px}}.event-community{margin-top:17px;border-top:1px solid var(--line);padding-top:12px}.event-community summary{cursor:pointer;color:var(--green);font-weight:700}.event-community h3{font-size:16px;margin:16px 0 4px}.event-team{border:1px solid var(--line);background:#faf6f8;padding:12px;border-radius:10px;margin-top:9px}.event-community .comment-list li{overflow-wrap:anywhere}.event-reply{margin-left:16px;padding-left:9px!important;border-left:2px solid var(--line)}.about-page{max-width:920px;margin:auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:23px;align-items:start}.about-copy{background:linear-gradient(135deg,#f2dce7,#fffafd);border:1px solid var(--line);border-radius:18px;padding:clamp(21px,4vw,37px)}.about-copy h1{line-height:1.2;margin:0 0 21px;font-size:clamp(28px,4vw,38px)}.about-copy p{margin:0 0 17px;line-height:1.85}.about-copy p:last-child{color:var(--green);margin:22px 0 0;font-size:19px}.about-comic{margin:0}.about-comic a{display:block;border-radius:15px;overflow:hidden;border:1px solid var(--line);background:white}.about-comic img{display:block;width:100%;height:auto}.about-comic figcaption{margin-top:6px;font-size:13px;color:var(--muted)}@media(max-width:690px){.about-page{grid-template-columns:1fr}.about-comic{width:min(100%,460px);justify-self:center}}.coffee-bean{display:inline-block;flex:none;width:1.3em;height:1.3em;object-fit:cover;object-position:center;border-radius:50%;vertical-align:middle}.bean-balance{display:flex;align-items:center;gap:.45em;flex-wrap:wrap}.bean-balance{font-size:clamp(23px,5vw,34px)}.bean-balance .coffee-bean{width:1.2em;height:1.2em}.bar nav{flex-wrap:wrap}</style>
+<style id="daylight-theme">
+/* Daylight theme: light background, blue-yellow gradient orb, frosted cards */
+:root{--ink:#0B1033;--muted:#5C648F;--green:#3D5AFE;--line:rgba(11,16,51,.09);--paper:#F6F7FB;--lime:#FFC94D;--blue:#3D5AFE;--honey:#FFC94D;--amber:#C98A00;--body:#4A5280;--glass:rgba(255,255,255,.78);--shadow:0 24px 60px rgba(11,16,51,.10);--display:'Space Grotesk',Inter,system-ui,sans-serif}
+body{background-color:var(--paper);background-image:radial-gradient(rgba(11,16,51,.10) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);font:15px/1.65 Inter,system-ui,sans-serif;position:relative;min-height:100vh}
+.bg-orb{position:fixed;z-index:-1;right:-140px;top:60px;width:min(760px,90vw);height:min(760px,90vw);border-radius:50%;filter:blur(80px);opacity:.75;overflow:hidden;pointer-events:none}
+.bg-orb div{width:100%;height:100%;background:conic-gradient(from 20deg,#3D5AFE,#7C9BFF,#FFD877,#FFC94D,#8FB0FF,#3D5AFE);animation:orbspin 28s linear infinite}
+.bg-orb.two{right:auto;left:-260px;top:auto;bottom:-280px;width:560px;height:560px;opacity:.35}
+@keyframes orbspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.bg-orb div{animation:none}}
+h1,h2,h3,.brand,.balance,.section-title{font-family:var(--display);letter-spacing:-.025em}
+button{border:1px solid var(--line);border-radius:999px;background:#fff;padding:9px 18px;color:var(--ink);font-weight:500;transition:background .15s,border-color .15s,transform .15s}
+button:hover{border-color:rgba(11,16,51,.22)}
+button:focus-visible,a:focus-visible{outline:3px solid #7C9BFF;outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed}
+.primary{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+.primary:hover{background:#1F2766;border-color:#1F2766}
+header{background:transparent;border-bottom:0;position:sticky;top:0;z-index:5;padding:16px 16px 0}
+.bar{max-width:1160px;padding:10px 12px 10px 20px;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:999px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(11,16,51,.06)}
+.brand{font-size:21px;font-weight:700;background:none;border:0}
+.mark,.mark[aria-hidden]{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#3D5AFE,#7C9BFF 55%,#FFC94D);color:#fff;font-size:16px}
+.bar nav{gap:2px}
+.bar nav button{border:0;background:transparent;color:var(--body);font-size:15px;padding:8px 14px}
+.bar nav button:hover{background:rgba(61,90,254,.07);color:var(--ink)}
+.bar nav button[aria-current=true]{background:rgba(61,90,254,.1);color:var(--blue);font-weight:600}
+.account button{padding:8px 16px}
+.wrap{padding-top:36px}
+.ask-panel{position:relative;background:var(--glass);border:1px solid #fff;border-radius:32px;box-shadow:var(--shadow);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:48px 48px 40px}
+.eyebrow{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin:0 0 14px}
+.ask-panel h1{font-size:clamp(34px,6vw,60px);line-height:1.02;letter-spacing:-.04em;margin:0 0 16px}
+.grad{background:linear-gradient(90deg,#3D5AFE 0%,#6F7CFF 45%,#F2A900 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ask-panel .intro{color:var(--body);font-size:18px;line-height:1.55;margin:0 0 26px;max-width:620px}
+.ask-panel form{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 10px 30px rgba(11,16,51,.06);padding:12px}
+.ask-panel textarea{font-size:17px;color:var(--ink)}
+.ask-panel textarea::placeholder{color:#7A82A8}
+.ask-panel textarea:focus-visible{outline:2px solid #7C9BFF}
+.ask-panel .primary{padding:12px 24px}
+.hot{gap:10px;margin:22px 0 40px}
+.hot strong{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hot button{background:#fff;font-size:14px;padding:8px 16px;box-shadow:0 8px 20px rgba(11,16,51,.06)}
+.hot button:hover{color:var(--blue)}
+.section-title{font-size:28px;margin-bottom:16px}
+.card{background:var(--glass);border:1px solid rgba(255,255,255,.9);border-radius:24px;box-shadow:0 14px 40px rgba(11,16,51,.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:22px 26px;margin-bottom:14px}
+.card h3{font-size:20px}
+.ticket{background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,236,186,.65))}
+.sidebar .points,.points{background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(205,215,255,.7))}
+.tag{background:rgba(61,90,254,.08);color:var(--blue);border-radius:999px;padding:4px 12px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.02em}
+.ticket .tag{background:rgba(255,201,77,.28);color:#7A5300}
+.tabs button{background:#fff;font-size:14px;padding:7px 15px}
+.tabs button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.meta,.summary,small{color:var(--muted)}
+.summary{color:var(--body)}
+.balance{color:var(--ink);font-weight:700}
+.voted{background:rgba(61,90,254,.1);color:var(--blue);border-color:rgba(61,90,254,.3)}
+.winner{color:var(--amber)}
+.member-link,.map-link,.event-list a,.leaflet-popup-content a{color:var(--blue)}
+.empty{background:rgba(255,255,255,.6);border:1px dashed rgba(11,16,51,.18);border-radius:20px}
+dialog{border:1px solid #fff;border-radius:28px;background:rgba(255,255,255,.96);box-shadow:0 40px 80px rgba(11,16,51,.2);color:var(--ink)}
+dialog::backdrop{background:rgba(11,16,51,.35);backdrop-filter:blur(4px)}
+input,textarea,select{border:1px solid rgba(11,16,51,.16);border-radius:12px;padding:11px 12px;color:var(--ink)}
+input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #7C9BFF;outline-offset:1px}
+#notice{background:var(--ink);border-radius:16px;padding:12px 18px;box-shadow:0 16px 40px rgba(11,16,51,.25)}
+footer{border-top:1px solid var(--line);color:var(--muted)}
+.social-footer{border-top:1px solid var(--line)}
+.social-footer span{background:#fff;border:1px solid var(--line);border-radius:999px}
+.exchange-head{background:var(--glass);border:1px solid #fff;border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(14px);padding:28px 30px}
+.exchange-head h1{font-size:34px}
+.exchange-tile{border-radius:22px;border:1px solid rgba(255,255,255,.9);background:var(--glass);box-shadow:0 14px 40px rgba(11,16,51,.07)}
+.exchange-cover{background:linear-gradient(135deg,#E6EBFF,#FFF4D6);color:var(--muted)}
+.about-copy{background:var(--glass);border:1px solid #fff;border-radius:28px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+.about-copy p:last-child{color:var(--blue)}
+.about-comic a{border-radius:24px;border:1px solid #fff;box-shadow:var(--shadow)}
+.map-frame{border-radius:24px;border:1px solid #fff;box-shadow:var(--shadow);background:#E9EDFB}
+.event-pin{background:var(--blue)}
+.event-pin.approx{background:#fff;color:var(--blue);border-color:var(--blue)}
+.event-team{background:rgba(255,255,255,.7);border-radius:16px}
+.event-community summary{color:var(--blue)}
+.profile-lists li,.comment-list li,.activity-list li{border-top-color:var(--line)}
+.detail h1{font-size:34px;line-height:1.2}
+@media(max-width:740px){header{padding:10px 10px 0}.bar{border-radius:24px;padding:10px 12px}.ask-panel{padding:28px 20px;border-radius:24px}.card{padding:18px}.bg-orb{right:-220px;top:120px;opacity:.6}}
+@media(max-width:550px){.ask-panel{padding:24px 16px}.ask-panel h1{font-size:36px}.bar nav button{padding:7px 10px;font-size:14px}}
+</style>
+</head>
+<body>
+<div class="bg-orb" aria-hidden="true"><div></div></div><div class="bg-orb two" aria-hidden="true"><div></div></div>
+<header><div class="bar">
+<button type="button" class="brand" data-action="home"><span class="mark" aria-hidden="true">✦</span> HerTech</button>
+<nav aria-label="Main navigation"><button data-action="about" id="navAbout">Who are we</button><button data-action="home" id="navHome">Community Q&A</button><button data-action="events" id="navEvents">UK Tech Events ↗</button><button data-action="wallet" id="navWallet">Points & Events</button><button data-action="exchange" id="navExchange">Swaps</button></nav>
+<div id="account" class="account"></div>
+</div></header>
+<div class="wrap"><main id="app"></main><footer>Prototype · Community activity is saved in this browser.</footer></div>
+<dialog id="dialog" aria-labelledby="dialogTitle"></dialog>
+<div id="notice" role="status" aria-live="polite"></div>
+<script>
+const topics = ['UK Tech Jobs', 'CVs & Portfolios', 'Interviews', 'Moving into Tech'];
+const KEY = 'hertech-circle-demo-v1';
+const PRICE = 2;
+const seats = 8;
+const week = 7 * 86400000;
+const demoVoters = ['demo-a', 'demo-b', 'demo-c', 'demo-d'];
+function seed() {
+  const now = Date.now();
+  return { members: [], member: null, ledger: [], redemptions: [], questions: [
+    {id:'q1', title:'How can I present my projects when applying for junior data analyst roles in the UK?', body:'I completed two course projects: one on data cleaning and another on data visualisation in Tableau. How can I show what I contributed on my CV?', topic:topics[1], author:'Mia · London', created:now-86400000, close:now+6*86400000, answers:[
+      {id:'a1', author:'Sophie · Data Analyst', body:'Choose the project most relevant to the role. Explain the problem, the decisions you made and the result. For example, describe how you handled missing values and checked your results, then link to the project.', votes:demoVoters.slice(0,3)},
+      {id:'a2', author:'Anya · Manchester', body:'Put a chart showing the result on your portfolio homepage and include steps to reproduce it. I also reorder projects on each CV to match the role.', votes:demoVoters.slice(0,1)}
+    ]},
+    {id:'q2', title:'How should I prepare for behavioural questions in my first UK tech interview?', body:'I’m ready for the technical questions, but I tend to ramble when talking about a disagreement or setback on a project. How do you practise?', topic:topics[2], author:'Lina · Bristol', created:now-172800000, close:now+5*86400000, answers:[
+      {id:'a3', author:'Rachel · Software Engineer', body:'Prepare three STAR stories and keep each under two minutes. Ask a practice partner to follow up with “What did you do?” and “What would you do differently next time?” It feels more like the real interview than memorising a script.', votes:demoVoters.slice(0,2)}
+    ]},
+    {id:'q3', title:'Which tech roles should I explore if I’m moving out of research?', body:'I have experience in biostatistics and Python and would like to find roles where I can use my research skills.', topic:topics[3], author:'Yuki · Edinburgh', created:now-259200000, close:now+4*86400000, answers:[]},
+    {id:'q4', title:'Where did you start looking for your first tech job in the UK?', body:'Which alumni or community resources helped you, alongside job boards?', topic:topics[0], author:'Nina · Leeds', created:now-week, close:now-1, answers:[]}
+  ]};
+}
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { return seed(); }
+}
+const SITE_URL = 'https://hertech-circle-uk.marz-ma.chatgpt.site/';
+// Accounts work on any published https address; local files (file://) stay in demo mode.
+const SUPABASE_URL = 'https://lpnfipdrxmdolqlsvkos.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_RxNzexmbNrm9pexDCfrxFw_7fntmbcs';
+const authRedirect = location.origin + location.pathname;
+const auth = location.protocol === 'https:'
+  ? window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{flowType:'pkce'}}).auth
+  : null;
+let verifiedUser = null;
+let state = load();
+state.member = null;
+for (const profile of state.members) delete profile.email;
+state.follows ??= [];
+state.exchanges ??= [];
+// Translate system labels and seeded examples from earlier browser data.
+const legacyTopics = {"\u82f1\u56fd Tech \u6c42\u804c": "UK Tech Jobs", "\u7b80\u5386\u4e0e\u4f5c\u54c1\u96c6": "CVs & Portfolios", "\u9762\u8bd5": "Interviews", "\u8f6c\u884c Tech": "Moving into Tech"};
+const legacySwaps = {"\u6280\u80fd\u4ea4\u6362": "Skill Swap", "\u7269\u54c1\u4ea4\u6362": "Item Swap", "\u6362\u5bbf": "Home Swap"};
+const legacyStages = {"\u5728\u8bfb": "Studying", "\u6c42\u804c\u4e2d": "Job hunting", "\u8f6c\u884c\u4e2d": "Changing careers", "\u6c42\u804c\u6216\u8f6c\u884c\u4e2d": "Job hunting or changing careers", "\u5728\u804c": "Employed"};
+const legacyPoints = {"\u6700\u9ad8\u8d5e\u56de\u7b54\u5956\u52b1": "Top answer bonus", "\u56de\u7b54\u83b7\u5f97 2 \u4e2a\u6709\u5e2e\u52a9": "Answer marked helpful by two members", "\u5151\u6362\u7b80\u5386\u5de5\u4f5c\u574a\u95e8\u7968": "Redeemed a CV workshop ticket", "\u6ce8\u518c\u4f53\u9a8c\u79ef\u5206": "Welcome Coffee Beans"};
+const systemLabel = (labels, value) => Object.hasOwn(labels, value) ? labels[value] : value;
+const examples = seed().questions;
+for (const question of state.questions) {
+  question.topic = systemLabel(legacyTopics, question.topic);
+  const example = examples.find(item => item.id === question.id);
+  if (!example || question.member) continue;
+  for (const field of ['title', 'body', 'author']) question[field] = example[field];
+  for (const answer of question.answers) {
+    const seededAnswer = example.answers.find(item => item.id === answer.id);
+    if (seededAnswer && !answer.member) {
+      answer.body = seededAnswer.body;
+      answer.author = seededAnswer.author;
+    }
+  }
+}
+for (const post of state.exchanges) post.type = systemLabel(legacySwaps, post.type);
+for (const entry of state.ledger) {
+  entry.reason = entry.reason === 'Welcome points' ? 'Welcome Coffee Beans' : systemLabel(legacyPoints, entry.reason);
+}
+for (const profile of state.members) profile.stage = systemLabel(legacyStages, profile.stage);
+
+state.eventCommunity ??= {};
+const expandedEvents = new Set();
+let eventDraft = null;
+const exchangeTypes = ['Skill Swap', 'Item Swap', 'Home Swap'];
+const exchangeImageLimit = 3;
+const exchangeImageFormat = /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i;
+let exchangeImageFiles = [];
+let exchangePreviewUrls = [];
+let exchangeType = 'All';
+let stayFilter = {from:'',to:''};
+const demoMembers = [
+  {id:'sample-mia',name:'Mia · London',stage:'Job hunting'},
+  {id:'sample-sophie',name:'Sophie · Data Analyst',stage:'Employed'},
+  {id:'sample-anya',name:'Anya · Manchester',stage:'Employed'},
+  {id:'sample-lina',name:'Lina · Bristol',stage:'Job hunting'},
+  {id:'sample-rachel',name:'Rachel · Software Engineer',stage:'Employed'},
+  {id:'sample-yuki',name:'Yuki · Edinburgh',stage:'Changing careers'},
+  {id:'sample-nina',name:'Nina · Leeds',stage:'Job hunting'}
+];
+const allMembers = () => [...state.members, ...demoMembers];
+let commentTargetId = '';
+const app = document.querySelector('#app');
+const dialog = document.querySelector('#dialog');
+const account = document.querySelector('#account');
+const notice = document.querySelector('#notice');
+let filter = 'All', activeForm = '', timer, sort = 'popular';
+let draftTitle = '', resumeAsk = false, city = 'All';
+const areas = {
+  'All': [-8.9,49.8,2.1,59.2],
+  'London': [-0.25,51.44,0.01,51.58],
+  'Manchester': [-2.36,53.41,-2.13,53.55],
+};
+const ukEvents = [
+  {id:'digital-economy-2026',name:'UK Digital Economy Conference 2026',city:'Manchester',date:'26 November',ends:'2026-11-26',venue:'Friends’ Meeting House',marker:[53.4776,-2.2467],url:'https://www.techuk.org/events/uk-digital-economy-conference-2026'},
+  {id:'digital-ethics-2026',name:'Digital Ethics Summit 2026',city:'London',date:'2 December',ends:'2026-12-02',marker:[51.5074,-0.1278],url:'https://www.techuk.org/events/digital-ethics-summit-2026'},
+  {id:'ciuk-2026',name:'CIUK 2026',city:'Manchester',date:'2–4 December',ends:'2026-12-04',venue:'Manchester Central',marker:[53.4761,-2.2468],url:'https://www.cake.ac.uk/events/202612-CIUK26/'},
+];
+const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]);
+const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2);
+for (const post of state.exchanges) post.id ??= uid();
+const current = () => state.members.find(member => member.id === verifiedUser?.id);
+const profileId = () => location.hash.slice('#member-'.length);
+const memberById = id => allMembers().find(item => item.id === id);
+function authorLink(record) {
+  const demo = demoMembers.find(item => item.name === record.author);
+  const id = record.member || demo?.id;
+  return id ? `<a class="member-link" href="#member-${escape(id)}">${escape(record.author)}</a>` : escape(record.author);
+}
+const lookup = () => state.questions.find(q => '#q-' + q.id === location.hash);
+const balance = () => state.ledger.filter(entry => entry.member === state.member).reduce((sum, entry) => sum + entry.delta, 0);
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { tell('Your browser could not save this change. It will be lost when you refresh.'); }
+}
+function tell(message) {
+  notice.textContent = message;
+  clearTimeout(timer);
+  timer = setTimeout(() => { notice.textContent = ''; }, 4500);
+}
+function credit(member, delta, reason, key) {
+  if (!member || state.ledger.some(entry => entry.key === key)) return;
+  state.ledger.push({member, delta, reason, key});
+}
+function winners(q) {
+  const max = Math.max(0, ...q.answers.map(a => a.votes.length));
+  return max < 3 ? [] : q.answers.filter(a => a.votes.length === max);
+}
+function settle() {
+  for (const q of state.questions) {
+    if (q.close > Date.now() || q.settled) continue;
+    const awarded = winners(q);
+    q.winnerIds = awarded.map(a => a.id);
+    for (const a of awarded) credit(a.member, 2, 'Top answer bonus', 'top-' + a.id);
+    q.settled = true;
+  }
+}
+function go(hash) {
+  if (location.hash === hash) render();
+  else location.hash = hash;
+}
+let eventMap, pins = [];
+function render() {
+  eventMap?.remove();
+  eventMap = null;
+  pins = [];
+  settle();
+  save();
+  const member = current();
+  const wallet = location.hash === '#points';
+  const events = location.hash === '#uk-events';
+  const profile = location.hash.startsWith('#member-');
+  const about = location.hash === '#who-are-we';
+  const exchangeDetail = /^#exchange-post-(.+)$/.exec(location.hash);
+  const exchange = location.hash === '#exchange' || location.hash === '#stay-dates' || Boolean(exchangeDetail);
+  const q = lookup();
+  document.querySelector('#navHome').setAttribute('aria-current', String(!wallet && !events && !profile && !exchange && !about));
+  document.querySelector('#navEvents').setAttribute('aria-current', String(events));
+  document.querySelector('#navWallet').setAttribute('aria-current', String(wallet));
+  account.innerHTML = member
+    ? '<button data-action="my-profile">My Profile</button><button data-action="logout">Log out</button>'
+    : '<button data-action="login">Log in</button><button class="primary" data-action="join">Sign up</button>';
+  document.querySelector('#navExchange').setAttribute('aria-current', String(exchange));
+  document.querySelector('#navAbout').setAttribute('aria-current', String(about));
+  app.innerHTML = about ? aboutPage() : exchangeDetail ? exchangePostPage(exchangeDetail[1]) : exchange ? exchangePage(location.hash === '#stay-dates') : wallet ? walletPage() : events ? eventsPage() : profile ? profilePage() : q ? questionPage(q) : location.hash === '#topics' ? topicsPage() : homePage();
+  if (events) showEventMap();
+}
+function aboutPage() {
+  return `<section class="about-page" aria-labelledby="about-title">
+    <article class="about-copy">
+      <h1 id="about-title">Who are we?</h1>
+      <p>We met at DurHack, a hackathon in Durham. While working on a project together, we noticed how few women were in the room. It got us talking: would it be easier to go to your first tech event if someone invited you along and there was a friendly face when you arrived?</p>
+      <p>That’s what we want to make happen. <strong>We want to run events for women in the UK who work in tech or want to get into it.</strong> From hands-on workshops to informal career meetups, you can build something together, hear how others found their first tech job and meet people who’ll practise interviews with you or help you work out your next step.</p>
+      <p>The connections can carry on after the event. You might teach someone to code and borrow a toolkit in return. If you’re heading to an event in another city, you might even arrange a weekend home swap with a friend who lives there.</p>
+      <p lang="en-GB"><strong>Help Her Dream Take Shape.</strong></p>
+    </article>
+    <figure class="about-comic"><a href="./hertech-comic-en.png" target="_blank" rel="noopener" aria-label="Open the full-size HerTech comic">
+      <img src="./hertech-comic-en.png" width="724" height="2172" alt="HerTech’s story in six panels: meeting at DurHack, running tech events for women, practising interviews, swapping skills and sharing tools, and arranging home swaps.">
+    </a><figcaption>View the full-size comic</figcaption></figure>
+  </section>`;
+}
+function homePage() {
+  return `<div class="home"><section class="ask-panel"><p class="eyebrow">A UK community for women in tech</p><h1>What's <span class="grad">on your mind?</span></h1><p class="intro">Share what you’ve learnt and support other women in UK tech through job searches, career changes and professional growth.</p>
+    <form id="quickAsk"><label class="visually-hidden" for="quickTitle">Question title</label><textarea id="quickTitle" name="title" placeholder="For example: How do I prepare for my first UK tech interview?" required maxlength="120" rows="4">${escape(draftTitle)}</textarea><div class="actions"><button class="primary" type="submit">Continue to question ↗</button></div></form>
+    </section><div class="hot" aria-label="Trending topics"><strong>Trending Topics</strong>${topics.map(topic => `<button data-action="filter" data-topic="${topic}"># ${topic}</button>`).join('')}</div>
+    <section aria-labelledby="communityEvents"><h2 class="section-title" id="communityEvents">Our Upcoming Events</h2>
+    <div class="event-cards">
+    <article class="card ticket"><span class="tag">Demo event · Online</span><h3>UK Tech CV Workshop</h3><p class="summary">Review your CV together and make your project experience more specific.</p><div class="actions"><button data-action="wallet">View tickets</button></div></article>
+    <article class="card"><span class="tag">In planning · Online</span><h3>Mock Interviews & Portfolio Peer Review</h3><p class="summary">Small-group practice and peer feedback. Date to be confirmed.</p></article>
+    </div></section>
+    <div class="social-footer" aria-label="Social media"><strong>Follow HerTech</strong><span>Xiaohongshu <small>Link coming soon</small></span><span>Instagram <small>Link coming soon</small></span></div></div>`;
+}
+function topicsPage() {
+  const questions = state.questions.filter(q => filter === 'All' || q.topic === filter);
+  return `<section class="detail"><button class="back" data-action="home">← Back to home</button><h1>${escape(filter)} · Q&A</h1>
+    <div class="tabs" aria-label="Filter by topic">${['All', ...topics].map(topic => `<button data-action="filter" data-topic="${topic}" aria-pressed="${topic === filter}">${topic}</button>`).join('')}</div>
+    ${questions.map(q => `<article class="card"><span class="tag">${escape(q.topic)}</span><h3><a class="link" href="#q-${q.id}">${escape(q.title)}</a></h3><p class="summary">${escape(q.body)}</p><div class="meta">${authorLink(q)} · ${q.answers.length} answers</div></article>`).join('') || '<p class="empty">No questions on this topic yet.</p>'}</section>`;
+}
+function visibleEvents() {
+  const today = new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
+  const dateKey = ['year','month','day'].map(type => today.find(part => part.type === type).value).join('-');
+  return ukEvents.filter(event => event.ends >= dateKey && (city === 'All' || event.city === city));
+}
+function eventsPage() {
+  const events = visibleEvents();
+  const box = areas[city];
+  const centre = [(box[1]+box[3])/2, (box[0]+box[2])/2];
+  const mapLink = 'https://www.openstreetmap.org/#map=' + (city === 'All' ? 5 : 12) + '/' + centre.join('/');
+  return `<section class="home"><h1>Upcoming UK tech events</h1>
+    <div class="tabs" aria-label="Filter by city">${Object.keys(areas).map(area => `<button data-action="city" data-topic="${area}" aria-pressed="${area === city}">${area}</button>`).join('')}</div>
+    <div id="eventMap" class="map-frame" role="region" aria-label="UK tech events map"></div>
+    <a class="map-link" href="${mapLink}" target="_blank" rel="noopener noreferrer">Open in OpenStreetMap ↗</a>
+    <div class="event-list">${events.map((event, index) => `<article class="card"><div class="meta">${event.date} · ${event.city}${event.venue ? ' · ' + event.venue : ' · Venue to be confirmed'}</div><h2>${index + 1}. ${event.name}</h2><div class="actions"><button data-action="pin" data-id="${index}">Show on map</button><a href="${event.url}" target="_blank" rel="noopener noreferrer">Organiser details ↗</a></div>${eventCommunityMarkup(event.id)}</article>`).join('') || '<p class="empty">No upcoming events are listed here. See the organiser’s calendar for more.</p>'}</div>
+    <a class="map-link" href="https://www.techuk.org/events" target="_blank" rel="noopener noreferrer">See more events on techUK ↗</a>
+    </section>`;
+}
+function eventCommunityData(id) {
+  return state.eventCommunity[id] || {comments:[],teams:[]};
+}
+function eventCommunityMarkup(id) {
+  const {comments,teams} = eventCommunityData(id);
+  const member = current();
+  return `<details class="event-community" data-event-community="${id}"${expandedEvents.has(id) ? ' open' : ''}>
+    <summary>Groups & Discussion · ${teams.length} groups · ${comments.length} comments</summary>
+    <div class="actions"><button class="primary" data-action="event-team" data-id="${id}">Start a group</button>
+    <button data-action="event-comment" data-id="${id}">Leave a comment</button></div>
+    ${teams.length ? '<h3>Open groups</h3>' + teams.map(team => {
+      const isHost = team.member === member?.id;
+      const joined = team.members.includes(member?.id);
+      const people = team.members.map(memberById).filter(Boolean).map(person => authorLink({member:person.id,author:person.name}));
+      return `<section class="event-team"><strong>${escape(team.title)}</strong><p class="summary">${escape(team.body)}</p>
+      <div class="meta">Organised by ${authorLink(team)} · ${team.members.length} joined</div>
+      ${people.length ? `<p class="meta">Group members ${people.join(', ')}</p>` : ''}
+      <div class="actions">${isHost ? '' : `<button data-action="event-team-join" data-id="${id}" data-target="${escape(team.id)}">${joined ? 'Leave group' : 'Join group'}</button>`}
+      <button data-action="event-comment" data-id="${id}" data-target="${escape(team.id)}">Message the group</button></div></section>`;
+    }).join('') : ''}
+    <h3>Event discussion</h3>
+    ${comments.length ? `<ul class="comment-list">${comments.map(comment => {
+      const parent = comments.find(item => item.id === comment.replyTo);
+      const team = teams.find(item => item.id === comment.teamId);
+      return `<li${parent ? ' class="event-reply"' : ''}>${authorLink(comment)}
+        ${parent ? `<small>Reply to ${authorLink(parent)}</small>` : team ? `<small>Message to “${escape(team.title)}”</small>` : ''}
+        <p class="summary">${escape(comment.body)}</p>
+        <button type="button" class="link member-link" data-action="event-reply" data-id="${id}" data-target="${escape(comment.id)}">Reply</button></li>`;
+    }).join('')}</ul>` : '<p class="summary">No comments yet.</p>'}</details>`;
+}
+app.addEventListener('toggle', event => {
+  const id = event.target.dataset?.eventCommunity;
+  if (!id || !event.target.isConnected) return;
+  if (event.target.open) expandedEvents.add(id);
+  else expandedEvents.delete(id);
+}, true);
+function showEventMap() {
+  const container = document.querySelector('#eventMap');
+  if (!window.L) {
+    container.textContent = 'The map is temporarily unavailable. Use an event’s map link to see its location.';
+    return;
+  }
+  const L = window.L;
+  const [west,south,east,north] = areas[city];
+  eventMap = L.map(container, {maxZoom:19});
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(eventMap);
+  pins = visibleEvents().map((event,index) => {
+    const icon = L.divIcon({className:'event-pin' + (event.venue ? '' : ' approx'), html:index+1, iconSize:[28,28], iconAnchor:[14,14]});
+    return L.marker(event.marker, {icon, title:event.name, alt:event.name}).addTo(eventMap)
+      .bindPopup('<strong>' + escape(event.name) + '</strong><br>' + escape(event.date + ' · ' + (event.venue || 'Central London (approximate location)')) + '<br><a target="_blank" rel="noopener noreferrer" href="' + escape(event.url) + '">Organiser details ↗</a>');
+  });
+  if (pins.length > 1) eventMap.fitBounds(L.featureGroup(pins).getBounds(), {padding:[32,32],maxZoom:16});
+  else if (pins.length === 1) eventMap.setView(pins[0].getLatLng(), 13);
+  else eventMap.fitBounds([[south,west],[north,east]]);
+}
+function profilePage() {
+  const member = memberById(profileId());
+  if (!member) return '<section class="detail"><p>Member not found.</p><button data-action="home">Back to home</button></section>';
+  const followers = state.follows.filter(edge => edge.to === member.id).map(edge => memberById(edge.from)).filter(Boolean);
+  const following = state.follows.filter(edge => edge.from === member.id).map(edge => memberById(edge.to)).filter(Boolean);
+  const own = current()?.id === member.id;
+  const followed = followers.some(item => item.id === current()?.id);
+  const list = items => items.length ? '<ul>' + items.map(item => `<li>${authorLink({member:item.id,author:item.name})}</li>`).join('') + '</ul>' : '<p class="summary">No members yet.</p>';
+  return `<section class="detail"><button class="back" data-action="home">← Back to home</button>
+    <div class="card"><h1>${escape(member.name)}</h1><p class="meta">${escape(member.stage)}${member.id.startsWith('sample-') ? ' · Demo member' : ''}</p>
+    ${own ? `<p>Verified email · ${escape(verifiedUser.email)}</p><button data-action="email-change">Change email</button>` : `<button class="primary" data-action="follow" aria-pressed="${followed}">${followed ? 'Unfollow' : 'Follow'}</button>`}</div>
+    <div class="profile-lists"><section class="card"><h2>Followers · ${followers.length}</h2>${list(followers)}</section>
+    <section class="card"><h2>Following · ${following.length}</h2>${list(following)}</section></div>
+    ${own ? memberActivity(member.id) : ''}</section>`;
+}
+function memberActivity(memberId) {
+  const questions = [];
+  const comments = [];
+  const likes = [];
+  for (const question of state.questions) {
+    if (question.member === memberId) {
+      questions.push({question, detail:question.topic + ' · ' + question.answers.length + ' answers'});
+    }
+    for (const comment of question.comments || []) {
+      if (comment.member === memberId) comments.push({question, detail:comment.body});
+    }
+    for (const answer of question.answers) {
+      if (answer.votes.includes(memberId)) likes.push({question, detail:answer.body});
+      for (const comment of answer.comments || []) {
+        if (comment.member === memberId) comments.push({question, detail:comment.body});
+      }
+    }
+  }
+  return [
+    {title:'My Questions', items:questions, empty:'You haven’t posted any questions yet.'},
+    {title:'My Comments', items:comments, empty:'You haven’t posted any comments yet.'},
+    {title:'My Likes', items:likes, empty:'You haven’t marked any answers as helpful yet.'}
+  ].map(({title,items,empty}) => `<section class="card"><h2 class="activity-heading">${title} · ${items.length}</h2>
+    ${items.length ? `<ul class="activity-list">${items.map(({question,detail}) => `<li><a class="member-link" href="#q-${escape(question.id)}">${escape(question.title)}</a><p class="summary">${escape(detail)}</p></li>`).join('')}</ul>` : `<p class="summary">${empty}</p>`}</section>`).join('');
+}
+function commentsSection(record) {
+  const comments = record.comments || [];
+  return `<div class="actions"><button data-action="comment" data-id="${escape(record.id)}">Comment · ${comments.length}</button></div>
+  ${comments.length ? `<ul class="comment-list" aria-label="Comments">${comments.map(comment => `<li>${authorLink(comment)}<p class="summary">${escape(comment.body)}</p></li>`).join('')}</ul>` : ''}`;
+}
+function questionPage(q) {
+  const answers = [...q.answers];
+  if (sort === 'popular') answers.sort((a,b) => b.votes.length - a.votes.length);
+  else answers.reverse();
+  const winning = q.winnerIds || [];
+  return `<section class="detail"><button class="back" data-action="home">← Back to Q&A</button><article class="card"><span class="tag">${escape(q.topic)}</span><h1>${escape(q.title)}</h1><p class="summary">${escape(q.body)}</p><p class="meta">${authorLink(q)} · ${q.settled ? 'Top answer bonus awarded' : 'The top answer bonus is awarded seven days after the question is posted'}</p><button class="primary" data-action="answer">Write an answer</button>${commentsSection(q)}</article>
+  <div class="topline"><h2>${answers.length} answers</h2><div class="tabs" aria-label="Sort answers"><button data-action="popular" aria-pressed="${sort === 'popular'}">Most helpful</button><button data-action="latest" aria-pressed="${sort === 'latest'}">Newest</button></div></div>
+  ${answers.map(a => `<article class="card"><strong>${authorLink(a)}</strong> ${winning.includes(a.id) ? '<small class="winner">Top answer</small>' : ''}<p class="summary">${escape(a.body)}</p><div class="actions"><button class="${a.votes.includes(state.member) ? 'voted' : ''}" aria-pressed="${a.votes.includes(state.member)}" data-action="vote" data-id="${a.id}">↑ Helpful · ${a.votes.length}</button></div>${commentsSection(a)}</article>`).join('') || '<p class="empty">No answers yet. Share your experience.</p>'}</section>`;
+}
+function ukDate() {
+  const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+  return ['year','month','day'].map(type => parts.find(part => part.type === type).value).join('-');
+}
+function dateFields(prefix, from = '', to = '') {
+  return `<div class="exchange-dates"><label for="${prefix}-from">Start date<input id="${prefix}-from" name="from" type="date" min="${ukDate()}" value="${escape(from)}"></label>
+    <label for="${prefix}-to">End date<input id="${prefix}-to" name="to" type="date" min="${ukDate()}" value="${escape(to)}"></label></div>`;
+}
+function exchangePage(stays) {
+  const posts = state.exchanges.filter(post => {
+    if (!stays) return exchangeType === 'All' || post.type === exchangeType;
+    return post.type === 'Home Swap' && post.to >= ukDate() &&
+      (!stayFilter.from || post.from <= stayFilter.from) && (!stayFilter.to || post.to >= stayFilter.to);
+  });
+  const heading = stays ? 'Find home swaps by date' : 'Community Swaps';
+  return `<section class="home">
+    ${stays ? '<button data-action="exchange">← Back to Swaps</button>' : ''}
+    <div class="exchange-head"><div class="topline"><h1>${heading}</h1><button class="primary" data-action="new-exchange">Post a listing</button></div>
+    <p>${stays ? 'Choose dates to find home swaps available for the whole period.' : 'Find an interview practice partner, swap items or arrange a home swap.'}</p></div>
+    ${stays ? `<form id="stayFilter" class="card exchange-date-filter">${dateFields('stay', stayFilter.from, stayFilter.to)}<div class="actions"><button class="primary" type="submit">Find home swaps</button><button type="button" data-action="clear-stay">Clear dates</button></div></form>`
+      : `<div class="tabs" aria-label="Filter by swap category">${['All',...exchangeTypes].map(type => `<button data-action="exchange-type" data-topic="${type}" aria-pressed="${type === exchangeType}">${type}</button>`).join('')}<button data-action="stay-dates">Find home swaps by date ↗</button></div>`}
+    ${posts.length ? `<div class="exchange-feed">${posts.map(post => exchangeTile(post, stays)).join('')}</div>`
+      : `<p class="empty">${stays ? 'No home swaps match these dates.' : 'No listings in this category yet.'}</p>`}
+    </section>`;
+}
+function exchangeTile(post, stays) {
+  const cover = post.images?.find(image => exchangeImageFormat.test(image));
+  return `<a class="exchange-tile" href="#exchange-post-${encodeURIComponent(post.id)}${stays ? '/stay' : ''}">
+    <div class="exchange-cover">${cover ? `<img loading="lazy" src="${cover}" alt="">` : 'No image'}</div>
+    <div class="exchange-caption"><h3>${escape(post.title)}</h3><p>${escape(post.place)}</p></div>
+    </a>`;
+}
+function exchangePostPage(route) {
+  const [id, source] = route.split('/');
+  const post = state.exchanges.find(item => encodeURIComponent(item.id) === id);
+  const back = source === 'stay' ? 'stay-dates' : 'exchange';
+  const backButton = `<button class="back" data-action="${back}">← Back to ${source === 'stay' ? 'home swap dates' : 'Swaps'}</button>`;
+  if (!post) return `<section class="detail">${backButton}<p>Listing not found.</p></section>`;
+  const cityMap = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(post.place + ', UK');
+  return `<section class="detail">${backButton}<article class="card exchange-body"><span class="tag">${escape(post.type)}</span>
+    <h1>${escape(post.title)}</h1>
+    <p class="meta">${authorLink(post)} · ${escape(post.place)}${post.type === 'Home Swap' ? ' · ' + escape(post.from) + ' to ' + escape(post.to) : ''}</p>
+    ${exchangeGallery(post)}
+    <p class="summary">${escape(post.body)}</p>
+    <a class="map-link" href="${escape(cityMap)}" target="_blank" rel="noopener noreferrer">View area map ↗</a>
+    </article></section>`;
+}
+function exchangeGallery(post) {
+  const images = (post.images || []).filter(image => exchangeImageFormat.test(image));
+  if (!images.length) return '';
+  return `<div class="exchange-gallery">${images.map((image,index) => `<button data-action="exchange-image" aria-label="Enlarge image ${index+1}"><img loading="lazy" src="${image}" alt="${escape(post.title)}, image ${index+1}"></button>`).join('')}</div>`;
+}
+function clearExchangePreviews() {
+  for (const url of exchangePreviewUrls) URL.revokeObjectURL(url);
+  exchangeImageFiles = [];
+  exchangePreviewUrls = [];
+}
+function previewExchangeImages(input) {
+  clearExchangePreviews();
+  const preview = dialog.querySelector('#exchange-preview');
+  const message = dialog.querySelector('#exchange-image-message');
+  preview.replaceChildren();
+  const files = Array.from(input.files);
+  const valid = files.length <= exchangeImageLimit &&
+    files.every(file => ['image/jpeg','image/png','image/webp'].includes(file.type) && file.size <= 10 * 1024 * 1024);
+  if (!valid) {
+    input.value = '';
+    message.textContent = 'Choose up to 3 JPG, PNG or WebP images, each no larger than 10 MB.';
+    return;
+  }
+  message.textContent = '';
+  exchangeImageFiles = files;
+  for (const [index,file] of files.entries()) {
+    const url = URL.createObjectURL(file);
+    exchangePreviewUrls.push(url);
+    const image = document.createElement('img');
+    image.src = url;
+    image.alt = 'Preview image ' + (index + 1);
+    preview.append(image);
+  }
+}
+async function compressExchangeImage(file) {
+  const bitmap = await createImageBitmap(file);
+  try {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const ratio = Math.min(1, 1200 / Math.max(bitmap.width, bitmap.height));
+    for (const scale of [1, 0.7, 0.45]) {
+      canvas.width = Math.max(1, Math.round(bitmap.width * ratio * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * ratio * scale));
+      context.fillStyle = '#fff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      const data = canvas.toDataURL('image/jpeg', 0.78);
+      if (data.length <= 230000 && exchangeImageFormat.test(data)) return data;
+    }
+    throw new Error('Image could not be compressed');
+  } finally {
+    bitmap.close();
+  }
+}
+const beanUnit = amount => Math.abs(amount) === 1 ? 'Coffee Bean' : 'Coffee Beans';
+function walletPage() {
+  const remaining = seats - state.redemptions.length;
+  const redeemed = state.redemptions.includes(state.member);
+  const entries = state.ledger.filter(entry => entry.member === state.member).slice().reverse();
+  return `<section class="detail"><h1>Points & Events</h1><div class="card points"><div class="balance bean-balance"><img class="coffee-bean" src="./coffee-bean.png" alt="">${current() ? balance() : '—'} ${beanUnit(current() ? balance() : 0)}</div><p>Earn 1 Coffee Bean when two members mark your answer as helpful. After seven days, the top answer earns 2 extra Coffee Beans if it has at least three votes. Tied answers each earn the bonus.</p><p class="form-note">You keep any Coffee Beans already awarded. New accounts receive 2 demo Coffee Beans to try ticket redemption.</p></div><section class="card ticket"><span class="tag">Demo event</span><h3>UK Tech CV Workshop</h3><p>Online · 60 minutes · ${PRICE} ${beanUnit(PRICE)} per ticket · ${remaining} places left</p>
+  <button class="primary" data-action="redeem" ${redeemed || remaining <= 0 ? 'disabled' : ''}>${redeemed ? 'Redeemed · Booking confirmed' : remaining > 0 ? 'Redeem ticket' : 'Fully booked'}</button></section>
+  <section class="card"><h3>Coffee Bean History</h3>${entries.map(entry => `<p>${escape(entry.reason)} · <strong>${entry.delta > 0 ? '+' : ''}${entry.delta} ${beanUnit(entry.delta)}</strong></p>`).join('') || '<p class="summary">No Coffee Bean transactions yet.</p>'}</section></section>`;
+}
+const authForms = ['join','login','email-change','resend'];
+const emailField = '<label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254">';
+function passwordField(newPassword) {
+  return '<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="' +
+    (newPassword ? 'new-password" minlength="10' : 'current-password') + '" required maxlength="72">';
+}
+function showForm(kind) {
+  if (authForms.includes(kind) && !auth) {
+    tell(location.protocol === 'file:' ? 'Open the online HerTech site to sign up or log in.' : 'We couldn’t connect to the account service. Please refresh and try again.');
+    return;
+  }
+  clearExchangePreviews();
+  activeForm = kind;
+  const forms = {
+    join: ['Sign up for HerTech', '<p class="form-note">For women in the UK who work in tech, study STEM or plan to enter the tech industry.</p><label for="name">Display name</label><input id="name" name="name" required maxlength="30">' + emailField + passwordField(true) + '<p class="form-note">Use at least 10 characters. Check your inbox for a verification email after signing up.</p><label for="stage">Career stage</label><select id="stage" name="stage"><option>Studying</option><option>Job hunting or changing careers</option><option>Employed</option></select><label class="checkbox"><input type="checkbox" required>I meet the community membership criteria</label><button type="button" class="link member-link" data-action="login">Already have an account? Log in</button>', 'Sign up and send verification email'],
+    login: ['Log in to HerTech', emailField + passwordField(false) + '<div class="actions"><button type="button" class="link member-link" data-action="join">Create an account</button><button type="button" class="link member-link" data-action="resend">Resend verification email</button></div>', 'Log in'],
+    resend: ['Resend verification email', emailField + '<button type="button" class="link member-link" data-action="login">Back to log in</button>', 'Send verification email'],
+    'email-change': ['Change email address', '<p class="form-note">Follow the instructions in the verification email to confirm the change. Then log in using your new email address and your current password.</p>' + emailField, 'Send confirmation email'],
+    'event-team': ['Start a group', '<label for="event-team-title">Group title</label><input id="event-team-title" name="title" required maxlength="100" placeholder="For example: Head to the event together from central Manchester"><label for="event-message">Group details</label><textarea id="event-message" name="body" required maxlength="1500" placeholder="Share where to meet or which sessions you’d like to attend together."></textarea>', 'Start a group'],
+    'event-comment': [eventDraft?.replyTo ? 'Reply to a comment' : eventDraft?.teamId ? 'Message the group' : 'Event discussion', '<label for="event-message">Message</label><textarea id="event-message" name="body" required maxlength="1500"></textarea>', 'Post message'],
+    'exchange-post': ['Post a swap listing', '<label for="exchange-category">Listing category</label><select id="exchange-category" name="type">' +
+      exchangeTypes.map(type => `<option${type === (location.hash === '#stay-dates' ? 'Home Swap' : exchangeType) ? ' selected' : ''}>${type}</option>`).join('') +
+      '</select><label for="exchange-title">Title</label><input id="exchange-title" name="title" required maxlength="120"><label for="exchange-place">Your city or neighbourhood</label><input id="exchange-place" name="place" required maxlength="80" placeholder="For example: Stratford, London"><p class="form-note">This location appears on your listing. A city or neighbourhood is enough.</p><div id="exchange-dates">' + dateFields('exchange') +
+      '</div><label for="exchange-body">Swap details</label><textarea id="exchange-body" name="body" required maxlength="2500" placeholder="Describe what you can offer and what you’d like in return."></textarea><label for="exchange-images">Photos (optional)</label><input id="exchange-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="form-note">Up to 3 images, 10 MB each.</p><p id="exchange-image-message" class="form-note" aria-live="polite"></p><div id="exchange-preview" class="exchange-gallery exchange-preview"></div>', 'Post a listing'],
+    ask: ['Ask a question', '<label for="title">Question title</label><input id="title" name="title" required maxlength="120" value="' + escape(draftTitle) + '"><label for="topic">Topic</label><select id="topic" name="topic">' + topics.map(topic => '<option>' + topic + '</option>').join('') + '</select><label for="body">Background</label><textarea id="body" name="body" required maxlength="2500"></textarea>', 'Post question'],
+    comment: ['Write a comment', '<label for="body">Comment</label><textarea id="body" name="body" required maxlength="1000"></textarea>', 'Post comment'],
+    answer: ['Write an answer', '<label for="body">Your experience or advice</label><textarea id="body" name="body" required maxlength="4000"></textarea>', 'Post answer'],
+    redeem: ['Confirm redemption', '<p>Use 2 Coffee Beans to redeem a demo ticket for the UK Tech CV Workshop?</p>', 'Confirm redemption']
+  };
+  const [title, fields, submit] = forms[kind];
+  dialog.innerHTML = `<form><h2 id="dialogTitle">${title}</h2>${fields}<p class="form-note" aria-live="polite" data-form-message hidden></p><div class="actions"><button type="button" data-action="cancel">Cancel</button><button class="primary" type="submit">${submit}</button></div></form>`;
+  if (kind === 'exchange-post') syncExchangeDateFields();
+  if (!dialog.open) dialog.showModal();
+}
+function syncExchangeDateFields() {
+  const dates = dialog.querySelector('#exchange-dates');
+  const stays = dialog.querySelector('#exchange-category').value === 'Home Swap';
+  dates.hidden = !stays;
+  for (const field of dates.querySelectorAll('input')) {
+    field.disabled = !stays;
+    field.required = stays;
+  }
+}
+dialog.addEventListener('change', event => {
+  if (event.target.id === 'exchange-category') syncExchangeDateFields();
+  if (event.target.id === 'exchange-images') previewExchangeImages(event.target);
+});
+document.addEventListener('click', async event => {
+  const button = event.target.closest('button[data-action]');
+  if (!button) return;
+  const {action, topic, id} = button.dataset;
+  const q = lookup();
+  const member = current();
+  if (action === 'about') go('#who-are-we');
+  if (action === 'home') { filter = 'All'; go('#home'); }
+  if (action === 'wallet') go('#points');
+  if (action === 'exchange') go('#exchange');
+  if (action === 'stay-dates') go('#stay-dates');
+  if (action === 'exchange-type') { exchangeType = topic; render(); }
+  if (action === 'clear-stay') { stayFilter = {from:'',to:''}; render(); }
+  if (action === 'exchange-image') {
+    const source = button.querySelector('img');
+    if (!exchangeImageFormat.test(source.src)) return;
+    activeForm = '';
+    dialog.innerHTML = '<h2 id="dialogTitle">View image</h2><div class="actions"><button type="button" data-action="cancel">Close</button></div>';
+    const image = source.cloneNode();
+    image.className = 'exchange-full-image';
+    dialog.querySelector('.actions').before(image);
+    dialog.showModal();
+  }
+  if (action === 'new-exchange') showForm(member ? 'exchange-post' : 'login');
+  if (['event-team','event-comment','event-reply','event-team-join'].includes(action)) {
+    if (!visibleEvents().some(item => item.id === id)) return;
+    const data = eventCommunityData(id);
+    const target = button.dataset.target;
+    expandedEvents.add(id);
+    if (!member) { showForm('login'); return; }
+    if (action === 'event-team-join') {
+      const team = data.teams.find(item => item.id === target);
+      if (!team || team.member === member.id) return;
+      const index = team.members.indexOf(member.id);
+      if (index < 0) team.members.push(member.id);
+      else team.members.splice(index,1);
+      render();
+      tell(index < 0 ? 'You joined the group.' : 'You left the group.');
+      return;
+    }
+    const parent = action === 'event-reply' ? data.comments.find(item => item.id === target) : null;
+    eventDraft = {id,replyTo:parent?.id,teamId:parent?.teamId || (action === 'event-comment' ? target : undefined)};
+    showForm(action === 'event-team' ? 'event-team' : 'event-comment');
+  }
+  if (action === 'events') { city = 'All'; go('#uk-events'); }
+  if (action === 'pin') {
+    const event = visibleEvents()[Number(id)];
+    if (!event) return;
+    const pin = pins[Number(id)];
+    if (!eventMap || !pin) {
+      const [lat,lon] = event.marker;
+      window.open('https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    document.querySelector('#eventMap').scrollIntoView({block:'nearest'});
+    eventMap.setView(pin.getLatLng(), 16);
+    pin.openPopup();
+  }
+  if (action === 'city' && Object.hasOwn(areas, topic)) { city = topic; render(); }
+  if (action === 'filter') { filter = topic; go('#topics'); }
+  if (action === 'popular' || action === 'latest') { sort = action; render(); }
+  if (action === 'cancel') { resumeAsk = false; dialog.close(); }
+  if (action === 'logout') {
+    button.disabled = true;
+    try {
+      const {error} = await auth.signOut({scope:'local'});
+      if (error) throw error;
+      syncUser(null);
+      go('#home');
+      tell('You’re logged out.');
+    } catch {
+      tell('Couldn’t log out. Please try again.');
+      button.disabled = false;
+    }
+  }
+  if (authForms.includes(action)) showForm(action);
+  if (action === 'my-profile' && member) go('#member-' + member.id);
+  if (action === 'follow') {
+    if (!member) { showForm('login'); return; }
+    const target = memberById(profileId());
+    if (!target || target.id === member.id) return;
+    const index = state.follows.findIndex(edge => edge.from === member.id && edge.to === target.id);
+    if (index < 0) state.follows.push({from:member.id,to:target.id});
+    else state.follows.splice(index, 1);
+    render();
+  }
+  if (action === 'comment' && q) {
+    if (!member) { showForm('login'); return; }
+    commentTargetId = id;
+    showForm('comment');
+  }
+  if (['ask','answer','redeem','vote'].includes(action) && !member) {
+    showForm('login');
+    return;
+  }
+  if (['ask','answer','redeem'].includes(action)) showForm(action);
+  if (action === 'vote' && q) {
+    const a = q.answers.find(item => item.id === id);
+    if (!a) return;
+    if (a.member === member.id) { tell('You can only mark other members’ answers as helpful.'); return; }
+    settle();
+    if (a.votes.includes(member.id)) {
+      a.votes = a.votes.filter(v => v !== member.id);
+    } else {
+      a.votes.push(member.id);
+      if (a.votes.length >= 2) credit(a.member, 1, 'Answer marked helpful by two members', 'help-' + a.id);
+    }
+    render();
+  }
+});
+app.addEventListener('submit', event => {
+  if (event.target.id === 'stayFilter') {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const from = String(data.get('from') || '');
+    const to = String(data.get('to') || from);
+    if (!from || from < ukDate() || to < from) return tell('Choose a valid start and end date.');
+    stayFilter = {from,to};
+    render();
+    return;
+  }
+  if (event.target.id !== 'quickAsk') return;
+  event.preventDefault();
+  draftTitle = String(new FormData(event.target).get('title') || '').trim().replace(/\s*\n\s*/g, ' ');
+  if (!draftTitle) return tell('Enter a question title.');
+  resumeAsk = !current();
+  showForm(resumeAsk ? 'login' : 'ask');
+});
+dialog.addEventListener('cancel', () => { resumeAsk = false; });
+dialog.addEventListener('close', clearExchangePreviews);
+dialog.addEventListener('submit', async event => {
+  event.preventDefault();
+  const data = new FormData(event.target);
+  const value = name => String(data.get(name) || '').trim();
+  const q = lookup();
+  const member = current();
+  if (authForms.includes(activeForm)) {
+    void submitAuth(activeForm, event.target, data);
+    return;
+  }
+  if (['event-team','event-comment'].includes(activeForm) && member && eventDraft) {
+    const {id, replyTo, teamId} = eventDraft;
+    if (location.hash !== '#uk-events' || !visibleEvents().some(item => item.id === id)) return tell('This event is no longer in the current list.');
+    const body = value('body'), title = value('title');
+    if (!body || (activeForm === 'event-team' && !title)) return tell('Complete the required fields.');
+    const community = state.eventCommunity[id] ??= {comments:[],teams:[]};
+    const record = {id:uid(),member:member.id,author:member.name,body};
+    if (activeForm === 'event-team') {
+      community.teams.push({...record,title,members:[]});
+      tell('Group posted.');
+    } else {
+      community.comments.push({...record,replyTo,teamId});
+      tell('Message posted.');
+    }
+    eventDraft = null;
+  }
+  if (activeForm === 'exchange-post' && member) {
+    const type = value('type'), title = value('title'), place = value('place'), body = value('body');
+    if (!exchangeTypes.includes(type) || !title || !place || !body) return tell('Choose a category and enter a title, location and description.');
+    const post = {id:uid(),type,title,place,body,member:member.id,author:member.name};
+    if (type === 'Home Swap') {
+      const from = value('from'), to = value('to');
+      if (!from || !to || from < ukDate() || to < from) return tell('Choose a valid start and end date for the home swap.');
+      post.from = from;
+      post.to = to;
+    }
+    const form = event.target;
+    const submit = form.querySelector('[type=submit]');
+    if (submit.disabled) return;
+    submit.disabled = true;
+    try {
+      post.images = [];
+      for (const file of exchangeImageFiles) post.images.push(await compressExchangeImage(file));
+    } catch {
+      tell('We couldn’t process an image. Pick a different one and try again.');
+      return;
+    } finally {
+      submit.disabled = false;
+    }
+    if (!dialog.open || !form.isConnected || current()?.id !== member.id) return;
+    state.exchanges.unshift(post);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(state));
+    } catch {
+      state.exchanges.shift();
+      tell('Your browser is out of storage. Try again with fewer photos.');
+      return;
+    }
+    if (location.hash === '#stay-dates' && type === 'Home Swap') stayFilter = {from:'',to:''};
+    else { exchangeType = type; go('#exchange'); }
+    tell('Swap listing posted.');
+  }
+  if (activeForm === 'ask' && member) {
+    if (!value('title') || !value('body')) return tell('Enter a question title and some background.');
+    const id = uid(), now = Date.now();
+    state.questions.unshift({id, title:value('title'), topic:value('topic'), body:value('body'), author:member.name, member:member.id, created:now, close:now+week, answers:[]});
+    draftTitle = '';
+    go('#q-' + id);
+    tell('Question posted.');
+  }
+  if (activeForm === 'answer' && member && q) {
+    if (!value('body')) return tell('Write an answer.');
+    q.answers.push({id:uid(), author:member.name, member:member.id, body:value('body'), votes:[]});
+    tell('Answer posted.');
+  }
+  if (activeForm === 'comment' && member && q) {
+    const target = q.id === commentTargetId ? q : q.answers.find(answer => answer.id === commentTargetId);
+    if (!target) { dialog.close(); return; }
+    if (!value('body')) return tell('Write a comment.');
+    target.comments ??= [];
+    target.comments.push({member:member.id,author:member.name,body:value('body')});
+    tell('Comment posted.');
+  }
+  if (activeForm === 'redeem' && member) {
+    if (state.redemptions.includes(member.id) || state.redemptions.length >= seats || balance() < PRICE) {
+      dialog.close();
+      tell('Couldn’t redeem the ticket. Check your Coffee Bean balance and the remaining places.');
+      return;
+    }
+    state.redemptions.push(member.id);
+    credit(member.id, -PRICE, 'Redeemed a CV workshop ticket', 'ticket-' + member.id);
+    tell('Ticket redeemed. Your booking is confirmed.');
+  }
+  dialog.close();
+  render();
+});
+function syncUser(user) {
+  verifiedUser = user?.email_confirmed_at ? user : null;
+  state.member = verifiedUser?.id ?? null;
+  if (verifiedUser && !state.members.some(profile => profile.id === verifiedUser.id)) {
+    const {name, stage} = verifiedUser.user_metadata || {};
+    state.members.push({id:verifiedUser.id,name:String(name || 'HerTech member').slice(0,30),stage:String(systemLabel(legacyStages, stage) || '').slice(0,40)});
+    credit(verifiedUser.id, 2, 'Welcome Coffee Beans', 'join-' + verifiedUser.id);
+  }
+  render();
+}
+function authError(error) {
+  const messages = {
+    invalid_credentials:'Incorrect email or password.',
+    email_not_confirmed:'Your email is awaiting verification. Open the verification email or request a new one.',
+    email_address_not_authorized:'Test emails can currently be sent only to Supabase project team members.',
+    over_email_send_rate_limit:'Too many requests. Please try again later.',
+    weak_password:'Choose a stronger password.'
+  };
+  return messages[error?.code] || 'We couldn’t complete this account action. Please try again later.';
+}
+async function submitAuth(kind, form, data) {
+  const message = form.querySelector('[data-form-message]');
+  const submit = form.querySelector('[type=submit]');
+  if (submit.disabled || !auth) return;
+  const email = String(data.get('email') || '').trim().toLowerCase();
+  const password = String(data.get('password') || '');
+  const name = String(data.get('name') || '').trim();
+  const setMessage = text => { message.textContent = text; message.hidden = false; };
+  if (kind === 'join' && !name) { setMessage('Enter a display name.'); return; }
+  submit.disabled = true;
+  setMessage('Working…');
+  try {
+    if (kind === 'join') {
+      const {error} = await auth.signUp({email,password,options:{emailRedirectTo:authRedirect,data:{name,stage:data.get('stage')}}});
+      if (error) throw error;
+      form.querySelector('[name=password]').value = '';
+      setMessage('If this address can be registered, you’ll receive a verification email. Verify your address before logging in.');
+    } else if (kind === 'login') {
+      const {data:result,error} = await auth.signInWithPassword({email,password});
+      if (error) throw error;
+      if (!result.user?.email_confirmed_at) {
+        await auth.signOut({scope:'local'});
+        setMessage(authError({code:'email_not_confirmed'}));
+        return;
+      }
+      syncUser(result.user);
+      if (form.isConnected && dialog.open) {
+        dialog.close();
+        if (resumeAsk) {
+          resumeAsk = false;
+          showForm('ask');
+        }
+      }
+      tell('You’re logged in to HerTech.');
+    } else if (kind === 'resend') {
+      const {error} = await auth.resend({type:'signup',email,options:{emailRedirectTo:authRedirect}});
+      if (error) throw error;
+      setMessage('If a registration for this address is awaiting verification, a new email will be sent.');
+    } else {
+      const {error} = await auth.updateUser({email},{emailRedirectTo:authRedirect});
+      if (error) throw error;
+      setMessage('Follow the instructions in the verification email to confirm the change.');
+    }
+  } catch (error) {
+    setMessage(authError(error));
+  } finally {
+    submit.disabled = false;
+  }
+}
+window.addEventListener('hashchange', () => { sort = 'popular'; render(); window.scrollTo(0, 0); });
+render();
+if (auth) {
+  auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') syncUser(null);
+    else syncUser(session?.user);
+  });
+}
+</script>
+</body>
+</html>
