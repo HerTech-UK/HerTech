@@ -259,6 +259,9 @@ img.avatar{object-fit:cover;background:#E6EBFF}
 .legal-links{text-align:center;font-size:14px}
 .legal-links a{color:var(--blue)}
 footer .foot-links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
+.res-cover{position:relative;aspect-ratio:40/21;border-radius:16px;overflow:hidden;margin:0 0 14px;background:#EEF1FF;border:1px solid var(--line)}
+.res-cover svg,.res-cover img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.res-cover img{object-fit:cover;background:#fff}
 </style>
 </head>
 <body>
@@ -687,12 +690,41 @@ function questionPage(id) {
 }
 
 // ───────────────────────── Resources ─────────────────────────
+// Original HerTech illustrations, one per resource category (shown when a site has no good preview image).
+const ART_BG = '<rect width="320" height="168" fill="#EEF1FF"/><circle cx="286" cy="22" r="54" fill="#FFC94D" opacity=".35"/><circle cx="24" cy="160" r="46" fill="#3D5AFE" opacity=".12"/>';
+const RES_ART = {
+  'Learning': `<svg viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg">${ART_BG}<path d="M160 52c-22-12-48-14-70-8v84c22-6 48-4 70 8z" fill="#fff" stroke="#0B1033" stroke-width="3" stroke-linejoin="round"/><path d="M160 52c22-12 48-14 70-8v84c-22-6-48-4-70 8z" fill="#fff" stroke="#0B1033" stroke-width="3" stroke-linejoin="round"/><path d="M104 66h40M104 80h40M104 94h28" stroke="#3D5AFE" stroke-width="4" stroke-linecap="round"/><path d="M184 70l-10 12 10 12M206 70l10 12-10 12" fill="none" stroke="#3D5AFE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 40l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="#FFC94D"/><path d="M262 104l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#3D5AFE"/></svg>`,
+  'Job hunting': `<svg viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg">${ART_BG}<rect x="96" y="62" width="110" height="74" rx="12" fill="#fff" stroke="#0B1033" stroke-width="3"/><path d="M134 62v-10a8 8 0 0 1 8-8h18a8 8 0 0 1 8 8v10" fill="none" stroke="#0B1033" stroke-width="3"/><path d="M96 92h110" stroke="#0B1033" stroke-width="3"/><rect x="143" y="86" width="16" height="12" rx="3" fill="#FFC94D" stroke="#0B1033" stroke-width="2.5"/><path d="M216 120l18-20 14 10 26-34" fill="none" stroke="#3D5AFE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M262 76h12v12" fill="none" stroke="#3D5AFE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="62" cy="54" r="7" fill="#FFC94D"/></svg>`,
+  'Courses & skills': `<svg viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg">${ART_BG}<rect x="88" y="44" width="144" height="88" rx="10" fill="#fff" stroke="#0B1033" stroke-width="3"/><path d="M72 140h176" stroke="#0B1033" stroke-width="5" stroke-linecap="round"/><rect x="104" y="62" width="112" height="10" rx="5" fill="#EEF1FF"/><rect x="104" y="62" width="74" height="10" rx="5" fill="#3D5AFE"/><path d="M106 92h52M106 106h36" stroke="#5C648F" stroke-width="4" stroke-linecap="round"/><path d="M196 88l20 8-20 8-20-8z" fill="#FFC94D" stroke="#0B1033" stroke-width="2.5" stroke-linejoin="round"/><path d="M184 98v10c0 4 24 4 24 0v-10" fill="none" stroke="#0B1033" stroke-width="2.5"/><path d="M262 48l4 8 8 4-8 4-4 8-4-8-8-4 8-4z" fill="#3D5AFE"/></svg>`,
+  'Tools': `<svg viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg">${ART_BG}<rect x="70" y="46" width="130" height="86" rx="10" fill="#0B1033"/><circle cx="84" cy="58" r="3.5" fill="#FFC94D"/><circle cx="96" cy="58" r="3.5" fill="#fff" opacity=".6"/><circle cx="108" cy="58" r="3.5" fill="#fff" opacity=".35"/><path d="M86 82l12 10-12 10" fill="none" stroke="#FFC94D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M108 104h34" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="236" cy="96" r="28" fill="#fff" stroke="#0B1033" stroke-width="3"/><circle cx="236" cy="96" r="10" fill="#3D5AFE"/><path d="M236 58v10M236 124v10M198 96h10M264 96h10M209 69l7 7M256 116l7 7M209 123l7-7M256 76l7-7" stroke="#0B1033" stroke-width="5" stroke-linecap="round"/></svg>`,
+  'Communities & events': `<svg viewBox="0 0 320 168" xmlns="http://www.w3.org/2000/svg">${ART_BG}<circle cx="118" cy="82" r="16" fill="#FFC94D" stroke="#0B1033" stroke-width="3"/><path d="M90 136c0-18 12-30 28-30s28 12 28 30" fill="#fff" stroke="#0B1033" stroke-width="3"/><circle cx="160" cy="72" r="18" fill="#3D5AFE" stroke="#0B1033" stroke-width="3"/><path d="M128 136c0-22 14-36 32-36s32 14 32 36" fill="#fff" stroke="#0B1033" stroke-width="3"/><circle cx="202" cy="82" r="16" fill="#fff" stroke="#0B1033" stroke-width="3"/><path d="M174 136c0-18 12-30 28-30s28 12 28 30" fill="#fff" stroke="#0B1033" stroke-width="3"/><path d="M80 137h160" stroke="#0B1033" stroke-width="5" stroke-linecap="round"/><path d="M226 34h46a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8h-30l-12 10v-10h-4a8 8 0 0 1-8-8v-20a8 8 0 0 1 8-8z" fill="#fff" stroke="#0B1033" stroke-width="3" stroke-linejoin="round"/><path d="M238 48h30M238 58h18" stroke="#3D5AFE" stroke-width="4" stroke-linecap="round"/></svg>`
+};
+const coverOk = url => typeof url === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(url) && url.length <= 1000;
+// Only real landscape preview images are kept; logos and odd shapes fall back to the illustration.
+function coverCheck(img) {
+  const w = img.naturalWidth, h = img.naturalHeight;
+  if (!w || !h || w < 600 || w / h < 1.4 || w / h > 2.4) img.remove();
+}
+function resCover(r) {
+  return `<div class="res-cover" aria-hidden="true">${RES_ART[r.category] || RES_ART.Learning}${coverOk(r.image_url) ? `<img src="${esc(r.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer" onload="coverCheck(this)" onerror="this.remove()">` : ''}</div>`;
+}
+// Ask Microlink (free link-preview service) for a site's preview image; save it only if it is a proper landscape cover.
+async function findCover(r) {
+  try {
+    const res = await fetch('https://api.microlink.io/?url=' + encodeURIComponent(r.url));
+    if (res.status === 429) return 'limit';
+    const img = (await res.json())?.data?.image;
+    if (!img || !coverOk(img.url) || !(img.width >= 600) || img.width / img.height < 1.4 || img.width / img.height > 2.4) return 'none';
+    const {error} = await sb.from('resources').update({image_url:img.url}).eq('id', r.id);
+    return error ? 'error' : 'ok';
+  } catch { return 'error'; }
+}
 function resourceCard(r, query = '', compact = false) {
   const url = safeUrl(r.url);
   const votes = resourceVotes(r.id);
   const voted = Boolean(me && db.resourceVotes.some(v => v.resource_id === r.id && v.member_id === me.id));
   const canEdit = !compact && me && (r.author_id === me.id || isAdmin());
-  return `<article class="card res-card${r.is_pick ? ' pick' : ''}">
+  return `<article class="card res-card${r.is_pick ? ' pick' : ''}">${compact ? '' : resCover(r)}
     <div class="q-tags"><span class="tag">${esc(r.category)}</span><span class="tag soft">${esc(r.cost)}</span>${r.is_pick ? '<span class="tag gold">★ HerTech pick</span>' : ''}${r.status !== 'approved' ? `<span class="tag warn">${r.status === 'pending' ? 'Waiting for review' : 'Not approved'}</span>` : ''}</div>
     <h3>${url ? `<a class="link" href="${esc(url)}" target="_blank" rel="noopener noreferrer ugc">${query ? mark(r.title, query) : esc(r.title)} ↗</a>` : esc(r.title)}</h3>
     <p class="meta">${esc(domain(url))}</p>
@@ -706,7 +738,7 @@ function resourcesPage() {
   const text = ui.resText;
   return `<section class="home"><div class="page-head"><div class="topline"><h1>Resources</h1><button class="primary" data-action="share-resource">Share a resource</button></div>
     <p class="section-note">Learning, job-hunting and career resources hand-picked by HerTech and shared by members. Every member submission is reviewed by the HerTech team before it appears, so only the good stuff gets through.</p>
-    ${isAdmin() ? `<a class="btn" href="#resources-review">Review queue · ${db.resources.filter(r => r.status === 'pending').length}</a>` : ''}</div>
+    ${isAdmin() ? `<div class="actions"><a class="btn" href="#resources-review">Review queue · ${db.resources.filter(r => r.status === 'pending').length}</a>${db.resources.some(r => r.status === 'approved' && !r.image_url) ? `<button data-action="find-covers">Find missing cover images</button>` : ''}</div>` : ''}</div>
     <div class="tabs" aria-label="Filter by category">${['All', ...RES_CATS].map(c => `<button data-action="res-cat" data-topic="${esc(c)}" aria-pressed="${c === ui.resCat}">${esc(c)}</button>`).join('')}</div>
     <div class="filter-row"><label class="visually-hidden" for="resText">Filter resources</label><input id="resText" data-live="resources" type="search" placeholder="Filter resources" value="${esc(text)}">
       <select id="resCost" data-live="resources" aria-label="Cost">${['All', ...COSTS].map(c => `<option value="${esc(c)}" ${c === ui.resCost ? 'selected' : ''}>${c === 'All' ? 'Any cost' : esc(c)}</option>`).join('')}</select></div>
@@ -1049,7 +1081,7 @@ function legalPage(kind) {
     privacy: ['Privacy policy', `<p>This policy explains what personal data HerTech collects, why, and your rights under UK data protection law (UK GDPR). The data controller is HerTech’s founders. To contact us, ${CONTACT_LINK}.</p>
       <h2>What we collect</h2><ul><li><strong>Account:</strong> your email address and password (stored securely by our database provider, never visible to us), display name and career stage.</li><li><strong>Profile:</strong> anything you choose to add, such as a bio, skills, a link and a photo.</li><li><strong>Community content:</strong> questions, answers, comments, swaps, resources, event groups, votes and follows. These are public on the site.</li><li><strong>Private messages:</strong> visible only to you and the person you message. The HerTech team can see a message only if its recipient reports it.</li><li><strong>Coffee Beans and bookings</strong> linked to your account.</li></ul>
       <h2>Why we use it (lawful basis)</h2><ul><li>To run your account and the community features you ask for (contract).</li><li>To keep the community safe: handling reports, removing harmful content and suspending accounts (legitimate interests).</li><li>To send essential emails such as verification and password resets (contract). We don’t send marketing emails.</li></ul>
-      <h2>Who processes it for us</h2><ul><li><strong>Supabase</strong> stores the database, accounts and photos.</li><li><strong>GitHub Pages</strong> hosts the website files.</li><li>When pages load, your browser also contacts <strong>Google Fonts</strong>, <strong>jsDelivr</strong> and <strong>unpkg</strong> (code libraries) and <strong>OpenStreetMap</strong> (event map), which receive your IP address.</li></ul><p>We don’t sell your data and we don’t use advertising or tracking cookies. Your login is kept in your browser’s local storage so you stay signed in.</p>
+      <h2>Who processes it for us</h2><ul><li><strong>Supabase</strong> stores the database, accounts and photos.</li><li><strong>GitHub Pages</strong> hosts the website files.</li><li>When pages load, your browser also contacts <strong>Google Fonts</strong>, <strong>jsDelivr</strong> and <strong>unpkg</strong> (code libraries) and <strong>OpenStreetMap</strong> (event map), which receive your IP address.</li><li>Some resource cards show a preview image loaded directly from that resource’s own website, which receives your IP address when the image loads.</li><li>When the HerTech team approves a resource, its link is sent to <strong>Microlink</strong> to look up the website’s preview image. No member data is sent.</li></ul><p>We don’t sell your data and we don’t use advertising or tracking cookies. Your login is kept in your browser’s local storage so you stay signed in.</p>
       <h2>How long we keep it</h2><p>We keep your data while your account exists. If you ask us to delete your account, we delete your profile and content, except where we must keep a record of a safety report.</p>
       <h2>Your rights</h2><p>You can ask to see, correct, download or delete your data, or object to how we use it. To do this, ${CONTACT_LINK}. You can also complain to the Information Commissioner’s Office (ico.org.uk).</p>`]
   };
@@ -1349,7 +1381,7 @@ document.addEventListener('click', async event => {
   }
   if (authForms.includes(action)) { showForm(action); return; }
   // Everything below needs an account
-  if (['ask','answer','comment','vote','edit-question','edit-answer','event-group','event-comment','event-reply','group-join','new-swap','swap-message','swap-status','share-resource','res-vote','follow','block','edit-profile','redeem','delete','res-review','report','report-status','suspend','new-event','delete-event'].includes(action) && needLogin()) {
+  if (['ask','answer','comment','vote','edit-question','edit-answer','event-group','event-comment','event-reply','group-join','new-swap','swap-message','swap-status','share-resource','res-vote','follow','block','edit-profile','redeem','delete','res-review','report','report-status','suspend','new-event','delete-event','find-covers'].includes(action) && needLogin()) {
     if (action === 'ask') resumeAsk = true;
     return;
   }
@@ -1396,9 +1428,29 @@ document.addEventListener('click', async event => {
       if (await run(() => mine ? sb.from('resource_votes').delete().eq('resource_id', id).eq('member_id', me.id) : sb.from('resource_votes').insert({resource_id:id}))) await refresh();
       break;
     }
-    case 'res-review':
-      if (await run(() => sb.from('resources').update({status:button.dataset.status, is_pick:button.dataset.pick === 'true'}).eq('id', id), button.dataset.status === 'approved' ? 'Resource approved.' : 'Resource rejected.')) await refresh();
+    case 'res-review': {
+      const approved = button.dataset.status === 'approved';
+      if (await run(() => sb.from('resources').update({status:button.dataset.status, is_pick:button.dataset.pick === 'true'}).eq('id', id), approved ? 'Resource approved.' : 'Resource rejected.')) {
+        const r = db.resources.find(x => x.id === id);
+        if (approved && r && !r.image_url) await findCover(r);
+        await refresh();
+      }
       break;
+    }
+    case 'find-covers': {
+      button.disabled = true;
+      let found = 0, limit = false;
+      for (const r of db.resources.filter(x => x.status === 'approved' && !x.image_url)) {
+        button.textContent = 'Looking… ' + found + ' found';
+        const result = await findCover(r);
+        if (result === 'limit') { limit = true; break; }
+        if (result === 'ok') found++;
+        await new Promise(done => setTimeout(done, 1200));
+      }
+      tell(found + ' cover image' + (found === 1 ? '' : 's') + ' found.' + (limit ? ' The free preview service’s daily limit was reached; try again tomorrow.' : ''));
+      await refresh();
+      break;
+    }
     case 'follow': {
       const following = db.follows.some(f => f.follower_id === me.id && f.followee_id === id);
       if (await run(() => following ? sb.from('follows').delete().eq('follower_id', me.id).eq('followee_id', id) : sb.from('follows').insert({followee_id:id}))) await refresh();
