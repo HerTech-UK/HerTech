@@ -364,6 +364,7 @@ function friendlyError(error) {
   if (/Failed to fetch|NetworkError/i.test(text)) return 'We couldn’t reach HerTech. Check your connection and try again.';
   return 'Something went wrong. Please try again.';
 }
+let lastError = '';
 async function run(task, done) {
   try {
     const result = await task();
@@ -372,7 +373,8 @@ async function run(task, done) {
     return result ?? true;
   } catch (error) {
     console.error(error);
-    tell(friendlyError(error));
+    lastError = friendlyError(error);
+    tell(lastError);
     return null;
   }
 }
@@ -1060,7 +1062,7 @@ function legalPage(kind) {
 const authForms = ['join', 'login', 'email-change', 'resend', 'forgot', 'new-password'];
 const emailField = '<label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254">';
 const passwordField = isNew => '<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="' + (isNew ? 'new-password" minlength="10' : 'current-password') + '" required maxlength="72">';
-const select = (id, name, options, value) => `<select id="${id}" name="${name}">${options.map(o => `<option ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+const select = (id, name, options, value) => `<select id="${id}" name="${name}">${options.map(o => `<option value="${esc(o)}" ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
 function showForm(kind, extra = {}) {
   if (authForms.includes(kind) && !auth) { tell(location.protocol === 'file:' ? 'Open the online HerTech site to sign up or log in.' : 'We couldn’t connect to the account service. Please refresh and try again.'); return; }
   activeForm = kind;
@@ -1192,6 +1194,7 @@ dialog.addEventListener('submit', async event => {
   if (!me) { showForm('login'); return; }
   if (submit.disabled) return;
   submit.disabled = true;
+  lastError = '';
   let ok = null, after = null;
   try {
     switch (activeForm) {
@@ -1293,7 +1296,8 @@ dialog.addEventListener('submit', async event => {
       }
     }
   } finally { submit.disabled = false; }
-  if (!ok) return;
+  // Errors also show inside the form, because the page notice sits behind an open dialog.
+  if (!ok) { if (lastError && message && message.hidden) say(lastError); return; }
   ui.eventDraft = null;
   dialog.close();
   await refresh();
