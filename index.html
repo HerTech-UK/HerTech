@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HerTech | A UK Community for Women in Tech</title>
+<meta name="description" content="HerTech is a UK community for women in tech: ask questions, share resources, swap skills and go to tech events together.">
+<meta name="theme-color" content="#F6F7FB">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233D5AFE'/%3E%3Cstop offset='.55' stop-color='%237C9BFF'/%3E%3Cstop offset='1' stop-color='%23FFC94D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cpath d='M32 12l5 15 15 5-15 5-5 15-5-15-15-5 15-5z' fill='white'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HerTech">
+<meta property="og:title" content="HerTech · A UK community for women in tech">
+<meta property="og:description" content="Ask questions, share resources, swap skills and go to tech events together.">
+<meta property="og:url" content="https://hertech-uk.github.io/HerTech/">
+<meta property="og:image" content="https://hertech-uk.github.io/HerTech/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2"></script>
@@ -230,6 +242,23 @@ footer a{color:var(--blue)}
   .page-head h1{font-size:28px}
 }
 @media(max-width:420px){.icon-btn{width:34px;height:34px}.account button{padding:6px 10px;font-size:13px}.brand{font-size:18px}}
+
+.link-btn.subtle{color:var(--muted);font-weight:500;font-size:13px;margin-left:auto}
+.actions .link-btn.subtle{align-self:center}
+.bubble .link-btn.subtle{font-size:11px;color:inherit;opacity:.8;margin:0}
+img.avatar{object-fit:cover;background:#E6EBFF}
+.avatar-field{display:flex;gap:16px;align-items:center;margin-top:8px}
+.avatar-field label{margin-top:0}
+.suspended-banner{background:#FFF1D6;border:1px solid #F3D39A;color:#7A4A00;border-radius:16px;padding:12px 16px;margin:0 auto 18px;max-width:920px}
+.report-card .snapshot{margin:10px 0;padding:12px 14px;border-left:3px solid var(--blue);background:rgba(61,90,254,.05);border-radius:0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
+.admin-links{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 24px}
+.legal h2{font-size:19px;margin:22px 0 6px}
+.legal ul{padding-left:20px;color:var(--body)}
+.legal p{color:var(--body)}
+.legal a,.dialog-links a,label a{color:var(--blue)}
+.legal-links{text-align:center;font-size:14px}
+.legal-links a{color:var(--blue)}
+footer .foot-links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
 </style>
 </head>
 <body>
@@ -239,7 +268,7 @@ footer a{color:var(--blue)}
 <nav id="nav" aria-label="Main navigation"></nav>
 <div id="account" class="account"></div>
 </div></header>
-<div class="wrap"><main id="app"></main><footer>HerTech · A UK community for women in tech · Be kind, share generously, and keep personal details private.</footer></div>
+<div class="wrap"><main id="app"></main><footer>HerTech · A UK community for women in tech · Be kind, share generously, and keep personal details private.<div class="foot-links"><a href="#guidelines">Community guidelines</a><a href="#terms">Terms of use</a><a href="#privacy">Privacy policy</a><a href="mailto:2335698577@qq.com">Contact us</a></div></footer></div>
 <dialog id="dialog" aria-labelledby="dialogTitle"></dialog>
 <div id="notice" role="status" aria-live="polite"></div>
 <script>
@@ -263,10 +292,13 @@ const ukEvents = [
   {id:'digital-ethics-2026', name:'Digital Ethics Summit 2026', city:'London', date:'2 December', ends:'2026-12-02', marker:[51.5074,-0.1278], url:'https://www.techuk.org/events/digital-ethics-summit-2026'},
   {id:'ciuk-2026', name:'CIUK 2026', city:'Manchester', date:'2–4 December', ends:'2026-12-04', venue:'Manchester Central', marker:[53.4761,-2.2468], url:'https://www.cake.ac.uk/events/202612-CIUK26/'}
 ];
-const areas = {'All':[-8.9,49.8,2.1,59.2], 'London':[-0.25,51.44,0.01,51.58], 'Manchester':[-2.36,53.41,-2.13,53.55]};
+const UK_BOX = [-8.9,49.8,2.1,59.2];
+const CITY_CENTRES = {'London':[51.5074,-0.1278], 'Manchester':[53.4808,-2.2426], 'Birmingham':[52.4862,-1.8904], 'Edinburgh':[55.9533,-3.1883], 'Glasgow':[55.8642,-4.2518], 'Bristol':[51.4545,-2.5879], 'Leeds':[53.8008,-1.5491], 'Cambridge':[52.2053,0.1218], 'Oxford':[51.752,-1.2577], 'Cardiff':[51.4816,-3.1791], 'Belfast':[54.5973,-5.9301], 'Newcastle':[54.9783,-1.6178], 'Sheffield':[53.3811,-1.4701], 'Nottingham':[52.9548,-1.1581], 'Liverpool':[53.4084,-2.9916], 'Durham':[54.7761,-1.5733]};
+const allEvents = () => db.events.length || !db.failed ? db.events : ukEvents;
+const eventCities = () => ['All', ...[...new Set(allEvents().map(e => e.city))].sort()];
 
 let me = null;
-const db = {loaded:false, failed:false, profiles:new Map(), questions:[], answers:[], votes:[], comments:[], groups:[], groupMembers:[], follows:[], swaps:[], resources:[], resourceVotes:[], ledger:[], messages:[], blocks:[], ticket:{places_left:SEATS, mine:false}};
+const db = {loaded:false, failed:false, events:[], reports:[], profiles:new Map(), questions:[], answers:[], votes:[], comments:[], groups:[], groupMembers:[], follows:[], swaps:[], resources:[], resourceVotes:[], ledger:[], messages:[], blocks:[], ticket:{places_left:SEATS, mine:false}};
 const swapImages = new Map();
 const ui = {qTopic:'All', qSort:'newest', answerSort:'popular', resCat:'All', resCost:'All', resText:'', swapType:'All', swapOpen:true, swapText:'', stay:{from:'',to:''}, city:'All', expandedEvents:new Set(), eventDraft:null, editing:null, commentTarget:null, draftTitle:''};
 let activeForm = '', resumeAsk = false, noticeTimer, eventMap = null, pins = [], realtime = null, pollTimer = null;
@@ -282,7 +314,12 @@ const profile = id => db.profiles.get(id);
 const nameOf = id => profile(id)?.name || 'Former member';
 const who = id => profile(id) ? `<a class="member-link" href="#member-${esc(id)}">${esc(nameOf(id))}</a>` : '<span>Former member</span>';
 const initials = id => esc(nameOf(id).trim().slice(0, 1).toUpperCase() || '?');
-const avatar = (id, size = '') => `<span class="avatar ${size}" aria-hidden="true" style="--hue:${hue(id)}">${initials(id)}</span>`;
+const STORAGE_PUBLIC = SUPABASE_URL + '/storage/v1/object/public/';
+const storageUrl = (bucket, url) => typeof url === 'string' && url.startsWith(STORAGE_PUBLIC + bucket + '/') && /^[^\s"'<>]+$/.test(url);
+const swapImageOk = src => typeof src === 'string' && (/^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(src) || storageUrl('swap-images', src));
+const avatar = (id, size = '') => storageUrl('avatars', profile(id)?.avatar_url)
+  ? `<img class="avatar ${size}" src="${esc(profile(id).avatar_url)}" alt="" loading="lazy">`
+  : `<span class="avatar ${size}" aria-hidden="true" style="--hue:${hue(id)}">${initials(id)}</span>`;
 function hue(id) { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; }
 const safeUrl = url => /^https?:\/\/[^\s]+$/i.test(url || '') ? url : '';
 const domain = url => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
@@ -386,7 +423,7 @@ async function loadAll() {
   try {
     sb.rpc('settle_questions').then(() => {}, () => {});
     const results = await Promise.all([
-      sb.from('profiles').select('id,name,stage,bio,offers,wants,link,is_admin,created_at').limit(5000),
+      sb.from('profiles').select('id,name,stage,bio,offers,wants,link,is_admin,is_banned,avatar_url,created_at').limit(5000),
       sb.from('questions').select('*').order('created_at', {ascending:false}).limit(2000),
       sb.from('answers').select('*').order('created_at').limit(10000),
       sb.from('answer_votes').select('answer_id,voter_id').limit(50000),
@@ -396,13 +433,15 @@ async function loadAll() {
       sb.from('follows').select('follower_id,followee_id').limit(20000),
       sb.from('swaps').select('id,author_id,type,title,place,offer,want,from_date,to_date,status,created_at,cover:images->0').order('created_at', {ascending:false}).limit(2000),
       sb.from('resources').select('*').order('created_at', {ascending:false}).limit(2000),
-      sb.from('resource_votes').select('resource_id,member_id').limit(20000)
+      sb.from('resource_votes').select('resource_id,member_id').limit(20000),
+      sb.from('events').select('*').order('ends_on')
     ]);
     const failed = results.find(result => result.error);
     if (failed) throw failed.error;
-    const [profiles, questions, answers, votes, comments, groups, groupMembers, follows, swaps, resources, resourceVotes] = results.map(result => result.data);
+    const [profiles, questions, answers, votes, comments, groups, groupMembers, follows, swaps, resources, resourceVotes, events] = results.map(result => result.data);
     db.profiles = new Map(profiles.map(p => [p.id, p]));
     Object.assign(db, {questions, answers, votes, comments, groups, groupMembers, follows, swaps, resources, resourceVotes, failed:false});
+    db.events = events.map(e => ({id:e.id, name:e.name, city:e.city, date:e.date_label, ends:e.ends_on, venue:e.venue, marker: e.lat != null && e.lng != null ? [e.lat, e.lng] : null, url:e.url}));
     await loadPrivate();
   } catch (error) {
     console.error(error);
@@ -412,7 +451,7 @@ async function loadAll() {
   render();
 }
 async function loadPrivate() {
-  if (!sb || !me) { db.ledger = []; db.messages = []; db.blocks = []; db.ticket = {places_left:SEATS, mine:false}; return; }
+  if (!sb || !me) { db.ledger = []; db.messages = []; db.blocks = []; db.reports = []; db.ticket = {places_left:SEATS, mine:false}; return; }
   const [ledger, messages, blocks, ticket] = await Promise.all([
     sb.from('ledger').select('delta,reason,created_at').order('created_at', {ascending:false}),
     sb.from('messages').select('*').order('created_at').limit(5000),
@@ -423,6 +462,7 @@ async function loadPrivate() {
   db.messages = messages.data || [];
   db.blocks = blocks.data || [];
   db.ticket = ticket.data?.[0] || db.ticket;
+  if (isAdmin()) { const {data} = await sb.from('reports').select('*').order('created_at', {ascending:false}).limit(500); db.reports = data || []; } else db.reports = [];
 }
 async function refresh() { await loadAll(); }
 function subscribeMessages() {
@@ -497,6 +537,7 @@ function render() {
   if (!db.loaded) { app.innerHTML = '<p class="loading">Loading the community…</p>'; return; }
   let html;
   if (path === 'who-are-we') html = aboutPage();
+  else if (['guidelines','terms','privacy'].includes(path) && db.failed) html = legalPage(path);
   else if (db.failed && !['uk-events'].includes(path)) html = offlinePage();
   else if (path === 'questions') html = questionsPage();
   else if (path === 'search') html = searchPage(params);
@@ -511,8 +552,10 @@ function render() {
   else if (path.startsWith('member-')) html = profilePage(path.slice(7));
   else if (path === 'points') html = walletPage();
   else if (path === 'uk-events') html = eventsPage();
+  else if (path === 'admin') html = adminPage();
+  else if (['guidelines','terms','privacy'].includes(path)) html = legalPage(path);
   else html = homePage();
-  app.innerHTML = html;
+  app.innerHTML = (suspended() ? '<div class="suspended-banner" role="alert">Your account is suspended, so you can read HerTech but can’t post or send messages. If you think this is a mistake, email ' + CONTACT_EMAIL + '.</div>' : '') + html;
   if (path === 'uk-events') showEventMap();
   if (path.startsWith('messages-')) afterThreadRender(path.slice(9));
   if (path.startsWith('swap-')) loadSwapImages(path.slice(5));
@@ -605,7 +648,7 @@ function memberRow(m) {
 function commentsBlock(type, id) {
   const list = commentsOn(type, id);
   return `<div class="actions"><button class="ghost" data-action="comment" data-type="${type}" data-id="${esc(id)}">Comment${list.length ? ' · ' + list.length : ''}</button></div>
-    ${list.length ? `<ul class="comment-list" aria-label="Comments">${list.map(c => `<li>${who(c.author_id)} <small>${ago(c.created_at)}</small><p class="summary">${esc(c.body)}</p>${me && (c.author_id === me.id || isAdmin()) ? `<button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''}</li>`).join('')}</ul>` : ''}`;
+    ${list.length ? `<ul class="comment-list" aria-label="Comments">${list.map(c => `<li>${who(c.author_id)} <small>${ago(c.created_at)}</small><p class="summary">${esc(c.body)}</p>${me && (c.author_id === me.id || isAdmin()) ? `<button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''} ${reportBtn('comment', c.id, c.author_id)}</li>`).join('')}</ul>` : ''}`;
 }
 function questionPage(id) {
   const q = db.questions.find(item => item.id === id);
@@ -622,7 +665,7 @@ function questionPage(id) {
     <div class="actions"><button class="primary" data-action="answer" data-id="${esc(q.id)}">Write an answer</button>
     ${own ? `<button data-action="edit-question" data-id="${esc(q.id)}">Edit</button>` : ''}
     ${own || isAdmin() ? `<button class="danger" data-action="delete" data-table="questions" data-id="${esc(q.id)}" data-after="#questions">Delete</button>` : ''}
-    <button data-action="copy-link">Copy link</button></div>
+    <button data-action="copy-link">Copy link</button>${reportBtn('question', q.id, q.author_id)}</div>
     ${commentsBlock('question', q.id)}</article>
   <div class="topline"><h2>${answers.length} ${answers.length === 1 ? 'answer' : 'answers'}</h2><div class="tabs" aria-label="Sort answers"><button data-action="answer-sort" data-topic="popular" aria-pressed="${ui.answerSort === 'popular'}">Most helpful</button><button data-action="answer-sort" data-topic="latest" aria-pressed="${ui.answerSort === 'latest'}">Newest</button></div></div>
   ${answers.map(a => {
@@ -634,7 +677,7 @@ function questionPage(id) {
       <div class="actions"><button class="${voted ? 'voted' : ''}" aria-pressed="${voted}" data-action="vote" data-id="${esc(a.id)}" ${mine ? 'disabled title="You can’t vote on your own answer"' : ''}>↑ Helpful · ${votes.length}</button>
       ${mine ? `<button data-action="edit-answer" data-id="${esc(a.id)}">Edit</button>` : ''}
       ${mine || isAdmin() ? `<button class="danger" data-action="delete" data-table="answers" data-id="${esc(a.id)}">Delete</button>` : ''}
-      ${!mine && me ? `<a class="btn ghost" href="#messages-${esc(a.author_id)}">Message</a>` : ''}</div>
+      ${!mine && me ? `<a class="btn ghost" href="#messages-${esc(a.author_id)}">Message</a>` : ''}${reportBtn('answer', a.id, a.author_id)}</div>
       ${commentsBlock('answer', a.id)}</article>`;
   }).join('') || '<p class="empty">No answers yet. Share your experience.</p>'}
   ${sameTopic.length ? `<section class="related"><h2>Related questions</h2>${sameTopic.map(x => `<a class="related-link" href="#q-${esc(x.id)}">${esc(x.title)}<small>${answersOf(x.id).length} answers</small></a>`).join('')}</section>` : ''}
@@ -655,7 +698,7 @@ function resourceCard(r, query = '', compact = false) {
     <div class="meta">Shared by ${who(r.author_id)} · ${ago(r.created_at)}</div>
     <div class="actions">${r.status === 'approved' ? `<button class="${voted ? 'voted' : ''}" aria-pressed="${voted}" data-action="res-vote" data-id="${esc(r.id)}">↑ Useful · ${votes}</button>` : ''}
     ${!compact && isAdmin() && r.status === 'approved' ? `<button data-action="res-review" data-id="${esc(r.id)}" data-status="approved" data-pick="${!r.is_pick}">${r.is_pick ? 'Remove from picks' : 'Make a HerTech pick'}</button>` : ''}
-    ${canEdit ? `<button class="danger" data-action="delete" data-table="resources" data-id="${esc(r.id)}">Delete</button>` : ''}</div></article>`;
+    ${canEdit ? `<button class="danger" data-action="delete" data-table="resources" data-id="${esc(r.id)}">Delete</button>` : ''}${compact || r.status !== 'approved' ? '' : reportBtn('resource', r.id, r.author_id)}</div></article>`;
 }
 function resourcesPage() {
   const text = ui.resText;
@@ -695,7 +738,7 @@ function reviewPage() {
 const SWAP_ICON = {'Skill Swap':'💡', 'Item Swap':'🎁', 'Home Swap':'🏠'};
 function swapTile(s) {
   return `<a class="exchange-tile${s.status === 'closed' ? ' closed' : ''}" href="#swap-${esc(s.id)}">
-    <div class="exchange-cover">${typeof s.cover === 'string' && /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(s.cover) ? `<img loading="lazy" src="${s.cover}" alt="">` : `<span class="cover-icon" aria-hidden="true">${SWAP_ICON[s.type] || '✦'}</span>`}${s.status === 'closed' ? '<span class="closed-flag">Swapped</span>' : ''}</div>
+    <div class="exchange-cover">${swapImageOk(s.cover) ? `<img loading="lazy" src="${esc(s.cover)}" alt="">` : `<span class="cover-icon" aria-hidden="true">${SWAP_ICON[s.type] || '✦'}</span>`}${s.status === 'closed' ? '<span class="closed-flag">Swapped</span>' : ''}</div>
     <div class="exchange-caption"><span class="tag">${esc(s.type)}</span><h3>${esc(s.title)}</h3><p>${esc(s.place)}${s.type === 'Home Swap' && s.from_date ? ' · ' + esc(s.from_date) + ' → ' + esc(s.to_date) : ''}</p>${s.want ? `<p class="want">Wants: ${esc(s.want)}</p>` : ''}</div></a>`;
 }
 function swapsPage() {
@@ -738,13 +781,13 @@ function swapPage(id) {
     <div class="swap-split"><div><h3>What I can offer</h3><p class="summary">${esc(s.offer)}</p></div><div><h3>What I’d like in return</h3><p class="summary">${esc(s.want || 'Open to suggestions.')}</p></div></div>
     <div class="author-card">${avatar(s.author_id)}<div>${who(s.author_id)}<p class="meta">${esc(author?.stage || 'Member')}${author?.offers ? ' · Can help with ' + esc(author.offers) : ''}</p></div></div>
     <div class="actions">${own ? `<button data-action="swap-status" data-id="${esc(s.id)}" data-status="${s.status === 'open' ? 'closed' : 'open'}">${s.status === 'open' ? 'Mark as swapped' : 'Reopen listing'}</button><button class="danger" data-action="delete" data-table="swaps" data-id="${esc(s.id)}" data-after="#exchange">Delete listing</button>`
-      : s.status === 'open' ? `<button class="primary" data-action="swap-message" data-id="${esc(s.id)}">Message ${esc(author?.name || 'her')} about this swap</button>` : ''}</div></article>
+      : s.status === 'open' ? `<button class="primary" data-action="swap-message" data-id="${esc(s.id)}">Message ${esc(author?.name || 'her')} about this swap</button>` : ''}${reportBtn('swap', s.id, s.author_id)}</div></article>
     <aside class="card safety"><h3>Swap safely</h3><ul><li>Chat on HerTech first, and video call before a home swap.</li><li>Meet in a public place to hand over items.</li><li>Never send money, bank details or ID documents.</li><li>If someone makes you uncomfortable, block them from your messages.</li></ul></aside>
     ${more.length ? `<h2 class="section-title">More from ${esc(author?.name || 'this member')}</h2><div class="exchange-feed">${more.map(swapTile).join('')}</div>` : ''}</section>`;
 }
 function galleryMarkup(s) {
-  const images = (swapImages.get(s.id) || []).filter(src => typeof src === 'string' && /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(src));
-  return images.length ? `<div class="exchange-gallery">${images.map((src, i) => `<button data-action="swap-image" aria-label="Enlarge image ${i + 1}"><img loading="lazy" src="${src}" alt="${esc(s.title)}, image ${i + 1}"></button>`).join('')}</div>` : '';
+  const images = (swapImages.get(s.id) || []).filter(swapImageOk);
+  return images.length ? `<div class="exchange-gallery">${images.map((src, i) => `<button data-action="swap-image" aria-label="Enlarge image ${i + 1}"><img loading="lazy" src="${esc(src)}" alt="${esc(s.title)}, image ${i + 1}"></button>`).join('')}</div>` : '';
 }
 async function loadSwapImages(id) {
   const s = db.swaps.find(item => item.id === id);
@@ -796,7 +839,7 @@ function renderThreadBody() {
     const day = new Date(m.created_at).toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
     const sep = day !== lastDay ? `<p class="day">${esc(day)}</p>` : '';
     lastDay = day;
-    return `${sep}<div class="bubble ${m.sender_id === me.id ? 'mine' : 'theirs'}"><p>${esc(m.body)}</p><small>${new Date(m.created_at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}${m.sender_id === me.id && m.read_at ? ' · Seen' : ''}</small></div>`;
+    return `${sep}<div class="bubble ${m.sender_id === me.id ? 'mine' : 'theirs'}"><p>${esc(m.body)}</p><small>${new Date(m.created_at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}${m.sender_id === me.id && m.read_at ? ' · Seen' : ''}${m.sender_id !== me.id ? ' · ' + reportBtn('message', m.id, m.sender_id) : ''}</small></div>`;
   }).join('') || `<p class="empty">Say hello to ${esc(nameOf(otherId))} 👋</p>`;
   box.scrollTop = box.scrollHeight;
 }
@@ -831,7 +874,7 @@ function profilePage(id) {
     ${m.offers ? `<p><strong>Can help with:</strong> ${esc(m.offers)}</p>` : ''}${m.wants ? `<p><strong>Looking for:</strong> ${esc(m.wants)}</p>` : ''}
     ${link ? `<p><a class="member-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer ugc">${esc(domain(link))} ↗</a></p>` : ''}
     <div class="actions">${own ? `<button class="primary" data-action="edit-profile">Edit profile</button><button data-action="email-change">Change email</button><a class="btn" href="#messages">My messages</a>`
-      : `<a class="btn primary" href="#messages-${esc(id)}">Message</a><button data-action="follow" data-id="${esc(id)}" aria-pressed="${followed}">${followed ? 'Following' : 'Follow'}</button>`}</div></div></article>
+      : `<a class="btn primary" href="#messages-${esc(id)}">Message</a><button data-action="follow" data-id="${esc(id)}" aria-pressed="${followed}">${followed ? 'Following' : 'Follow'}</button>${reportBtn('member', id, id)}`}${own && isAdmin() ? `<a class="btn" href="#admin">Admin${db.reports.filter(r => r.status === 'open').length ? ' · ' + db.reports.filter(r => r.status === 'open').length + ' open reports' : ''}</a>` : ''}</div></div></article>
     ${own ? `<p class="form-note">Logged in as ${esc(me.email)}</p>` : ''}
     <div class="profile-lists"><section class="card"><h2>Followers · ${followers.length}</h2>${people(followers)}</section><section class="card"><h2>Following · ${following.length}</h2>${people(following)}</section></div>
     ${section('Questions', questions.map(q => `<li><a class="member-link" href="#q-${esc(q.id)}">${esc(q.title)}</a><p class="summary">${esc(q.topic)} · ${answersOf(q.id).length} answers</p></li>`), own ? 'You haven’t asked anything yet.' : 'No questions yet.')}
@@ -856,18 +899,18 @@ function walletPage() {
 // ───────────────────────── Events ─────────────────────────
 function visibleEvents() {
   const today = ukDate();
-  return ukEvents.filter(event => event.ends >= today && (ui.city === 'All' || event.city === ui.city));
+  return allEvents().filter(event => event.ends >= today && (ui.city === 'All' || event.city === ui.city));
 }
 function eventsPage() {
   const events = visibleEvents();
-  const box = areas[ui.city];
-  const centre = [(box[1] + box[3]) / 2, (box[0] + box[2]) / 2];
+  if (!eventCities().includes(ui.city)) ui.city = 'All';
+  const centre = ui.city !== 'All' && CITY_CENTRES[ui.city] ? CITY_CENTRES[ui.city] : [54.5, -2.5];
   const mapLink = 'https://www.openstreetmap.org/#map=' + (ui.city === 'All' ? 5 : 12) + '/' + centre.join('/');
-  return `<section class="home"><h1>Upcoming UK tech events</h1><p class="section-note">Going to one of these? Start a group so you don’t have to walk in alone.</p>
-    <div class="tabs" aria-label="Filter by city">${Object.keys(areas).map(area => `<button data-action="city" data-topic="${area}" aria-pressed="${area === ui.city}">${area}</button>`).join('')}</div>
+  return `<section class="home"><div class="topline"><h1>Upcoming UK tech events</h1>${isAdmin() ? '<button class="primary" data-action="new-event">Add an event</button>' : ''}</div><p class="section-note">Going to one of these? Start a group so you don’t have to walk in alone.</p>
+    <div class="tabs" aria-label="Filter by city">${eventCities().map(area => `<button data-action="city" data-topic="${esc(area)}" aria-pressed="${area === ui.city}">${esc(area)}</button>`).join('')}</div>
     <div id="eventMap" class="map-frame" role="region" aria-label="UK tech events map"></div>
     <a class="map-link" href="${mapLink}" target="_blank" rel="noopener noreferrer">Open in OpenStreetMap ↗</a>
-    <div class="event-list">${events.map((event, index) => `<article class="card"><div class="meta">${event.date} · ${event.city}${event.venue ? ' · ' + event.venue : ' · Venue to be confirmed'}</div><h2>${index + 1}. ${event.name}</h2><div class="actions"><button data-action="pin" data-id="${index}">Show on map</button><a href="${event.url}" target="_blank" rel="noopener noreferrer">Organiser details ↗</a></div>${db.failed ? '' : eventCommunity(event.id)}</article>`).join('') || '<p class="empty">No upcoming events are listed here. See the organiser’s calendar for more.</p>'}</div>
+    <div class="event-list">${events.map((event, index) => `<article class="card"><div class="meta">${esc(event.date)} · ${esc(event.city)}${event.venue ? ' · ' + esc(event.venue) : ' · Venue to be confirmed'}</div><h2>${index + 1}. ${esc(event.name)}</h2><div class="actions">${event.marker ? `<button data-action="pin" data-id="${index}">Show on map</button>` : ''}${safeUrl(event.url) ? `<a href="${esc(event.url)}" target="_blank" rel="noopener noreferrer">Organiser details ↗</a>` : ''}${isAdmin() && db.events.length ? `<button class="danger" data-action="delete-event" data-id="${esc(event.id)}">Remove event</button>` : ''}</div>${db.failed ? '' : eventCommunity(event.id)}</article>`).join('') || '<p class="empty">No upcoming events are listed here. See the organiser’s calendar for more.</p>'}</div>
     <a class="map-link" href="https://www.techuk.org/events" target="_blank" rel="noopener noreferrer">See more events on techUK ↗</a></section>`;
 }
 function eventCommunity(id) {
@@ -882,14 +925,14 @@ function eventCommunity(id) {
       return `<section class="event-team"><strong>${esc(g.title)}</strong><p class="summary">${esc(g.body)}</p><div class="meta">Organised by ${who(g.author_id)} · ${members.length} joined</div>
         ${members.length ? `<p class="meta">Members: ${members.map(who).join(', ')}</p>` : ''}
         <div class="actions">${host ? `<button class="danger" data-action="delete" data-table="event_groups" data-id="${esc(g.id)}">Delete group</button>` : `<button data-action="group-join" data-id="${id}" data-target="${esc(g.id)}">${joined ? 'Leave group' : 'Join group'}</button>`}
-        <button data-action="event-comment" data-id="${id}" data-target="${esc(g.id)}">Message the group</button></div></section>`;
+        <button data-action="event-comment" data-id="${id}" data-target="${esc(g.id)}">Message the group</button>${reportBtn('event_group', g.id, g.author_id)}</div></section>`;
     }).join('') : ''}
     <h3>Event discussion</h3>
     ${comments.length ? `<ul class="comment-list">${comments.map(c => {
       const parent = comments.find(x => x.id === c.reply_to);
       const group = groups.find(x => x.id === c.group_id);
       return `<li${parent ? ' class="event-reply"' : ''}>${who(c.author_id)} <small>${ago(c.created_at)}</small>${parent ? ` <small>replying to ${esc(nameOf(parent.author_id))}</small>` : group ? ` <small>to “${esc(group.title)}”</small>` : ''}
-        <p class="summary">${esc(c.body)}</p><button type="button" class="link-btn" data-action="event-reply" data-id="${id}" data-target="${esc(c.id)}">Reply</button>${me && (c.author_id === me.id || isAdmin()) ? ` <button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''}</li>`;
+        <p class="summary">${esc(c.body)}</p><button type="button" class="link-btn" data-action="event-reply" data-id="${id}" data-target="${esc(c.id)}">Reply</button>${me && (c.author_id === me.id || isAdmin()) ? ` <button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''} ${reportBtn('comment', c.id, c.author_id)}</li>`;
     }).join('')}</ul>` : '<p class="summary">No comments yet.</p>'}</details>`;
 }
 app.addEventListener('toggle', event => {
@@ -902,16 +945,19 @@ function showEventMap() {
   if (!container) return;
   if (!window.L) { container.textContent = 'The map is temporarily unavailable. Use an event’s map link to see its location.'; return; }
   const L = window.L;
-  const [west, south, east, north] = areas[ui.city];
+  const [west, south, east, north] = UK_BOX;
   eventMap = L.map(container, {maxZoom:19});
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(eventMap);
   pins = visibleEvents().map((event, index) => {
-    const icon = L.divIcon({className:'event-pin' + (event.venue ? '' : ' approx'), html:index + 1, iconSize:[28,28], iconAnchor:[14,14]});
+    if (!event.marker) return null;
+    const icon = L.divIcon({className:'event-pin' + (event.venue ? '' : ' approx'), html:String(index + 1), iconSize:[28,28], iconAnchor:[14,14]});
     return L.marker(event.marker, {icon, title:event.name, alt:event.name}).addTo(eventMap)
-      .bindPopup('<strong>' + esc(event.name) + '</strong><br>' + esc(event.date + ' · ' + (event.venue || 'Central London (approximate location)')) + '<br><a target="_blank" rel="noopener noreferrer" href="' + esc(event.url) + '">Organiser details ↗</a>');
+      .bindPopup('<strong>' + esc(event.name) + '</strong><br>' + esc(event.date + ' · ' + (event.venue || event.city + ' (approximate location)')) + (safeUrl(event.url) ? '<br><a target="_blank" rel="noopener noreferrer" href="' + esc(event.url) + '">Organiser details ↗</a>' : ''));
   });
-  if (pins.length > 1) eventMap.fitBounds(L.featureGroup(pins).getBounds(), {padding:[32,32], maxZoom:16});
-  else if (pins.length === 1) eventMap.setView(pins[0].getLatLng(), 13);
+  const placed = pins.filter(Boolean);
+  if (placed.length > 1) eventMap.fitBounds(L.featureGroup(placed).getBounds(), {padding:[32,32], maxZoom:16});
+  else if (placed.length === 1) eventMap.setView(placed[0].getLatLng(), 13);
+  else if (ui.city !== 'All' && CITY_CENTRES[ui.city]) eventMap.setView(CITY_CENTRES[ui.city], 12);
   else eventMap.fitBounds([[south, west], [north, east]]);
 }
 
@@ -925,8 +971,93 @@ function aboutPage() {
     <figure class="about-comic"><a href="./hertech-comic-en.png" target="_blank" rel="noopener" aria-label="Open the full-size HerTech comic"><img src="./hertech-comic-en.png" width="724" height="2172" alt="HerTech’s story in six panels: meeting at DurHack, running tech events for women, practising interviews, swapping skills and sharing tools, and arranging home swaps."></a><figcaption>View the full-size comic</figcaption></figure></section>`;
 }
 
+
+// ───────────────────────── Reporting, moderation & legal ─────────────────────────
+const REPORT_REASONS = ['Spam or advertising', 'Harassment or hate', 'Scam or unsafe', 'Shares personal information', 'Off-topic', 'Other'];
+const reportBtn = (type, id, authorId) => me && authorId === me.id ? '' : `<button class="link-btn subtle" data-action="report" data-type="${type}" data-id="${esc(id)}">Report</button>`;
+const suspended = () => Boolean(me && profile(me.id)?.is_banned);
+function contentLink(r) {
+  const id = r.target_id;
+  if (r.target_type === 'question') return '#q-' + id;
+  if (r.target_type === 'answer') { const a = db.answers.find(x => x.id === id); return a ? '#q-' + a.question_id : ''; }
+  if (r.target_type === 'comment') {
+    const c = db.comments.find(x => x.id === id);
+    if (!c) return '';
+    if (c.target_type === 'question') return '#q-' + c.target_id;
+    if (c.target_type === 'answer') { const a = db.answers.find(x => x.id === c.target_id); return a ? '#q-' + a.question_id : ''; }
+    return '#uk-events';
+  }
+  if (r.target_type === 'swap') return '#swap-' + id;
+  if (r.target_type === 'resource') return '#resources';
+  if (r.target_type === 'member') return '#member-' + id;
+  if (r.target_type === 'event_group') return '#uk-events';
+  return '';
+}
+const DELETABLE = {question:'questions', answer:'answers', comment:'comments', swap:'swaps', resource:'resources', event_group:'event_groups'};
+function adminPage() {
+  if (!isAdmin()) return '<section class="detail"><a class="back" href="#home">← Home</a><p class="empty">Only the HerTech team can open this page.</p></section>';
+  const filter = ui.reportFilter || 'open';
+  const list = db.reports.filter(r => r.status === filter);
+  const counts = s => db.reports.filter(r => r.status === s).length;
+  const banned = [...db.profiles.values()].filter(p => p.is_banned);
+  const pending = db.resources.filter(r => r.status === 'pending').length;
+  const label = {question:'Question', answer:'Answer', comment:'Comment', swap:'Swap listing', resource:'Resource', message:'Private message', member:'Member profile', event_group:'Event group'};
+  return `<section class="home"><a class="back" href="#member-${esc(me.id)}">← My profile</a><h1>HerTech admin</h1>
+    <p class="section-note">Reports from members, suspended accounts and quick links. Reported private messages show only the message that was reported.</p>
+    <div class="admin-links"><a class="btn" href="#resources-review">Resources to review · ${pending}</a><a class="btn" href="#uk-events">Manage events</a></div>
+    <h2 class="section-title">Reports</h2>
+    <div class="tabs">${['open','resolved','dismissed'].map(s => `<button data-action="report-filter" data-topic="${s}" aria-pressed="${s === filter}">${s[0].toUpperCase() + s.slice(1)} · ${counts(s)}</button>`).join('')}</div>
+    ${list.map(r => {
+      const link = contentLink(r);
+      const author = r.target_author ? profile(r.target_author) : null;
+      const table = DELETABLE[r.target_type];
+      const stillThere = table ? (table === 'questions' ? db.questions : table === 'answers' ? db.answers : table === 'comments' ? db.comments : table === 'swaps' ? db.swaps : table === 'resources' ? db.resources : db.groups).some(x => x.id === r.target_id) : false;
+      return `<article class="card report-card"><div class="q-tags"><span class="tag">${label[r.target_type] || esc(r.target_type)}</span><span class="tag warn">${esc(r.reason)}</span>${author?.is_banned ? '<span class="tag soft">Author suspended</span>' : ''}</div>
+        <p class="meta">Reported by ${who(r.reporter_id)} · ${ago(r.created_at)} · Posted by ${r.target_author ? who(r.target_author) : 'unknown'}</p>
+        <blockquote class="snapshot">${esc(r.snapshot) || '<em>No text</em>'}</blockquote>
+        ${r.details ? `<p class="summary"><strong>Reporter’s note:</strong> ${esc(r.details)}</p>` : ''}
+        <div class="actions">${link ? `<a class="btn" href="${esc(link)}">Open</a>` : ''}
+        ${table && stillThere ? `<button class="danger" data-action="delete" data-table="${table}" data-id="${esc(r.target_id)}">Delete this content</button>` : table ? '<span class="meta">Content already deleted</span>' : ''}
+        ${r.target_author && author && !author.is_admin ? `<button data-action="suspend" data-id="${esc(r.target_author)}" data-value="${!author.is_banned}">${author.is_banned ? 'Restore member' : 'Suspend member'}</button>` : ''}
+        ${r.status === 'open' ? `<button class="primary" data-action="report-status" data-id="${esc(r.id)}" data-value="resolved">Mark resolved</button><button data-action="report-status" data-id="${esc(r.id)}" data-value="dismissed">Dismiss</button>` : `<button data-action="report-status" data-id="${esc(r.id)}" data-value="open">Reopen</button>`}</div></article>`;
+    }).join('') || `<p class="empty">No ${filter} reports.</p>`}
+    <h2 class="section-title">Suspended members · ${banned.length}</h2>
+    ${banned.map(p => `<article class="card member-row">${avatar(p.id)}<div>${who(p.id)}<p class="meta">${esc(p.stage || 'Member')}</p><div class="actions"><button data-action="suspend" data-id="${esc(p.id)}" data-value="false">Restore member</button></div></div></article>`).join('') || '<p class="empty">Nobody is suspended.</p>'}</section>`;
+}
+const TEAM_ID = '32057026-1f99-4ea2-849d-14f5cfa8e9ce';
+const CONTACT_EMAIL = '2335698577@qq.com';
+const CONTACT_LINK = `email us at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>`;
+function legalPage(kind) {
+  const updated = '26 November 2026';
+  const pages = {
+    guidelines: ['Community guidelines', `<p>HerTech is a community for women in the UK who work in tech or want to. These guidelines keep it kind, useful and safe. Breaking them can lead to posts being removed or an account being suspended.</p>
+      <h2>Be kind and respectful</h2><ul><li>Disagree with ideas, not people. No insults, harassment, hate or discrimination of any kind.</li><li>Assume good intent, especially with people who are new to tech.</li></ul>
+      <h2>Share honestly</h2><ul><li>Share your own experience and say when something is your opinion.</li><li>No spam, adverts or affiliate links. Recommending something you’re paid to promote must be clearly stated, and HerTech may still remove it.</li><li>Don’t copy other people’s work without credit.</li></ul>
+      <h2>Keep people safe</h2><ul><li>Never post anyone’s personal details: home address, phone number, private messages, ID documents or bank details.</li><li>For swaps, chat on HerTech first, video call before a home swap and meet in public to hand over items. Never send money in advance.</li><li>Report anything that worries you with the Report link. Block anyone who makes you uncomfortable.</li></ul>
+      <h2>Who can join</h2><ul><li>HerTech is for women aged 18 or over who live, study or work in the UK and are in tech or moving into it.</li><li>One account per person. Don’t pretend to be someone else.</li></ul>
+      <h2>What the HerTech team does</h2><p>The HerTech team reviews reports, may remove content that breaks these guidelines and may suspend accounts. We review shared resources before they appear. If you think we got something wrong, ${CONTACT_LINK}.</p>`],
+    terms: ['Terms of use', `<p>These terms apply when you use HerTech. By creating an account you agree to them and to our <a href="#guidelines">community guidelines</a>.</p>
+      <h2>Who we are</h2><p>HerTech is a community project run by its founders in the UK. To contact us, ${CONTACT_LINK}.</p>
+      <h2>Your account</h2><ul><li>You must be 18 or over.</li><li>Keep your password safe; you’re responsible for activity on your account.</li><li>You can ask us to delete your account at any time.</li></ul>
+      <h2>Your content</h2><ul><li>You keep ownership of what you post. You give HerTech permission to show it on the site so the community can read it.</li><li>Only post what you have the right to share, and nothing illegal, harmful or misleading.</li><li>We may remove content or suspend accounts that break these terms or the guidelines.</li></ul>
+      <h2>Swaps and meeting people</h2><p>Swaps are agreements between members. HerTech doesn’t check members, items or homes and isn’t part of any swap. Take sensible precautions and follow the safety tips on each listing.</p>
+      <h2>Coffee Beans</h2><p>Coffee Beans are community points with no cash value. They can’t be bought, sold or transferred, and we may change how they work.</p>
+      <h2>Advice on HerTech</h2><p>Answers and resources come from members and are shared in good faith. They aren’t professional legal, immigration, financial or careers advice.</p>
+      <h2>Availability and changes</h2><p>HerTech is provided as it is and may change or pause. If we change these terms we’ll post the new version here with a new date. These terms are governed by the law of England and Wales.</p>`],
+    privacy: ['Privacy policy', `<p>This policy explains what personal data HerTech collects, why, and your rights under UK data protection law (UK GDPR). The data controller is HerTech’s founders. To contact us, ${CONTACT_LINK}.</p>
+      <h2>What we collect</h2><ul><li><strong>Account:</strong> your email address and password (stored securely by our database provider, never visible to us), display name and career stage.</li><li><strong>Profile:</strong> anything you choose to add, such as a bio, skills, a link and a photo.</li><li><strong>Community content:</strong> questions, answers, comments, swaps, resources, event groups, votes and follows. These are public on the site.</li><li><strong>Private messages:</strong> visible only to you and the person you message. The HerTech team can see a message only if its recipient reports it.</li><li><strong>Coffee Beans and bookings</strong> linked to your account.</li></ul>
+      <h2>Why we use it (lawful basis)</h2><ul><li>To run your account and the community features you ask for (contract).</li><li>To keep the community safe: handling reports, removing harmful content and suspending accounts (legitimate interests).</li><li>To send essential emails such as verification and password resets (contract). We don’t send marketing emails.</li></ul>
+      <h2>Who processes it for us</h2><ul><li><strong>Supabase</strong> stores the database, accounts and photos.</li><li><strong>GitHub Pages</strong> hosts the website files.</li><li>When pages load, your browser also contacts <strong>Google Fonts</strong>, <strong>jsDelivr</strong> and <strong>unpkg</strong> (code libraries) and <strong>OpenStreetMap</strong> (event map), which receive your IP address.</li></ul><p>We don’t sell your data and we don’t use advertising or tracking cookies. Your login is kept in your browser’s local storage so you stay signed in.</p>
+      <h2>How long we keep it</h2><p>We keep your data while your account exists. If you ask us to delete your account, we delete your profile and content, except where we must keep a record of a safety report.</p>
+      <h2>Your rights</h2><p>You can ask to see, correct, download or delete your data, or object to how we use it. To do this, ${CONTACT_LINK}. You can also complain to the Information Commissioner’s Office (ico.org.uk).</p>`]
+  };
+  const [title, body] = pages[kind];
+  return `<section class="detail legal"><a class="back" href="#home">← Home</a><article class="card"><h1>${title}</h1><p class="meta">Last updated ${updated}</p>${body}<p class="form-note">This is a plain-English draft written for a small community project and should be reviewed before HerTech opens to the public.</p></article>
+    <p class="legal-links"><a href="#guidelines">Community guidelines</a> · <a href="#terms">Terms of use</a> · <a href="#privacy">Privacy policy</a></p></section>`;
+}
+
 // ───────────────────────── Forms ─────────────────────────
-const authForms = ['join', 'login', 'email-change', 'resend'];
+const authForms = ['join', 'login', 'email-change', 'resend', 'forgot', 'new-password'];
 const emailField = '<label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254">';
 const passwordField = isNew => '<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="' + (isNew ? 'new-password" minlength="10' : 'current-password') + '" required maxlength="72">';
 const select = (id, name, options, value) => `<select id="${id}" name="${name}">${options.map(o => `<option ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
@@ -937,8 +1068,10 @@ function showForm(kind, extra = {}) {
   const p = me ? profile(me.id) : null;
   const ed = ui.editing;
   const forms = {
-    join: ['Sign up for HerTech', '<p class="form-note">For women in the UK who work in tech, study STEM or plan to enter the tech industry.</p><label for="name">Display name</label><input id="name" name="name" required maxlength="30" placeholder="e.g. Jasmine · London">' + emailField + passwordField(true) + '<p class="form-note">Use at least 10 characters. Check your inbox for a verification email after signing up.</p><label for="stage">Career stage</label>' + select('stage', 'stage', STAGES) + '<label class="checkbox"><input type="checkbox" required>I meet the community membership criteria and will follow the community guidelines</label><button type="button" class="link-btn" data-action="login">Already have an account? Log in</button>', 'Sign up and send verification email'],
-    login: ['Log in to HerTech', emailField + passwordField(false) + '<div class="actions"><button type="button" class="link-btn" data-action="join">Create an account</button><button type="button" class="link-btn" data-action="resend">Resend verification email</button></div>', 'Log in'],
+    join: ['Sign up for HerTech', '<p class="form-note">For women in the UK who work in tech, study STEM or plan to enter the tech industry.</p><label for="name">Display name</label><input id="name" name="name" required maxlength="30" placeholder="e.g. Jasmine · London">' + emailField + passwordField(true) + '<p class="form-note">Use at least 10 characters. Check your inbox for a verification email after signing up.</p><label for="stage">Career stage</label>' + select('stage', 'stage', STAGES) + '<label class="checkbox"><input type="checkbox" required>I’m a woman aged 18 or over, and I agree to the <a href="#terms" target="_blank">terms</a>, <a href="#guidelines" target="_blank">community guidelines</a> and <a href="#privacy" target="_blank">privacy policy</a></label><button type="button" class="link-btn" data-action="login">Already have an account? Log in</button>', 'Sign up and send verification email'],
+    login: ['Log in to HerTech', emailField + passwordField(false) + '<div class="actions"><button type="button" class="link-btn" data-action="join">Create an account</button><button type="button" class="link-btn" data-action="forgot">Forgot password?</button><button type="button" class="link-btn" data-action="resend">Resend verification email</button></div>', 'Log in'],
+    forgot: ['Reset your password', '<p class="form-note">Enter the email you signed up with. We’ll send you a link to choose a new password.</p>' + emailField + '<button type="button" class="link-btn" data-action="login">Back to log in</button>', 'Send reset link'],
+    'new-password': ['Choose a new password', passwordField(true) + '<label for="password2">Type it again</label><input id="password2" name="password2" type="password" autocomplete="new-password" minlength="10" required maxlength="72"><p class="form-note">Use at least 10 characters.</p>', 'Save new password'],
     resend: ['Resend verification email', emailField + '<button type="button" class="link-btn" data-action="login">Back to log in</button>', 'Send verification email'],
     'email-change': ['Change email address', '<p class="form-note">Follow the instructions in the verification email to confirm the change, then log in with your new email and current password.</p>' + emailField, 'Send confirmation email'],
     ask: ['Ask a question', `<label for="ask-title">Question title</label><input id="ask-title" name="title" required maxlength="120" value="${esc(extra.title ?? ui.draftTitle)}" autocomplete="off"><div id="similar" aria-live="polite"></div><label for="ask-topic">Topic</label>${select('ask-topic', 'topic', TOPICS, ui.qTopic)}<label for="ask-body">Background</label><textarea id="ask-body" name="body" required maxlength="2500" placeholder="Give a bit of context: your background, what you’ve tried and what would help."></textarea>`, 'Post question'],
@@ -950,15 +1083,22 @@ function showForm(kind, extra = {}) {
     'event-comment': [ui.eventDraft?.replyTo ? 'Reply to a comment' : ui.eventDraft?.groupId ? 'Message the group' : 'Event discussion', '<label for="body">Message</label><textarea id="body" name="body" required maxlength="1500"></textarea>', 'Post message'],
     'swap-post': ['Post a swap listing', `<label for="s-type">Listing type</label>${select('s-type', 'type', SWAP_TYPES, extra.type || (ui.swapType === 'All' ? 'Skill Swap' : ui.swapType))}<label for="s-title">Title</label><input id="s-title" name="title" required maxlength="120" placeholder="e.g. CV review in exchange for Python help"><label for="s-place">Your city or neighbourhood</label><input id="s-place" name="place" required maxlength="80" placeholder="e.g. Stratford, London"><p class="form-note">A city or neighbourhood is enough. Never post your full address.</p><div id="s-dates">${dateFields('s')}</div><label for="s-offer">What can you offer?</label><textarea id="s-offer" name="offer" required maxlength="1500" placeholder="Describe the skill, item or home you’re offering."></textarea><label for="s-want">What would you like in return?</label><textarea id="s-want" name="want" maxlength="1000" placeholder="e.g. Help with SQL, a book on UX design, or open to ideas."></textarea><label for="s-images">Photos (optional)</label><input id="s-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="form-note">Up to 3 images, 10 MB each.</p><p id="s-image-msg" class="form-note" aria-live="polite"></p><div id="s-preview" class="exchange-gallery exchange-preview"></div>`, 'Post listing'],
     'share-resource': ['Share a resource', `<p class="form-note">Share a course, guide, job board, tool or community that genuinely helped you. The HerTech team reviews every submission before it appears.</p><label for="r-title">Title</label><input id="r-title" name="title" required maxlength="120"><label for="r-url">Link</label><input id="r-url" name="url" type="url" required maxlength="500" placeholder="https://"><label for="r-cat">Category</label>${select('r-cat', 'category', RES_CATS, ui.resCat === 'All' ? 'Learning' : ui.resCat)}<label for="r-cost">Cost</label>${select('r-cost', 'cost', COSTS, 'Free')}<label for="r-desc">Why is it useful?</label><textarea id="r-desc" name="description" required maxlength="600" placeholder="Who is it for and what will they get out of it?"></textarea><label class="checkbox"><input type="checkbox" required>This is my honest recommendation, not a paid advert</label>`, 'Submit for review'],
-    'edit-profile': ['Edit profile', `<label for="p-name">Display name</label><input id="p-name" name="name" required maxlength="30" value="${esc(p?.name)}"><label for="p-stage">Career stage</label>${select('p-stage', 'stage', STAGES, p?.stage)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><label for="p-link">LinkedIn or portfolio link</label><input id="p-link" name="link" type="url" maxlength="200" value="${esc(p?.link)}" placeholder="https://">`, 'Save profile'],
+    'edit-profile': ['Edit profile', `${avatarField(p)}<label for="p-name">Display name</label><input id="p-name" name="name" required maxlength="30" value="${esc(p?.name)}"><label for="p-stage">Career stage</label>${select('p-stage', 'stage', STAGES, p?.stage)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><label for="p-link">LinkedIn or portfolio link</label><input id="p-link" name="link" type="url" maxlength="200" value="${esc(p?.link)}" placeholder="https://">`, 'Save profile'],
+    report: ['Report this', `<p class="form-note">Tell the HerTech team what’s wrong. They’ll review it, and the person won’t be told who reported them.</p><label for="rep-reason">Reason</label>${select('rep-reason', 'reason', REPORT_REASONS)}<label for="rep-details">Anything else we should know? (optional)</label><textarea id="rep-details" name="details" maxlength="1000"></textarea>`, 'Send report'],
+    'new-event': ['Add an event', `<label for="ev-name">Event name</label><input id="ev-name" name="name" required maxlength="140"><label for="ev-city">City</label><input id="ev-city" name="city" required maxlength="60" list="ev-cities" placeholder="e.g. London"><datalist id="ev-cities">${Object.keys(CITY_CENTRES).map(c => `<option value="${c}">`).join('')}<option value="Online"></datalist><label for="ev-date">Date as shown on the site</label><input id="ev-date" name="date_label" required maxlength="60" placeholder="e.g. 2–4 December"><label for="ev-ends">Last day of the event</label><input id="ev-ends" name="ends_on" type="date" required min="${ukDate()}"><label for="ev-venue">Venue (optional)</label><input id="ev-venue" name="venue" maxlength="120"><label for="ev-url">Organiser link</label><input id="ev-url" name="url" type="url" required maxlength="500" placeholder="https://"><label for="ev-latlng">Map position (optional)</label><input id="ev-latlng" name="latlng" maxlength="60" placeholder="e.g. 51.5074, -0.1278"><p class="form-note">Right-click the venue in Google Maps and copy the numbers. Leave empty to use the city centre.</p>`, 'Add event'],
+    welcome: ['Welcome to HerTech 👋', `<p class="form-note">Help other members get to know you. You can change this any time from your profile.</p>${avatarField(p)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science">`, 'Save and continue'],
     redeem: ['Confirm redemption', `<p>Use ${PRICE} Coffee Beans to book a place at the UK Tech CV Workshop?</p><p class="form-note">Your balance: ${me ? balance() : 0} ${beanUnit(me ? balance() : 0)}</p>`, 'Confirm redemption']
   };
   const [title, fields, submit] = forms[kind];
-  dialog.innerHTML = `<form><h2 id="dialogTitle">${title}</h2>${fields}<p class="form-note" aria-live="polite" data-form-message hidden></p><div class="actions"><button type="button" data-action="cancel">Cancel</button><button class="primary" type="submit">${submit}</button></div></form>`;
+  dialog.innerHTML = `<form><h2 id="dialogTitle">${title}</h2>${fields}<p class="form-note" aria-live="polite" data-form-message hidden></p><div class="actions"><button type="button" data-action="cancel">${kind === 'welcome' ? 'Skip for now' : 'Cancel'}</button><button class="primary" type="submit">${submit}</button></div></form>`;
+  ui.avatarFile = null;
   if (kind === 'swap-post') syncSwapDates();
   if (kind === 'ask') updateSimilar();
   if (!dialog.open) dialog.showModal();
   dialog.querySelector('input:not([type=hidden]):not([type=checkbox]),textarea')?.focus();
+}
+function avatarField(p) {
+  return `<div class="avatar-field">${me ? avatar(me.id, 'lg') : ''}<div><label for="p-photo">Profile photo (optional)</label><input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp"><p class="form-note" id="p-photo-msg">A clear photo of you or anything that represents you. JPG, PNG or WebP.</p></div></div>`;
 }
 function syncSwapDates() {
   const dates = dialog.querySelector('#s-dates');
@@ -972,6 +1112,31 @@ function updateSimilar() {
   if (!box) return;
   const similar = rank(db.questions, questionScore, title).items.slice(0, 3);
   box.innerHTML = similar.length && terms(title).length >= 2 ? `<div class="similar"><strong>Similar questions already asked</strong>${similar.map(q => `<a href="#q-${esc(q.id)}" data-close-dialog>${esc(q.title)} <small>${answersOf(q.id).length} answers</small></a>`).join('')}</div>` : '';
+}
+function dataUrlToBlob(url) {
+  const [head, b64] = url.split(',');
+  const bytes = atob(b64);
+  const arr = new Uint8Array(bytes.length);
+  for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+  return new Blob([arr], {type:'image/jpeg'});
+}
+async function squareAvatar(file) {
+  const bitmap = await createImageBitmap(file);
+  try {
+    const size = Math.min(bitmap.width, bitmap.height);
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = 400;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 400, 400);
+    ctx.drawImage(bitmap, (bitmap.width - size) / 2, (bitmap.height - size) / 2, size, size, 0, 0, 400, 400);
+    return dataUrlToBlob(canvas.toDataURL('image/jpeg', 0.85));
+  } finally { bitmap.close(); }
+}
+async function uploadPhoto(bucket, blob) {
+  const path = me.id + '/' + (crypto.randomUUID?.() || Date.now().toString(36)) + '.jpg';
+  const {error} = await sb.storage.from(bucket).upload(path, blob, {contentType:'image/jpeg', upsert:false});
+  if (error) throw error;
+  return sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 }
 async function compressImage(file) {
   const bitmap = await createImageBitmap(file);
@@ -992,6 +1157,13 @@ async function compressImage(file) {
   } finally { bitmap.close(); }
 }
 dialog.addEventListener('change', event => {
+  if (event.target.id === 'p-photo') {
+    const f = event.target.files[0];
+    const msg = dialog.querySelector('#p-photo-msg');
+    if (f && (!['image/jpeg','image/png','image/webp'].includes(f.type) || f.size > 10 * 1024 * 1024)) { event.target.value = ''; ui.avatarFile = null; msg.textContent = 'Choose a JPG, PNG or WebP image under 10 MB.'; return; }
+    ui.avatarFile = f || null;
+    if (f) { const box = dialog.querySelector('.avatar-field .avatar'); const img = document.createElement('img'); img.className = 'avatar lg'; img.alt = ''; img.src = URL.createObjectURL(f); box?.replaceWith(img); msg.textContent = 'Looks good. It will be saved with your profile.'; }
+  }
   if (event.target.id === 's-type') syncSwapDates();
   if (event.target.id === 's-images') {
     const files = Array.from(event.target.files);
@@ -1056,8 +1228,8 @@ dialog.addEventListener('submit', async event => {
           row.from_date = value('from'); row.to_date = value('to');
           if (!row.from_date || !row.to_date || row.from_date < ukDate() || row.to_date < row.from_date) { say('Choose a valid start and end date for the home swap.'); return; }
         }
-        try { row.images = []; for (const f of ui.swapFiles || []) row.images.push(await compressImage(f)); }
-        catch { say('We couldn’t process an image. Pick a different one and try again.'); return; }
+        try { row.images = []; for (const f of ui.swapFiles || []) row.images.push(await uploadPhoto('swap-images', dataUrlToBlob(await compressImage(f)))); }
+        catch (error) { console.error(error); say('We couldn’t upload a photo. Pick a different one, or post without photos.'); return; }
         ok = await run(() => sb.from('swaps').insert(row).select('id').single(), 'Swap listing posted.');
         if (ok) after = '#swap-' + ok.data.id;
         break;
@@ -1070,10 +1242,46 @@ dialog.addEventListener('submit', async event => {
         ok = await run(() => sb.from('resources').insert(row), isAdmin() ? 'Resource shared.' : 'Thanks! The HerTech team will review it soon.');
         break;
       }
+      case 'report': {
+        const res = await sb.from('reports').insert({target_type:ui.reportTarget.type, target_id:ui.reportTarget.id, reason:value('reason'), details:value('details')});
+        if (res.error) { say(/duplicate/i.test(res.error.message) ? 'You’ve already reported this. The HerTech team will look at it.' : friendlyError(res.error)); return; }
+        ok = res;
+        tell(ui.reportTarget.type === 'message' ? 'Thanks. Reported. You can also block this member from the chat.' : 'Thanks. The HerTech team will review it.');
+        break;
+      }
+      case 'new-event': {
+        const name = value('name'), url = value('url');
+        if (!safeUrl(url) || !url.startsWith('https://')) { say('The organiser link must start with https://'); return; }
+        let lat = null, lng = null;
+        const pos = value('latlng');
+        if (pos) {
+          const m = pos.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
+          if (!m) { say('Write the map position as two numbers, e.g. 51.5074, -0.1278'); return; }
+          [lat, lng] = [Number(m[1]), Number(m[2])];
+        } else if (CITY_CENTRES[value('city')]) [lat, lng] = CITY_CENTRES[value('city')];
+        const slug = (name.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'event') + '-' + value('ends_on').slice(0, 4);
+        ok = await run(() => sb.from('events').insert({id:slug, name, city:value('city'), date_label:value('date_label'), ends_on:value('ends_on'), venue:value('venue'), lat, lng, url}), 'Event added.');
+        break;
+      }
+      case 'welcome':
       case 'edit-profile': {
+        let avatar_url;
+        if (ui.avatarFile) {
+          try { avatar_url = await uploadPhoto('avatars', await squareAvatar(ui.avatarFile)); }
+          catch (error) { console.error(error); say('We couldn’t upload that photo. Try another one, or save without it.'); return; }
+        }
+        if (activeForm === 'welcome') {
+          try { localStorage.setItem('hertech-welcome-' + me.id, '1'); } catch {}
+          const update = {bio:value('bio'), offers:value('offers'), wants:value('wants')};
+          if (avatar_url) update.avatar_url = avatar_url;
+          ok = await run(() => sb.from('profiles').update(update).eq('id', me.id), 'Welcome to HerTech! 🎉');
+          break;
+        }
         const link = value('link');
         if (link && !safeUrl(link)) { say('Links must start with https://'); return; }
-        ok = await run(() => sb.from('profiles').update({name:value('name'), stage:value('stage'), bio:value('bio'), offers:value('offers'), wants:value('wants'), link}).eq('id', me.id), 'Profile saved.');
+        const update = {name:value('name'), stage:value('stage'), bio:value('bio'), offers:value('offers'), wants:value('wants'), link};
+        if (avatar_url) update.avatar_url = avatar_url;
+        ok = await run(() => sb.from('profiles').update(update).eq('id', me.id), 'Profile saved.');
         break;
       }
       case 'redeem': {
@@ -1098,7 +1306,8 @@ document.addEventListener('click', async event => {
   if (!button) return;
   const {action, topic, id, target} = button.dataset;
   switch (action) {
-    case 'cancel': resumeAsk = false; dialog.close(); return;
+    case 'cancel': if (activeForm === 'welcome' && me) { try { localStorage.setItem('hertech-welcome-' + me.id, '1'); } catch {} } resumeAsk = false; dialog.close(); return;
+    case 'report-filter': ui.reportFilter = topic; render(); return;
     case 'reload': db.loaded = false; render(); loadAll(); return;
     case 'topic': ui.qTopic = topic; go('#questions'); return;
     case 'q-topic': ui.qTopic = topic; render(); return;
@@ -1107,13 +1316,13 @@ document.addEventListener('click', async event => {
     case 'res-cat': ui.resCat = topic; render(); return;
     case 'swap-type': ui.swapType = topic; render(); return;
     case 'clear-stay': ui.stay = {from:'', to:''}; render(); return;
-    case 'city': if (Object.hasOwn(areas, topic)) { ui.city = topic; render(); } return;
+    case 'city': if (eventCities().includes(topic)) { ui.city = topic; render(); } return;
     case 'copy-link':
       try { await navigator.clipboard.writeText(location.href); tell('Link copied.'); } catch { tell('Copy the address from your browser bar.'); }
       return;
     case 'pin': {
       const ev = visibleEvents()[Number(id)], pin = pins[Number(id)];
-      if (!ev) return;
+      if (!ev || !ev.marker) return;
       if (!eventMap || !pin) { const [lat, lon] = ev.marker; window.open('https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon, '_blank', 'noopener,noreferrer'); return; }
       document.querySelector('#eventMap').scrollIntoView({block:'nearest'});
       eventMap.setView(pin.getLatLng(), 16); pin.openPopup();
@@ -1136,7 +1345,7 @@ document.addEventListener('click', async event => {
   }
   if (authForms.includes(action)) { showForm(action); return; }
   // Everything below needs an account
-  if (['ask','answer','comment','vote','edit-question','edit-answer','event-group','event-comment','event-reply','group-join','new-swap','swap-message','swap-status','share-resource','res-vote','follow','block','edit-profile','redeem','delete','res-review'].includes(action) && needLogin()) {
+  if (['ask','answer','comment','vote','edit-question','edit-answer','event-group','event-comment','event-reply','group-join','new-swap','swap-message','swap-status','share-resource','res-vote','follow','block','edit-profile','redeem','delete','res-review','report','report-status','suspend','new-event','delete-event'].includes(action) && needLogin()) {
     if (action === 'ask') resumeAsk = true;
     return;
   }
@@ -1198,6 +1407,23 @@ document.addEventListener('click', async event => {
       break;
     }
     case 'edit-profile': showForm('edit-profile'); break;
+    case 'report': ui.reportTarget = {type:button.dataset.type, id}; showForm('report'); break;
+    case 'report-status':
+      if (await run(() => sb.from('reports').update({status:button.dataset.value}).eq('id', id), button.dataset.value === 'open' ? 'Report reopened.' : 'Report updated.')) { await loadPrivate(); render(); }
+      break;
+    case 'suspend': {
+      const on = button.dataset.value === 'true';
+      if (on && button.dataset.armed !== 'yes') { button.dataset.armed = 'yes'; button.textContent = 'Click again to suspend'; setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.textContent = 'Suspend member'; } }, 4000); return; }
+      const res = await run(() => sb.rpc('set_suspended', {member:id, suspended:on}));
+      if (res) { tell(res.data === 'ok' ? (on ? 'Member suspended. She can still read but can’t post or message.' : 'Member restored.') : res.data === 'admin' ? 'Admins can’t be suspended.' : 'Only admins can do this.'); await refresh(); }
+      break;
+    }
+    case 'new-event': showForm('new-event'); break;
+    case 'delete-event': {
+      if (button.dataset.armed !== 'yes') { button.dataset.armed = 'yes'; button.textContent = 'Click again to remove'; setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.textContent = 'Remove event'; } }, 4000); return; }
+      if (await run(() => sb.from('events').delete().eq('id', id), 'Event removed.')) await refresh();
+      break;
+    }
     case 'redeem': showForm('redeem'); break;
     case 'delete': {
       if (button.dataset.armed !== 'yes') { button.dataset.armed = 'yes'; const label = button.textContent; button.textContent = 'Click again to delete'; setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.textContent = label; } }, 4000); return; }
@@ -1289,6 +1515,12 @@ function liveFilter(el) {
 }
 
 // ───────────────────────── Accounts ─────────────────────────
+function maybeWelcome() {
+  const p = me && profile(me.id);
+  if (!p || p.bio || p.offers || p.wants || dialog.open) return;
+  try { if (localStorage.getItem('hertech-welcome-' + me.id)) return; } catch { return; }
+  showForm('welcome');
+}
 async function setUser(user) {
   const next = user?.email_confirmed_at ? user : null;
   const changed = next?.id !== me?.id;
@@ -1298,6 +1530,7 @@ async function setUser(user) {
   if (me && db.loaded && !db.profiles.has(me.id)) { await loadAll(); }
   else { await loadPrivate(); render(); }
   if (me) subscribeMessages();
+  maybeWelcome();
 }
 function authError(error) {
   const messages = {
@@ -1334,6 +1567,17 @@ async function submitAuth(kind, form, data) {
       await setUser(result.user);
       tell('You’re logged in to HerTech.');
       if (resumeAsk) { resumeAsk = false; showForm('ask'); }
+    } else if (kind === 'forgot') {
+      const {error} = await auth.resetPasswordForEmail(email, {redirectTo:authRedirect});
+      if (error) throw error;
+      say('If there’s an account for this address, a reset link is on its way. Open it on this device.');
+    } else if (kind === 'new-password') {
+      if (password.length < 10) { say('Use at least 10 characters.'); return; }
+      if (password !== String(data.get('password2') || '')) { say('The two passwords don’t match.'); return; }
+      const {error} = await auth.updateUser({password});
+      if (error) throw error;
+      if (dialog.open) dialog.close();
+      tell('Password updated. You’re logged in.');
     } else if (kind === 'resend') {
       const {error} = await auth.resend({type:'signup', email, options:{emailRedirectTo:authRedirect}});
       if (error) throw error;
@@ -1356,10 +1600,10 @@ render();
   if (auth) {
     const {data} = await auth.getSession();
     me = data.session?.user?.email_confirmed_at ? data.session.user : null;
-    auth.onAuthStateChange((evt, session) => { setTimeout(() => setUser(evt === 'SIGNED_OUT' ? null : session?.user), 0); });
+    auth.onAuthStateChange((evt, session) => { setTimeout(() => { setUser(evt === 'SIGNED_OUT' ? null : session?.user); if (evt === 'PASSWORD_RECOVERY') showForm('new-password'); }, 0); });
   }
   await loadAll();
-  if (me) subscribeMessages();
+  if (me) { subscribeMessages(); maybeWelcome(); }
 })();
 </script>
 </body>

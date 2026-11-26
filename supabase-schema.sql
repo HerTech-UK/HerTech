@@ -188,11 +188,12 @@ create table if not exists public.resources (
 create or replace function public.guard_resource() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  if not public.is_admin() then
+  -- Only members using the website are limited; the HerTech team and the SQL editor are not.
+  if auth.uid() is not null and not public.is_admin() then
     if tg_op = 'INSERT' then
       new.status := 'pending'; new.is_pick := false;
     else
-      new.status := 'pending'; new.is_pick := old.is_pick and false;
+      new.status := 'pending'; new.is_pick := false;
       new.author_id := old.author_id;
     end if;
   end if;
