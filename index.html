@@ -94,428 +94,886 @@ footer{border-top:1px solid var(--line);color:var(--muted)}
 @media(max-width:740px){header{padding:10px 10px 0}.bar{border-radius:24px;padding:10px 12px}.ask-panel{padding:28px 20px;border-radius:24px}.card{padding:18px}.bg-orb{right:-220px;top:120px;opacity:.6}}
 @media(max-width:550px){.ask-panel{padding:24px 16px}.ask-panel h1{font-size:36px}.bar nav button{padding:7px 10px;font-size:14px}}
 </style>
+<style id="v2">
+/* v2: search, resources, swaps, messages, profiles */
+.bar nav a{color:var(--body);text-decoration:none;font-size:15px;padding:8px 14px;border-radius:999px;white-space:nowrap}
+.bar nav a:hover{background:rgba(61,90,254,.07);color:var(--ink)}
+.bar nav a[aria-current=page]{background:rgba(61,90,254,.1);color:var(--blue);font-weight:600}
+.account{align-items:center}
+.icon-btn{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;color:var(--ink);border:1px solid var(--line);background:#fff}
+.icon-btn:hover{border-color:rgba(11,16,51,.22)}
+.badge{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#E5484D;color:#fff;font-size:11px;font-weight:700;line-height:1}
+.icon-btn .badge{position:absolute;top:-4px;right:-4px}
+.me-link{display:inline-flex;text-decoration:none}
+.avatar{--hue:220;display:inline-grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,hsl(var(--hue) 85% 62%),hsl(calc(var(--hue) + 50) 90% 70%));color:#fff;font-family:var(--display);font-weight:700;font-size:16px}
+.avatar.sm{width:36px;height:36px;font-size:14px}
+.avatar.lg{width:76px;height:76px;font-size:30px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:9px 18px;color:var(--ink);text-decoration:none;font-weight:500}
+.btn:hover{border-color:rgba(11,16,51,.22)}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ghost{background:transparent}
+.small{padding:6px 12px;font-size:13px}
+.danger{color:#C2272D}
+.link-btn{border:0;background:none;padding:0;color:var(--blue);font-weight:600;font-size:inherit;border-radius:0}
+.link-btn:hover{text-decoration:underline}
+.link-btn.danger{color:#C2272D;font-weight:500;font-size:13px}
+.loading{text-align:center;color:var(--muted);padding:60px 0}
+mark{background:rgba(255,201,77,.55);color:inherit;border-radius:3px;padding:0 1px}
+.search-box{display:flex;gap:8px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px;box-shadow:0 10px 30px rgba(11,16,51,.06)}
+.search-box input{border:0;padding:10px 4px;font-size:17px;min-width:0;flex:1;background:transparent}
+.search-box input:focus-visible{outline:none}
+.search-box:focus-within{outline:2px solid #7C9BFF;outline-offset:2px}
+.search-box button{flex:none;padding:11px 22px}
+.search-box.slim{margin-top:14px;box-shadow:none}
+.search-box.slim input{font-size:15px;padding:6px 4px}
+.ask-panel form.search-box{display:flex;border-radius:999px;padding:6px 6px 6px 20px}
+.ask-line{margin:16px 0 0;color:var(--body)}
+.home-section{margin:0 0 36px}
+.section-note{color:var(--body);margin:-6px 0 16px}
+.more{color:var(--blue);text-decoration:none;font-weight:600;white-space:nowrap}
+.page-head{margin-bottom:18px}
+.page-head h1{margin:0;font-size:34px}
+.page-head .section-note{margin:8px 0 14px}
+.q-card h3{margin:8px 0 4px}
+.q-card .link{color:var(--ink);text-decoration:none}
+.q-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag.soft{background:rgba(11,16,51,.06);color:var(--body)}
+.tag.gold{background:rgba(255,201,77,.35);color:#7A5300}
+.tag.warn{background:#FFF1D6;color:#8A5A00}
+.tag.ok{background:#E3F7EA;color:#17713A}
+.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.clamp1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:-4px 0 16px;font-size:13px;color:var(--muted)}
+.sortbar span{margin-right:4px;font-family:'JetBrains Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.sortbar button,.sortbar .chip{padding:5px 12px;font-size:13px;background:transparent;border-color:transparent}
+.sortbar [aria-pressed=true]{background:rgba(61,90,254,.1);color:var(--blue);font-weight:600}
+.chip{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 15px;font-size:14px;color:var(--ink);text-decoration:none}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.result-line{color:var(--body);margin:18px 0 10px}
+.seg{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:16px}
+.seg a{padding:10px 14px;color:var(--body);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500}
+.seg a span{font-size:12px;background:rgba(11,16,51,.06);border-radius:999px;padding:1px 7px;margin-left:4px}
+.seg a[aria-current=page]{color:var(--blue);border-bottom-color:var(--blue);font-weight:650}
+.ask-cta{background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(205,215,255,.6))}
+.member-row{display:flex;gap:14px;align-items:flex-start}
+.member-row p{margin:2px 0}
+.answer-head{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.answer-head .meta{margin:0}
+.related{margin-top:26px}
+.related h2{font-size:20px}
+.related-link{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.related-link:hover{color:var(--blue)}
+.related-link small{white-space:nowrap}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-bottom:22px}
+.res-grid .card{margin:0;display:flex;flex-direction:column}
+.res-card h3{margin:10px 0 0}
+.res-card h3 a{color:var(--ink);text-decoration:none}
+.res-card h3 a:hover{color:var(--blue);text-decoration:underline}
+.res-card .meta{margin-top:2px}
+.res-card .actions{margin-top:auto;padding-top:10px}
+.res-card.pick{background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,236,186,.55))}
+.filter-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.filter-row input[type=search]{flex:1;min-width:200px;border-radius:999px;background:#fff}
+.filter-row select{width:auto;border-radius:999px;background:#fff}
+.checkbox.inline{margin:0;font-weight:500}
+.cover-icon{font-size:44px;filter:saturate(.9)}
+.exchange-cover{position:relative}
+.closed-flag{position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 10px;font-size:12px}
+.exchange-tile.closed{opacity:.7}
+.exchange-caption .tag{margin-bottom:6px}
+.exchange-caption .want{font-size:13px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.swap-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0}
+.swap-split h3{font-size:16px;margin:0 0 4px}
+.swap-split>div{background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:16px;padding:14px}
+.author-card{display:flex;gap:12px;align-items:center;margin-top:6px}
+.author-card p{margin:0}
+.safety h3{margin-top:0}
+.safety ul{margin:0;padding-left:20px;color:var(--body)}
+.convo{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink)}
+.convo.unread strong{color:var(--blue)}
+.convo-text{flex:1;min-width:0;display:flex;flex-direction:column}
+.convo-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.thread-head{display:flex;gap:12px;align-items:center;margin:6px 0 12px}
+.thread-head p{margin:0}
+.thread-head button{margin-left:auto}
+.thread-body{background:var(--glass);border:1px solid #fff;border-radius:24px;box-shadow:0 14px 40px rgba(11,16,51,.07);padding:18px;height:min(56vh,520px);overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.thread-body .empty{margin:auto}
+.day{align-self:center;font-size:12px;color:var(--muted);margin:10px 0 4px}
+.bubble{max-width:76%;padding:9px 14px;border-radius:18px;overflow-wrap:anywhere}
+.bubble p{margin:0;white-space:pre-wrap}
+.bubble small{display:block;font-size:11px;margin-top:2px;opacity:.75}
+.bubble.mine{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.bubble.mine small{color:#D6DAF5}
+.bubble.theirs{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
+.composer{display:flex;gap:8px;align-items:flex-end;margin-top:12px}
+.composer textarea{min-height:52px;border-radius:18px}
+.profile-card{display:flex;gap:20px;align-items:flex-start}
+.profile-main{flex:1;min-width:0}
+.profile-main h1{margin:0}
+.profile-main p{margin:6px 0}
+.similar{margin-top:8px;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:#F6F7FB}
+.similar strong{display:block;font-size:13px;margin-bottom:4px}
+.similar a{display:flex;justify-content:space-between;gap:10px;padding:5px 0;color:var(--blue);text-decoration:none;font-size:14px}
+.similar a small{white-space:nowrap}
+.answer-head + .summary{margin-top:2px}
+footer a{color:var(--blue)}
+@media(max-width:740px){
+  .bar{flex-wrap:wrap}
+  .bar nav{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;margin:0 -4px;padding-bottom:2px}
+  .bar nav::-webkit-scrollbar{display:none}
+  .bar nav a{padding:7px 11px;font-size:14px}
+  .account{gap:6px}.account button{padding:7px 12px;font-size:14px}
+  .swap-split{grid-template-columns:1fr}
+  .profile-card{flex-direction:column}
+  .bubble{max-width:88%}
+  .search-box button{padding:10px 16px}
+  .page-head h1{font-size:28px}
+}
+@media(max-width:420px){.icon-btn{width:34px;height:34px}.account button{padding:6px 10px;font-size:13px}.brand{font-size:18px}}
+</style>
 </head>
 <body>
 <div class="bg-orb" aria-hidden="true"><div></div></div><div class="bg-orb two" aria-hidden="true"><div></div></div>
 <header><div class="bar">
-<button type="button" class="brand" data-action="home"><span class="mark" aria-hidden="true">✦</span> HerTech</button>
-<nav aria-label="Main navigation"><button data-action="about" id="navAbout">Who are we</button><button data-action="home" id="navHome">Community Q&A</button><button data-action="events" id="navEvents">UK Tech Events ↗</button><button data-action="wallet" id="navWallet">Points & Events</button><button data-action="exchange" id="navExchange">Swaps</button></nav>
+<a class="brand" href="#home" style="text-decoration:none;color:inherit"><span class="mark" aria-hidden="true">✦</span> HerTech</a>
+<nav id="nav" aria-label="Main navigation"></nav>
 <div id="account" class="account"></div>
 </div></header>
-<div class="wrap"><main id="app"></main><footer>Prototype · Community activity is saved in this browser.</footer></div>
+<div class="wrap"><main id="app"></main><footer>HerTech · A UK community for women in tech · Be kind, share generously, and keep personal details private.</footer></div>
 <dialog id="dialog" aria-labelledby="dialogTitle"></dialog>
 <div id="notice" role="status" aria-live="polite"></div>
 <script>
-const topics = ['UK Tech Jobs', 'CVs & Portfolios', 'Interviews', 'Moving into Tech'];
-const KEY = 'hertech-circle-demo-v1';
-const PRICE = 2;
-const seats = 8;
-const week = 7 * 86400000;
-const demoVoters = ['demo-a', 'demo-b', 'demo-c', 'demo-d'];
-function seed() {
-  const now = Date.now();
-  return { members: [], member: null, ledger: [], redemptions: [], questions: [
-    {id:'q1', title:'How can I present my projects when applying for junior data analyst roles in the UK?', body:'I completed two course projects: one on data cleaning and another on data visualisation in Tableau. How can I show what I contributed on my CV?', topic:topics[1], author:'Mia · London', created:now-86400000, close:now+6*86400000, answers:[
-      {id:'a1', author:'Sophie · Data Analyst', body:'Choose the project most relevant to the role. Explain the problem, the decisions you made and the result. For example, describe how you handled missing values and checked your results, then link to the project.', votes:demoVoters.slice(0,3)},
-      {id:'a2', author:'Anya · Manchester', body:'Put a chart showing the result on your portfolio homepage and include steps to reproduce it. I also reorder projects on each CV to match the role.', votes:demoVoters.slice(0,1)}
-    ]},
-    {id:'q2', title:'How should I prepare for behavioural questions in my first UK tech interview?', body:'I’m ready for the technical questions, but I tend to ramble when talking about a disagreement or setback on a project. How do you practise?', topic:topics[2], author:'Lina · Bristol', created:now-172800000, close:now+5*86400000, answers:[
-      {id:'a3', author:'Rachel · Software Engineer', body:'Prepare three STAR stories and keep each under two minutes. Ask a practice partner to follow up with “What did you do?” and “What would you do differently next time?” It feels more like the real interview than memorising a script.', votes:demoVoters.slice(0,2)}
-    ]},
-    {id:'q3', title:'Which tech roles should I explore if I’m moving out of research?', body:'I have experience in biostatistics and Python and would like to find roles where I can use my research skills.', topic:topics[3], author:'Yuki · Edinburgh', created:now-259200000, close:now+4*86400000, answers:[]},
-    {id:'q4', title:'Where did you start looking for your first tech job in the UK?', body:'Which alumni or community resources helped you, alongside job boards?', topic:topics[0], author:'Nina · Leeds', created:now-week, close:now-1, answers:[]}
-  ]};
-}
-function load() {
-  try { return JSON.parse(localStorage.getItem(KEY)) || seed(); } catch { return seed(); }
-}
-const SITE_URL = 'https://hertech-circle-uk.marz-ma.chatgpt.site/';
-// Accounts work on any published https address; local files (file://) stay in demo mode.
+// ───────────────────────── Setup ─────────────────────────
+const TOPICS = ['UK Tech Jobs', 'CVs & Portfolios', 'Interviews', 'Moving into Tech', 'Networking', 'Learning & Skills'];
+const SWAP_TYPES = ['Skill Swap', 'Item Swap', 'Home Swap'];
+const RES_CATS = ['Learning', 'Job hunting', 'Courses & skills', 'Tools', 'Communities & events'];
+const COSTS = ['Free', 'Paid', 'Free & paid'];
+const STAGES = ['Studying', 'Job hunting or changing careers', 'Employed'];
+const PRICE = 2, SEATS = 8, TICKET = 'cv-workshop';
 const SUPABASE_URL = 'https://lpnfipdrxmdolqlsvkos.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_RxNzexmbNrm9pexDCfrxFw_7fntmbcs';
 const authRedirect = location.origin + location.pathname;
-const auth = location.protocol === 'https:'
-  ? window.supabase?.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{flowType:'pkce'}}).auth
-  : null;
-let verifiedUser = null;
-let state = load();
-state.member = null;
-for (const profile of state.members) delete profile.email;
-state.follows ??= [];
-state.exchanges ??= [];
-// Translate system labels and seeded examples from earlier browser data.
-const legacyTopics = {"\u82f1\u56fd Tech \u6c42\u804c": "UK Tech Jobs", "\u7b80\u5386\u4e0e\u4f5c\u54c1\u96c6": "CVs & Portfolios", "\u9762\u8bd5": "Interviews", "\u8f6c\u884c Tech": "Moving into Tech"};
-const legacySwaps = {"\u6280\u80fd\u4ea4\u6362": "Skill Swap", "\u7269\u54c1\u4ea4\u6362": "Item Swap", "\u6362\u5bbf": "Home Swap"};
-const legacyStages = {"\u5728\u8bfb": "Studying", "\u6c42\u804c\u4e2d": "Job hunting", "\u8f6c\u884c\u4e2d": "Changing careers", "\u6c42\u804c\u6216\u8f6c\u884c\u4e2d": "Job hunting or changing careers", "\u5728\u804c": "Employed"};
-const legacyPoints = {"\u6700\u9ad8\u8d5e\u56de\u7b54\u5956\u52b1": "Top answer bonus", "\u56de\u7b54\u83b7\u5f97 2 \u4e2a\u6709\u5e2e\u52a9": "Answer marked helpful by two members", "\u5151\u6362\u7b80\u5386\u5de5\u4f5c\u574a\u95e8\u7968": "Redeemed a CV workshop ticket", "\u6ce8\u518c\u4f53\u9a8c\u79ef\u5206": "Welcome Coffee Beans"};
-const systemLabel = (labels, value) => Object.hasOwn(labels, value) ? labels[value] : value;
-const examples = seed().questions;
-for (const question of state.questions) {
-  question.topic = systemLabel(legacyTopics, question.topic);
-  const example = examples.find(item => item.id === question.id);
-  if (!example || question.member) continue;
-  for (const field of ['title', 'body', 'author']) question[field] = example[field];
-  for (const answer of question.answers) {
-    const seededAnswer = example.answers.find(item => item.id === answer.id);
-    if (seededAnswer && !answer.member) {
-      answer.body = seededAnswer.body;
-      answer.author = seededAnswer.author;
-    }
-  }
-}
-for (const post of state.exchanges) post.type = systemLabel(legacySwaps, post.type);
-for (const entry of state.ledger) {
-  entry.reason = entry.reason === 'Welcome points' ? 'Welcome Coffee Beans' : systemLabel(legacyPoints, entry.reason);
-}
-for (const profile of state.members) profile.stage = systemLabel(legacyStages, profile.stage);
+// Accounts and community data work on any published https address; a local file shows a notice instead.
+const sb = location.protocol === 'https:' && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {auth:{flowType:'pkce'}}) : null;
+const auth = sb?.auth || null;
+try { localStorage.removeItem('hertech-circle-demo-v1'); } catch {}
 
-state.eventCommunity ??= {};
-const expandedEvents = new Set();
-let eventDraft = null;
-const exchangeTypes = ['Skill Swap', 'Item Swap', 'Home Swap'];
-const exchangeImageLimit = 3;
-const exchangeImageFormat = /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i;
-let exchangeImageFiles = [];
-let exchangePreviewUrls = [];
-let exchangeType = 'All';
-let stayFilter = {from:'',to:''};
-const demoMembers = [
-  {id:'sample-mia',name:'Mia · London',stage:'Job hunting'},
-  {id:'sample-sophie',name:'Sophie · Data Analyst',stage:'Employed'},
-  {id:'sample-anya',name:'Anya · Manchester',stage:'Employed'},
-  {id:'sample-lina',name:'Lina · Bristol',stage:'Job hunting'},
-  {id:'sample-rachel',name:'Rachel · Software Engineer',stage:'Employed'},
-  {id:'sample-yuki',name:'Yuki · Edinburgh',stage:'Changing careers'},
-  {id:'sample-nina',name:'Nina · Leeds',stage:'Job hunting'}
+const ukEvents = [
+  {id:'digital-economy-2026', name:'UK Digital Economy Conference 2026', city:'Manchester', date:'26 November', ends:'2026-11-26', venue:'Friends’ Meeting House', marker:[53.4776,-2.2467], url:'https://www.techuk.org/events/uk-digital-economy-conference-2026'},
+  {id:'digital-ethics-2026', name:'Digital Ethics Summit 2026', city:'London', date:'2 December', ends:'2026-12-02', marker:[51.5074,-0.1278], url:'https://www.techuk.org/events/digital-ethics-summit-2026'},
+  {id:'ciuk-2026', name:'CIUK 2026', city:'Manchester', date:'2–4 December', ends:'2026-12-04', venue:'Manchester Central', marker:[53.4761,-2.2468], url:'https://www.cake.ac.uk/events/202612-CIUK26/'}
 ];
-const allMembers = () => [...state.members, ...demoMembers];
-let commentTargetId = '';
+const areas = {'All':[-8.9,49.8,2.1,59.2], 'London':[-0.25,51.44,0.01,51.58], 'Manchester':[-2.36,53.41,-2.13,53.55]};
+
+let me = null;
+const db = {loaded:false, failed:false, profiles:new Map(), questions:[], answers:[], votes:[], comments:[], groups:[], groupMembers:[], follows:[], swaps:[], resources:[], resourceVotes:[], ledger:[], messages:[], blocks:[], ticket:{places_left:SEATS, mine:false}};
+const swapImages = new Map();
+const ui = {qTopic:'All', qSort:'newest', answerSort:'popular', resCat:'All', resCost:'All', resText:'', swapType:'All', swapOpen:true, swapText:'', stay:{from:'',to:''}, city:'All', expandedEvents:new Set(), eventDraft:null, editing:null, commentTarget:null, draftTitle:''};
+let activeForm = '', resumeAsk = false, noticeTimer, eventMap = null, pins = [], realtime = null, pollTimer = null;
+
 const app = document.querySelector('#app');
 const dialog = document.querySelector('#dialog');
 const account = document.querySelector('#account');
 const notice = document.querySelector('#notice');
-let filter = 'All', activeForm = '', timer, sort = 'popular';
-let draftTitle = '', resumeAsk = false, city = 'All';
-const areas = {
-  'All': [-8.9,49.8,2.1,59.2],
-  'London': [-0.25,51.44,0.01,51.58],
-  'Manchester': [-2.36,53.41,-2.13,53.55],
-};
-const ukEvents = [
-  {id:'digital-economy-2026',name:'UK Digital Economy Conference 2026',city:'Manchester',date:'26 November',ends:'2026-11-26',venue:'Friends’ Meeting House',marker:[53.4776,-2.2467],url:'https://www.techuk.org/events/uk-digital-economy-conference-2026'},
-  {id:'digital-ethics-2026',name:'Digital Ethics Summit 2026',city:'London',date:'2 December',ends:'2026-12-02',marker:[51.5074,-0.1278],url:'https://www.techuk.org/events/digital-ethics-summit-2026'},
-  {id:'ciuk-2026',name:'CIUK 2026',city:'Manchester',date:'2–4 December',ends:'2026-12-04',venue:'Manchester Central',marker:[53.4761,-2.2468],url:'https://www.cake.ac.uk/events/202612-CIUK26/'},
-];
-const escape = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]);
-const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2);
-for (const post of state.exchanges) post.id ??= uid();
-const current = () => state.members.find(member => member.id === verifiedUser?.id);
-const profileId = () => location.hash.slice('#member-'.length);
-const memberById = id => allMembers().find(item => item.id === id);
-function authorLink(record) {
-  const demo = demoMembers.find(item => item.name === record.author);
-  const id = record.member || demo?.id;
-  return id ? `<a class="member-link" href="#member-${escape(id)}">${escape(record.author)}</a>` : escape(record.author);
+
+// ───────────────────────── Helpers ─────────────────────────
+const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[ch]);
+const profile = id => db.profiles.get(id);
+const nameOf = id => profile(id)?.name || 'Former member';
+const who = id => profile(id) ? `<a class="member-link" href="#member-${esc(id)}">${esc(nameOf(id))}</a>` : '<span>Former member</span>';
+const initials = id => esc(nameOf(id).trim().slice(0, 1).toUpperCase() || '?');
+const avatar = (id, size = '') => `<span class="avatar ${size}" aria-hidden="true" style="--hue:${hue(id)}">${initials(id)}</span>`;
+function hue(id) { let h = 0; for (const ch of String(id)) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; }
+const safeUrl = url => /^https?:\/\/[^\s]+$/i.test(url || '') ? url : '';
+const domain = url => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
+const isAdmin = () => Boolean(me && profile(me.id)?.is_admin);
+const beanUnit = n => Math.abs(n) === 1 ? 'Coffee Bean' : 'Coffee Beans';
+const balance = () => db.ledger.reduce((sum, entry) => sum + entry.delta, 0);
+const answersOf = qid => db.answers.filter(a => a.question_id === qid);
+const votesOf = aid => db.votes.filter(v => v.answer_id === aid);
+const commentsOn = (type, id) => db.comments.filter(c => c.target_type === type && c.target_id === id);
+const resourceVotes = rid => db.resourceVotes.filter(v => v.resource_id === rid).length;
+const blocked = id => db.blocks.some(b => b.blocked_id === id);
+const unreadCount = () => me ? db.messages.filter(m => m.recipient_id === me.id && !m.read_at).length : 0;
+function ago(ts) {
+  const diff = (Date.now() - new Date(ts)) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff / 60) + ' min ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + ' h ago';
+  if (diff < 7 * 86400) return Math.floor(diff / 86400) + ' d ago';
+  return new Date(ts).toLocaleDateString('en-GB', {day:'numeric', month:'short', year: new Date(ts).getFullYear() === new Date().getFullYear() ? undefined : 'numeric'});
 }
-const lookup = () => state.questions.find(q => '#q-' + q.id === location.hash);
-const balance = () => state.ledger.filter(entry => entry.member === state.member).reduce((sum, entry) => sum + entry.delta, 0);
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { tell('Your browser could not save this change. It will be lost when you refresh.'); }
+function ukDate() {
+  const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
+  return ['year','month','day'].map(type => parts.find(part => part.type === type).value).join('-');
 }
 function tell(message) {
   notice.textContent = message;
-  clearTimeout(timer);
-  timer = setTimeout(() => { notice.textContent = ''; }, 4500);
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => { notice.textContent = ''; }, 4500);
 }
-function credit(member, delta, reason, key) {
-  if (!member || state.ledger.some(entry => entry.key === key)) return;
-  state.ledger.push({member, delta, reason, key});
+function route() {
+  const raw = location.hash.slice(1);
+  const cut = raw.indexOf('?');
+  const path = decodeURIComponent(cut < 0 ? raw : raw.slice(0, cut)) || 'home';
+  return {path, params:new URLSearchParams(cut < 0 ? '' : raw.slice(cut + 1))};
 }
-function winners(q) {
-  const max = Math.max(0, ...q.answers.map(a => a.votes.length));
-  return max < 3 ? [] : q.answers.filter(a => a.votes.length === max);
+function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
+function needLogin() { if (me) return false; showForm('login'); return true; }
+function friendlyError(error) {
+  const text = String(error?.message || error || '');
+  if (/row-level security|permission denied/i.test(text)) return 'You don’t have permission to do that.';
+  if (/check constraint|violates/i.test(text)) return 'Some details aren’t valid. Check the form and try again.';
+  if (/Failed to fetch|NetworkError/i.test(text)) return 'We couldn’t reach HerTech. Check your connection and try again.';
+  return 'Something went wrong. Please try again.';
 }
-function settle() {
-  for (const q of state.questions) {
-    if (q.close > Date.now() || q.settled) continue;
-    const awarded = winners(q);
-    q.winnerIds = awarded.map(a => a.id);
-    for (const a of awarded) credit(a.member, 2, 'Top answer bonus', 'top-' + a.id);
-    q.settled = true;
+async function run(task, done) {
+  try {
+    const result = await task();
+    if (result?.error) throw result.error;
+    if (done) tell(done);
+    return result ?? true;
+  } catch (error) {
+    console.error(error);
+    tell(friendlyError(error));
+    return null;
   }
 }
-function go(hash) {
-  if (location.hash === hash) render();
-  else location.hash = hash;
+
+// ───────────────────────── Search ─────────────────────────
+const terms = text => [...new Set(String(text || '').toLowerCase().split(/[^\p{L}\p{N}+#]+/u).filter(word => word.length > 1))];
+function scoreText(fields, words, phrase) {
+  let score = 0, matched = 0;
+  for (const word of words) {
+    let s = 0;
+    for (const [text, weight] of fields) if (text.includes(word)) s += weight;
+    if (s) matched++;
+    score += s;
+  }
+  if (phrase && fields[0][0].includes(phrase)) score += 8;
+  return {score, all: words.length > 0 && matched === words.length, any: matched > 0};
 }
-let eventMap, pins = [];
+function questionScore(q, words, phrase) {
+  const answers = answersOf(q.id).map(a => a.body).join(' ').toLowerCase();
+  return scoreText([[q.title.toLowerCase(), 5], [q.topic.toLowerCase(), 3], [q.body.toLowerCase(), 2], [answers, 1]], words, phrase);
+}
+function rank(items, scorer, query) {
+  const words = terms(query), phrase = String(query || '').trim().toLowerCase();
+  if (!words.length) return {items:[], loose:false};
+  const scored = items.map(item => ({item, ...scorer(item, words, phrase)}));
+  let hits = scored.filter(s => s.all);
+  let loose = false;
+  if (!hits.length) { hits = scored.filter(s => s.any); loose = hits.length > 0; }
+  return {items: hits.sort((a, b) => b.score - a.score).map(s => s.item), loose};
+}
+function mark(text, query) {
+  const words = terms(query).map(word => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  if (!words.length) return esc(text);
+  const re = new RegExp('(' + words.join('|') + ')', 'giu');
+  return String(text).split(re).map((part, i) => i % 2 ? `<mark>${esc(part)}</mark>` : esc(part)).join('');
+}
+function snippet(text, query, length = 190) {
+  const value = String(text || '').replace(/\s+/g, ' ');
+  const word = terms(query).find(w => value.toLowerCase().includes(w));
+  let start = word ? Math.max(0, value.toLowerCase().indexOf(word) - 60) : 0;
+  let out = value.slice(start, start + length);
+  return (start > 0 ? '…' : '') + mark(out, query) + (start + length < value.length ? '…' : '');
+}
+
+// ───────────────────────── Data ─────────────────────────
+async function loadAll() {
+  if (!sb) { db.loaded = true; db.failed = true; render(); return; }
+  try {
+    sb.rpc('settle_questions').then(() => {}, () => {});
+    const results = await Promise.all([
+      sb.from('profiles').select('id,name,stage,bio,offers,wants,link,is_admin,created_at').limit(5000),
+      sb.from('questions').select('*').order('created_at', {ascending:false}).limit(2000),
+      sb.from('answers').select('*').order('created_at').limit(10000),
+      sb.from('answer_votes').select('answer_id,voter_id').limit(50000),
+      sb.from('comments').select('*').order('created_at').limit(10000),
+      sb.from('event_groups').select('*').order('created_at'),
+      sb.from('event_group_members').select('group_id,member_id'),
+      sb.from('follows').select('follower_id,followee_id').limit(20000),
+      sb.from('swaps').select('id,author_id,type,title,place,offer,want,from_date,to_date,status,created_at,cover:images->0').order('created_at', {ascending:false}).limit(2000),
+      sb.from('resources').select('*').order('created_at', {ascending:false}).limit(2000),
+      sb.from('resource_votes').select('resource_id,member_id').limit(20000)
+    ]);
+    const failed = results.find(result => result.error);
+    if (failed) throw failed.error;
+    const [profiles, questions, answers, votes, comments, groups, groupMembers, follows, swaps, resources, resourceVotes] = results.map(result => result.data);
+    db.profiles = new Map(profiles.map(p => [p.id, p]));
+    Object.assign(db, {questions, answers, votes, comments, groups, groupMembers, follows, swaps, resources, resourceVotes, failed:false});
+    await loadPrivate();
+  } catch (error) {
+    console.error(error);
+    db.failed = true;
+  }
+  db.loaded = true;
+  render();
+}
+async function loadPrivate() {
+  if (!sb || !me) { db.ledger = []; db.messages = []; db.blocks = []; db.ticket = {places_left:SEATS, mine:false}; return; }
+  const [ledger, messages, blocks, ticket] = await Promise.all([
+    sb.from('ledger').select('delta,reason,created_at').order('created_at', {ascending:false}),
+    sb.from('messages').select('*').order('created_at').limit(5000),
+    sb.from('blocks').select('blocked_id'),
+    sb.rpc('ticket_status', {event:TICKET, seats:SEATS})
+  ]);
+  db.ledger = ledger.data || [];
+  db.messages = messages.data || [];
+  db.blocks = blocks.data || [];
+  db.ticket = ticket.data?.[0] || db.ticket;
+}
+async function refresh() { await loadAll(); }
+function subscribeMessages() {
+  if (!sb || !me || realtime) return;
+  realtime = sb.channel('dm-' + me.id)
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'messages'}, payload => {
+      const msg = payload.new;
+      if (!me || ![msg.sender_id, msg.recipient_id].includes(me.id) || db.messages.some(m => m.id === msg.id)) return;
+      db.messages.push(msg);
+      onNewMessage(msg);
+    })
+    .subscribe();
+  clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    if (!me || document.hidden) return;
+    const last = db.messages.at(-1)?.created_at || '1970-01-01';
+    const {data} = await sb.from('messages').select('*').gt('created_at', last).order('created_at');
+    for (const msg of data || []) if (!db.messages.some(m => m.id === msg.id)) { db.messages.push(msg); onNewMessage(msg); }
+  }, 20000);
+}
+function unsubscribeMessages() {
+  if (realtime) sb.removeChannel(realtime);
+  realtime = null;
+  clearInterval(pollTimer);
+}
+function onNewMessage(msg) {
+  const {path} = route();
+  if (path === 'messages-' + (msg.sender_id === me.id ? msg.recipient_id : msg.sender_id)) {
+    renderThreadBody();
+    if (msg.recipient_id === me.id) markRead(msg.sender_id);
+  } else if (path === 'messages') {
+    render();
+  } else if (msg.recipient_id === me.id) {
+    tell('New message from ' + nameOf(msg.sender_id));
+  }
+  renderHeader();
+}
+async function markRead(otherId) {
+  const unread = db.messages.filter(m => m.sender_id === otherId && m.recipient_id === me?.id && !m.read_at);
+  if (!unread.length) return;
+  const now = new Date().toISOString();
+  for (const m of unread) m.read_at = now;
+  renderHeader();
+  await sb.from('messages').update({read_at:now}).eq('sender_id', otherId).eq('recipient_id', me.id).is('read_at', null);
+}
+
+// ───────────────────────── Layout ─────────────────────────
+const NAV = [['about','who-are-we','Who are we'], ['qa','home','Community Q&A'], ['resources','resources','Resources'], ['events','uk-events','UK Tech Events'], ['beans','points','Points & Events'], ['swaps','exchange','Swaps']];
+function navKey(path) {
+  if (path === 'who-are-we') return 'about';
+  if (path.startsWith('resources')) return 'resources';
+  if (path === 'exchange' || path === 'stay-dates' || path.startsWith('swap-')) return 'swaps';
+  if (path === 'uk-events') return 'events';
+  if (path === 'points') return 'beans';
+  if (path.startsWith('messages') || path.startsWith('member-')) return '';
+  return 'qa';
+}
+function renderHeader() {
+  const key = navKey(route().path);
+  document.querySelector('#nav').innerHTML = NAV.map(([id, hash, label]) => `<a href="#${hash}" aria-current="${id === key ? 'page' : 'false'}">${label}</a>`).join('');
+  const unread = unreadCount();
+  account.innerHTML = `<a class="icon-btn" href="#search" aria-label="Search"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>` + (me
+    ? `<a class="icon-btn" href="#messages" aria-label="Messages${unread ? ', ' + unread + ' unread' : ''}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 5h16v11H8l-4 4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>${unread ? `<span class="badge">${unread > 9 ? '9+' : unread}</span>` : ''}</a><a class="me-link" href="#member-${esc(me.id)}" aria-label="My profile">${avatar(me.id, 'sm')}</a><button data-action="logout">Log out</button>`
+    : '<button data-action="login">Log in</button><button class="primary" data-action="join">Sign up</button>');
+}
 function render() {
   eventMap?.remove();
   eventMap = null;
   pins = [];
-  settle();
-  save();
-  const member = current();
-  const wallet = location.hash === '#points';
-  const events = location.hash === '#uk-events';
-  const profile = location.hash.startsWith('#member-');
-  const about = location.hash === '#who-are-we';
-  const exchangeDetail = /^#exchange-post-(.+)$/.exec(location.hash);
-  const exchange = location.hash === '#exchange' || location.hash === '#stay-dates' || Boolean(exchangeDetail);
-  const q = lookup();
-  document.querySelector('#navHome').setAttribute('aria-current', String(!wallet && !events && !profile && !exchange && !about));
-  document.querySelector('#navEvents').setAttribute('aria-current', String(events));
-  document.querySelector('#navWallet').setAttribute('aria-current', String(wallet));
-  account.innerHTML = member
-    ? '<button data-action="my-profile">My Profile</button><button data-action="logout">Log out</button>'
-    : '<button data-action="login">Log in</button><button class="primary" data-action="join">Sign up</button>';
-  document.querySelector('#navExchange').setAttribute('aria-current', String(exchange));
-  document.querySelector('#navAbout').setAttribute('aria-current', String(about));
-  app.innerHTML = about ? aboutPage() : exchangeDetail ? exchangePostPage(exchangeDetail[1]) : exchange ? exchangePage(location.hash === '#stay-dates') : wallet ? walletPage() : events ? eventsPage() : profile ? profilePage() : q ? questionPage(q) : location.hash === '#topics' ? topicsPage() : homePage();
-  if (events) showEventMap();
+  renderHeader();
+  const {path, params} = route();
+  if (!db.loaded) { app.innerHTML = '<p class="loading">Loading the community…</p>'; return; }
+  let html;
+  if (path === 'who-are-we') html = aboutPage();
+  else if (db.failed && !['uk-events'].includes(path)) html = offlinePage();
+  else if (path === 'questions') html = questionsPage();
+  else if (path === 'search') html = searchPage(params);
+  else if (path.startsWith('q-')) html = questionPage(path.slice(2));
+  else if (path === 'resources') html = resourcesPage();
+  else if (path === 'resources-review') html = reviewPage();
+  else if (path === 'exchange') html = swapsPage();
+  else if (path === 'stay-dates') html = staysPage();
+  else if (path.startsWith('swap-')) html = swapPage(path.slice(5));
+  else if (path === 'messages') html = inboxPage();
+  else if (path.startsWith('messages-')) html = threadPage(path.slice(9));
+  else if (path.startsWith('member-')) html = profilePage(path.slice(7));
+  else if (path === 'points') html = walletPage();
+  else if (path === 'uk-events') html = eventsPage();
+  else html = homePage();
+  app.innerHTML = html;
+  if (path === 'uk-events') showEventMap();
+  if (path.startsWith('messages-')) afterThreadRender(path.slice(9));
+  if (path.startsWith('swap-')) loadSwapImages(path.slice(5));
+  if (path === 'search') { const input = document.querySelector('#searchInput'); if (input && !input.value) input.focus(); }
 }
-function aboutPage() {
-  return `<section class="about-page" aria-labelledby="about-title">
-    <article class="about-copy">
-      <h1 id="about-title">Who are we?</h1>
-      <p>We met at DurHack, a hackathon in Durham. While working on a project together, we noticed how few women were in the room. It got us talking: would it be easier to go to your first tech event if someone invited you along and there was a friendly face when you arrived?</p>
-      <p>That’s what we want to make happen. <strong>We want to run events for women in the UK who work in tech or want to get into it.</strong> From hands-on workshops to informal career meetups, you can build something together, hear how others found their first tech job and meet people who’ll practise interviews with you or help you work out your next step.</p>
-      <p>The connections can carry on after the event. You might teach someone to code and borrow a toolkit in return. If you’re heading to an event in another city, you might even arrange a weekend home swap with a friend who lives there.</p>
-      <p lang="en-GB"><strong>Help Her Dream Take Shape.</strong></p>
-    </article>
-    <figure class="about-comic"><a href="./hertech-comic-en.png" target="_blank" rel="noopener" aria-label="Open the full-size HerTech comic">
-      <img src="./hertech-comic-en.png" width="724" height="2172" alt="HerTech’s story in six panels: meeting at DurHack, running tech events for women, practising interviews, swapping skills and sharing tools, and arranging home swaps.">
-    </a><figcaption>View the full-size comic</figcaption></figure>
-  </section>`;
+function offlinePage() {
+  return `<section class="detail"><div class="card"><h1>We can’t load the community right now</h1><p class="summary">${location.protocol === 'file:' ? 'Open the online HerTech site to see questions, resources and swaps.' : 'Check your connection, then refresh the page.'}</p><div class="actions"><button class="primary" data-action="reload">Try again</button></div></div></section>`;
+}
+
+// ───────────────────────── Home ─────────────────────────
+function questionCard(q, query = '') {
+  const count = answersOf(q.id).length;
+  return `<article class="card q-card"><div class="q-tags"><span class="tag">${esc(q.topic)}</span>${count ? '' : '<span class="tag soft">Unanswered</span>'}</div>
+    <h3><a class="link" href="#q-${esc(q.id)}">${query ? mark(q.title, query) : esc(q.title)}</a></h3>
+    <p class="summary clamp">${query ? snippet(q.body, query) : esc(q.body)}</p>
+    <div class="meta">${who(q.author_id)} · ${ago(q.created_at)} · ${count} ${count === 1 ? 'answer' : 'answers'}</div></article>`;
 }
 function homePage() {
+  const HOME_TOPICS = ['UK Tech Jobs', 'CVs & Portfolios', 'Interviews', 'Moving into Tech'];
   return `<div class="home"><section class="ask-panel"><p class="eyebrow">A UK community for women in tech</p><h1>What's <span class="grad">on your mind?</span></h1><p class="intro">Share what you’ve learnt and support other women in UK tech through job searches, career changes and professional growth.</p>
-    <form id="quickAsk"><label class="visually-hidden" for="quickTitle">Question title</label><textarea id="quickTitle" name="title" placeholder="For example: How do I prepare for my first UK tech interview?" required maxlength="120" rows="4">${escape(draftTitle)}</textarea><div class="actions"><button class="primary" type="submit">Continue to question ↗</button></div></form>
-    </section><div class="hot" aria-label="Trending topics"><strong>Trending Topics</strong>${topics.map(topic => `<button data-action="filter" data-topic="${topic}"># ${topic}</button>`).join('')}</div>
+    <form id="quickAsk"><label class="visually-hidden" for="quickTitle">Question title</label><textarea id="quickTitle" name="title" placeholder="For example: How do I prepare for my first UK tech interview?" required maxlength="120" rows="4">${esc(ui.draftTitle)}</textarea><div class="actions"><button class="primary" type="submit">Continue to question ↗</button></div></form>
+    </section><div class="hot" aria-label="Trending topics"><strong>Trending Topics</strong>${HOME_TOPICS.map(topic => `<button data-action="topic" data-topic="${esc(topic)}"># ${esc(topic)}</button>`).join('')}</div>
     <section aria-labelledby="communityEvents"><h2 class="section-title" id="communityEvents">Our Upcoming Events</h2>
     <div class="event-cards">
-    <article class="card ticket"><span class="tag">Demo event · Online</span><h3>UK Tech CV Workshop</h3><p class="summary">Review your CV together and make your project experience more specific.</p><div class="actions"><button data-action="wallet">View tickets</button></div></article>
+    <article class="card ticket"><span class="tag">Online · Coffee Bean ticket</span><h3>UK Tech CV Workshop</h3><p class="summary">Review your CV together and make your project experience more specific.</p><div class="actions"><a class="btn" href="#points">View tickets</a></div></article>
     <article class="card"><span class="tag">In planning · Online</span><h3>Mock Interviews & Portfolio Peer Review</h3><p class="summary">Small-group practice and peer feedback. Date to be confirmed.</p></article>
     </div></section>
     <div class="social-footer" aria-label="Social media"><strong>Follow HerTech</strong><span>Xiaohongshu <small>Link coming soon</small></span><span>Instagram <small>Link coming soon</small></span></div></div>`;
 }
-function topicsPage() {
-  const questions = state.questions.filter(q => filter === 'All' || q.topic === filter);
-  return `<section class="detail"><button class="back" data-action="home">← Back to home</button><h1>${escape(filter)} · Q&A</h1>
-    <div class="tabs" aria-label="Filter by topic">${['All', ...topics].map(topic => `<button data-action="filter" data-topic="${topic}" aria-pressed="${topic === filter}">${topic}</button>`).join('')}</div>
-    ${questions.map(q => `<article class="card"><span class="tag">${escape(q.topic)}</span><h3><a class="link" href="#q-${q.id}">${escape(q.title)}</a></h3><p class="summary">${escape(q.body)}</p><div class="meta">${authorLink(q)} · ${q.answers.length} answers</div></article>`).join('') || '<p class="empty">No questions on this topic yet.</p>'}</section>`;
+function questionsPage() {
+  let list = db.questions.filter(q => ui.qTopic === 'All' || q.topic === ui.qTopic);
+  if (ui.qSort === 'unanswered') list = list.filter(q => !answersOf(q.id).length);
+  if (ui.qSort === 'answers') list = [...list].sort((a, b) => answersOf(b.id).length - answersOf(a.id).length);
+  return `<section class="home"><div class="page-head"><div class="topline"><h1>Community Q&A</h1><button class="primary" data-action="ask">Ask a question</button></div>
+    <form id="pageSearch" class="search-box slim" role="search"><label class="visually-hidden" for="pageQuery">Search questions</label><input id="pageQuery" name="q" type="search" placeholder="Search questions" maxlength="120"><button type="submit">Search</button></form></div>
+    <div class="tabs" aria-label="Filter by topic">${['All', ...TOPICS].map(topic => `<button data-action="q-topic" data-topic="${esc(topic)}" aria-pressed="${topic === ui.qTopic}">${esc(topic)}</button>`).join('')}</div>
+    <div class="sortbar"><span>Sort</span>${[['newest','Newest'],['answers','Most answers'],['unanswered','Unanswered']].map(([key,label]) => `<button data-action="q-sort" data-topic="${key}" aria-pressed="${ui.qSort === key}">${label}</button>`).join('')}</div>
+    ${list.map(q => questionCard(q)).join('') || '<p class="empty">No questions here yet.</p>'}</section>`;
 }
+function searchPage(params) {
+  const query = params.get('q') || '';
+  return `<section class="home"><div class="page-head"><h1>Search</h1><p class="section-note">Find questions, answers, resources, swaps and members.</p>
+    <form id="searchForm" class="search-box" role="search"><label class="visually-hidden" for="searchInput">Search HerTech</label>
+    <input id="searchInput" name="q" type="search" value="${esc(query)}" placeholder="Try “interview”, “data analyst” or “CV”" autocomplete="off" maxlength="120" autofocus>
+    <button class="primary" type="submit">Search</button></form></div>
+    <div id="searchResults">${searchResults(params)}</div></section>`;
+}
+function searchResults(params) {
+  const query = params.get('q') || '';
+  const section = params.get('in') || 'questions';
+  const topic = params.get('topic') || 'All';
+  const sort = params.get('sort') || 'best';
+  if (!terms(query).length) {
+    const unanswered = db.questions.filter(q => !answersOf(q.id).length).slice(0, 4);
+    return `<div class="hot" aria-label="Topics"><strong>Browse topics</strong>${TOPICS.map(t => `<button data-action="topic" data-topic="${esc(t)}"># ${esc(t)}</button>`).join('')}</div>
+      <h2 class="section-title">Recently asked</h2>${db.questions.slice(0, 5).map(q => questionCard(q)).join('') || '<p class="empty">No questions yet.</p>'}
+      ${unanswered.length ? `<h2 class="section-title">Waiting for an answer</h2>${unanswered.map(q => questionCard(q)).join('')}` : ''}`;
+  }
+  const questions = rank(db.questions.filter(q => topic === 'All' || q.topic === topic), questionScore, query);
+  const resources = rank(db.resources.filter(r => r.status === 'approved'), (r, w, p) => scoreText([[r.title.toLowerCase(), 5], [r.category.toLowerCase(), 3], [r.description.toLowerCase(), 2], [domain(r.url), 1]], w, p), query);
+  const swaps = rank(db.swaps, (s, w, p) => scoreText([[s.title.toLowerCase(), 5], [s.type.toLowerCase(), 3], [(s.offer + ' ' + s.want).toLowerCase(), 2], [s.place.toLowerCase(), 2]], w, p), query);
+  const members = rank([...db.profiles.values()], (m, w, p) => scoreText([[m.name.toLowerCase(), 5], [(m.offers || '').toLowerCase(), 3], [(m.bio || '').toLowerCase() + ' ' + (m.stage || '').toLowerCase(), 1]], w, p), query);
+  let qs = questions.items;
+  if (sort === 'newest') qs = [...qs].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  if (sort === 'unanswered') qs = qs.filter(q => !answersOf(q.id).length);
+  const link = changes => { const next = new URLSearchParams(params); for (const [k, v] of Object.entries(changes)) next.set(k, v); return '#search?' + next.toString(); };
+  const tabs = [['questions','Questions',questions], ['resources','Resources',resources], ['swaps','Swaps',swaps], ['members','Members',members]];
+  const current = tabs.find(t => t[0] === section) || tabs[0];
+  let body;
+  if (current[0] === 'questions') {
+    body = `<div class="tabs" aria-label="Filter by topic">${['All', ...TOPICS].map(t => `<a class="chip" href="${link({topic:t})}" aria-pressed="${t === topic}">${esc(t)}</a>`).join('')}</div>
+      <div class="sortbar"><span>Sort</span>${[['best','Best match'],['newest','Newest'],['unanswered','Unanswered']].map(([k,l]) => `<a class="chip" href="${link({sort:k})}" aria-pressed="${k === sort}">${l}</a>`).join('')}</div>
+      ${qs.map(q => questionCard(q, query)).join('') || '<p class="empty">No questions match. </p>'}
+      <div class="card ask-cta"><strong>Didn’t find what you need?</strong><p class="summary">Ask the community, and other women in UK tech can share their experience.</p><button class="primary" data-action="ask" data-title="${esc(query)}">Ask “${esc(query.slice(0, 60))}”</button></div>`;
+  } else if (current[0] === 'resources') {
+    body = resources.items.length ? `<div class="res-grid">${resources.items.map(r => resourceCard(r, query, true)).join('')}</div>` : '<p class="empty">No resources match.</p>';
+  } else if (current[0] === 'swaps') {
+    body = swaps.items.length ? `<div class="exchange-feed">${swaps.items.map(swapTile).join('')}</div>` : '<p class="empty">No swaps match.</p>';
+  } else {
+    body = members.items.length ? members.items.map(memberRow).join('') : '<p class="empty">No members match.</p>';
+  }
+  return `<p class="result-line">${current[2].loose ? 'No exact matches, so here are related results for' : 'Results for'} “${esc(query)}”</p>
+    <nav class="seg" aria-label="Search sections">${tabs.map(([key,label,res]) => `<a href="${link({in:key})}" aria-current="${key === current[0] ? 'page' : 'false'}">${label} <span>${res.items.length}</span></a>`).join('')}</nav>${body}`;
+}
+function memberRow(m) {
+  return `<article class="card member-row">${avatar(m.id)}<div><a class="member-link" href="#member-${esc(m.id)}">${esc(m.name)}</a><p class="meta">${esc(m.stage || 'Member')}</p>${m.offers ? `<p class="summary clamp">Can help with: ${esc(m.offers)}</p>` : ''}</div></article>`;
+}
+
+// ───────────────────────── Questions ─────────────────────────
+function commentsBlock(type, id) {
+  const list = commentsOn(type, id);
+  return `<div class="actions"><button class="ghost" data-action="comment" data-type="${type}" data-id="${esc(id)}">Comment${list.length ? ' · ' + list.length : ''}</button></div>
+    ${list.length ? `<ul class="comment-list" aria-label="Comments">${list.map(c => `<li>${who(c.author_id)} <small>${ago(c.created_at)}</small><p class="summary">${esc(c.body)}</p>${me && (c.author_id === me.id || isAdmin()) ? `<button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''}</li>`).join('')}</ul>` : ''}`;
+}
+function questionPage(id) {
+  const q = db.questions.find(item => item.id === id);
+  if (!q) return '<section class="detail"><a class="back" href="#home">← Back to Q&A</a><p class="empty">This question was not found. It may have been deleted.</p></section>';
+  const answers = answersOf(q.id);
+  if (ui.answerSort === 'popular') answers.sort((a, b) => votesOf(b.id).length - votesOf(a.id).length);
+  else answers.reverse();
+  const own = me?.id === q.author_id;
+  const related = rank(db.questions.filter(x => x.id !== q.id), questionScore, q.title).items.slice(0, 4);
+  const sameTopic = related.length ? related : db.questions.filter(x => x.id !== q.id && x.topic === q.topic).slice(0, 4);
+  return `<section class="detail"><a class="back" href="#questions">← All questions</a>
+  <article class="card"><span class="tag">${esc(q.topic)}</span><h1>${esc(q.title)}</h1><p class="summary">${esc(q.body)}</p>
+    <p class="meta">${who(q.author_id)} · ${ago(q.created_at)} · ${q.settled ? 'Top answer bonus awarded' : 'Top answer bonus is awarded 7 days after posting'}</p>
+    <div class="actions"><button class="primary" data-action="answer" data-id="${esc(q.id)}">Write an answer</button>
+    ${own ? `<button data-action="edit-question" data-id="${esc(q.id)}">Edit</button>` : ''}
+    ${own || isAdmin() ? `<button class="danger" data-action="delete" data-table="questions" data-id="${esc(q.id)}" data-after="#questions">Delete</button>` : ''}
+    <button data-action="copy-link">Copy link</button></div>
+    ${commentsBlock('question', q.id)}</article>
+  <div class="topline"><h2>${answers.length} ${answers.length === 1 ? 'answer' : 'answers'}</h2><div class="tabs" aria-label="Sort answers"><button data-action="answer-sort" data-topic="popular" aria-pressed="${ui.answerSort === 'popular'}">Most helpful</button><button data-action="answer-sort" data-topic="latest" aria-pressed="${ui.answerSort === 'latest'}">Newest</button></div></div>
+  ${answers.map(a => {
+    const votes = votesOf(a.id);
+    const voted = Boolean(me && votes.some(v => v.voter_id === me.id));
+    const mine = me?.id === a.author_id;
+    return `<article class="card"><div class="answer-head">${avatar(a.author_id)}<div><strong>${who(a.author_id)}</strong> ${a.is_top ? '<small class="winner">★ Top answer</small>' : ''}<div class="meta">${esc(profile(a.author_id)?.stage || '')} · ${ago(a.created_at)}</div></div></div>
+      <p class="summary">${esc(a.body)}</p>
+      <div class="actions"><button class="${voted ? 'voted' : ''}" aria-pressed="${voted}" data-action="vote" data-id="${esc(a.id)}" ${mine ? 'disabled title="You can’t vote on your own answer"' : ''}>↑ Helpful · ${votes.length}</button>
+      ${mine ? `<button data-action="edit-answer" data-id="${esc(a.id)}">Edit</button>` : ''}
+      ${mine || isAdmin() ? `<button class="danger" data-action="delete" data-table="answers" data-id="${esc(a.id)}">Delete</button>` : ''}
+      ${!mine && me ? `<a class="btn ghost" href="#messages-${esc(a.author_id)}">Message</a>` : ''}</div>
+      ${commentsBlock('answer', a.id)}</article>`;
+  }).join('') || '<p class="empty">No answers yet. Share your experience.</p>'}
+  ${sameTopic.length ? `<section class="related"><h2>Related questions</h2>${sameTopic.map(x => `<a class="related-link" href="#q-${esc(x.id)}">${esc(x.title)}<small>${answersOf(x.id).length} answers</small></a>`).join('')}</section>` : ''}
+  </section>`;
+}
+
+// ───────────────────────── Resources ─────────────────────────
+function resourceCard(r, query = '', compact = false) {
+  const url = safeUrl(r.url);
+  const votes = resourceVotes(r.id);
+  const voted = Boolean(me && db.resourceVotes.some(v => v.resource_id === r.id && v.member_id === me.id));
+  const canEdit = !compact && me && (r.author_id === me.id || isAdmin());
+  return `<article class="card res-card${r.is_pick ? ' pick' : ''}">
+    <div class="q-tags"><span class="tag">${esc(r.category)}</span><span class="tag soft">${esc(r.cost)}</span>${r.is_pick ? '<span class="tag gold">★ HerTech pick</span>' : ''}${r.status !== 'approved' ? `<span class="tag warn">${r.status === 'pending' ? 'Waiting for review' : 'Not approved'}</span>` : ''}</div>
+    <h3>${url ? `<a class="link" href="${esc(url)}" target="_blank" rel="noopener noreferrer ugc">${query ? mark(r.title, query) : esc(r.title)} ↗</a>` : esc(r.title)}</h3>
+    <p class="meta">${esc(domain(url))}</p>
+    <p class="summary">${query ? snippet(r.description, query, 220) : esc(r.description)}</p>
+    <div class="meta">Shared by ${who(r.author_id)} · ${ago(r.created_at)}</div>
+    <div class="actions">${r.status === 'approved' ? `<button class="${voted ? 'voted' : ''}" aria-pressed="${voted}" data-action="res-vote" data-id="${esc(r.id)}">↑ Useful · ${votes}</button>` : ''}
+    ${!compact && isAdmin() && r.status === 'approved' ? `<button data-action="res-review" data-id="${esc(r.id)}" data-status="approved" data-pick="${!r.is_pick}">${r.is_pick ? 'Remove from picks' : 'Make a HerTech pick'}</button>` : ''}
+    ${canEdit ? `<button class="danger" data-action="delete" data-table="resources" data-id="${esc(r.id)}">Delete</button>` : ''}</div></article>`;
+}
+function resourcesPage() {
+  const text = ui.resText;
+  return `<section class="home"><div class="page-head"><div class="topline"><h1>Resources</h1><button class="primary" data-action="share-resource">Share a resource</button></div>
+    <p class="section-note">Learning, job-hunting and career resources hand-picked by HerTech and shared by members. Every member submission is reviewed by the HerTech team before it appears, so only the good stuff gets through.</p>
+    ${isAdmin() ? `<a class="btn" href="#resources-review">Review queue · ${db.resources.filter(r => r.status === 'pending').length}</a>` : ''}</div>
+    <div class="tabs" aria-label="Filter by category">${['All', ...RES_CATS].map(c => `<button data-action="res-cat" data-topic="${esc(c)}" aria-pressed="${c === ui.resCat}">${esc(c)}</button>`).join('')}</div>
+    <div class="filter-row"><label class="visually-hidden" for="resText">Filter resources</label><input id="resText" data-live="resources" type="search" placeholder="Filter resources" value="${esc(text)}">
+      <select id="resCost" data-live="resources" aria-label="Cost">${['All', ...COSTS].map(c => `<option value="${esc(c)}" ${c === ui.resCost ? 'selected' : ''}>${c === 'All' ? 'Any cost' : esc(c)}</option>`).join('')}</select></div>
+    <div id="liveList">${resourceList()}</div></section>`;
+}
+function resourceList() {
+  const words = terms(ui.resText);
+  const visible = db.resources.filter(r => (ui.resCat === 'All' || r.category === ui.resCat) && (ui.resCost === 'All' || r.cost === ui.resCost)
+    && (!words.length || words.every(w => (r.title + ' ' + r.description + ' ' + r.url).toLowerCase().includes(w))));
+  const approved = visible.filter(r => r.status === 'approved');
+  const picks = approved.filter(r => r.is_pick);
+  const shared = approved.filter(r => !r.is_pick).sort((a, b) => resourceVotes(b.id) - resourceVotes(a.id));
+  const mine = me ? visible.filter(r => r.status !== 'approved' && r.author_id === me.id) : [];
+  return `${mine.length ? `<h2 class="section-title">Your submissions</h2><div class="res-grid">${mine.map(r => resourceCard(r, ui.resText)).join('')}</div>` : ''}
+    <h2 class="section-title">★ HerTech picks</h2>${picks.length ? `<div class="res-grid">${picks.map(r => resourceCard(r, ui.resText)).join('')}</div>` : '<p class="empty">No picks in this category yet.</p>'}
+    <h2 class="section-title">Shared by members</h2>${shared.length ? `<div class="res-grid">${shared.map(r => resourceCard(r, ui.resText)).join('')}</div>` : '<p class="empty">Nothing shared here yet. Know a great course, guide or job board? Share it.</p>'}`;
+}
+function reviewPage() {
+  if (!isAdmin()) return '<section class="detail"><a class="back" href="#resources">← Resources</a><p class="empty">Only the HerTech team can review submissions.</p></section>';
+  const pending = db.resources.filter(r => r.status === 'pending');
+  const rejected = db.resources.filter(r => r.status === 'rejected');
+  return `<section class="home"><a class="back" href="#resources">← Resources</a><h1>Review shared resources</h1>
+    <p class="section-note">Check that each link works, is relevant to women in UK tech and isn’t spam or a paid ad before approving it.</p>
+    ${pending.map(r => `<article class="card"><div class="q-tags"><span class="tag">${esc(r.category)}</span><span class="tag soft">${esc(r.cost)}</span></div><h3>${esc(r.title)}</h3>
+      <p><a class="member-link" href="${esc(safeUrl(r.url))}" target="_blank" rel="noopener noreferrer ugc">${esc(r.url)} ↗</a></p><p class="summary">${esc(r.description)}</p><p class="meta">Shared by ${who(r.author_id)} · ${ago(r.created_at)}</p>
+      <div class="actions"><button class="primary" data-action="res-review" data-id="${esc(r.id)}" data-status="approved" data-pick="false">Approve</button><button data-action="res-review" data-id="${esc(r.id)}" data-status="approved" data-pick="true">Approve as HerTech pick</button><button class="danger" data-action="res-review" data-id="${esc(r.id)}" data-status="rejected" data-pick="false">Reject</button></div></article>`).join('') || '<p class="empty">Nothing waiting for review. 🎉</p>'}
+    ${rejected.length ? `<h2 class="section-title">Rejected</h2>${rejected.map(r => `<article class="card"><h3>${esc(r.title)}</h3><p class="meta">${esc(r.url)}</p><div class="actions"><button data-action="res-review" data-id="${esc(r.id)}" data-status="approved" data-pick="false">Approve after all</button><button class="danger" data-action="delete" data-table="resources" data-id="${esc(r.id)}">Delete</button></div></article>`).join('')}` : ''}</section>`;
+}
+
+// ───────────────────────── Swaps ─────────────────────────
+const SWAP_ICON = {'Skill Swap':'💡', 'Item Swap':'🎁', 'Home Swap':'🏠'};
+function swapTile(s) {
+  return `<a class="exchange-tile${s.status === 'closed' ? ' closed' : ''}" href="#swap-${esc(s.id)}">
+    <div class="exchange-cover">${typeof s.cover === 'string' && /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(s.cover) ? `<img loading="lazy" src="${s.cover}" alt="">` : `<span class="cover-icon" aria-hidden="true">${SWAP_ICON[s.type] || '✦'}</span>`}${s.status === 'closed' ? '<span class="closed-flag">Swapped</span>' : ''}</div>
+    <div class="exchange-caption"><span class="tag">${esc(s.type)}</span><h3>${esc(s.title)}</h3><p>${esc(s.place)}${s.type === 'Home Swap' && s.from_date ? ' · ' + esc(s.from_date) + ' → ' + esc(s.to_date) : ''}</p>${s.want ? `<p class="want">Wants: ${esc(s.want)}</p>` : ''}</div></a>`;
+}
+function swapsPage() {
+  return `<section class="home"><div class="exchange-head"><div class="topline"><h1>Community Swaps</h1><button class="primary" data-action="new-swap">Post a listing</button></div>
+    <p>Swap skills (CV review for coding help), lend or swap items, or arrange a home swap for an event in another city. Message the poster to agree the details.</p></div>
+    <div class="tabs" aria-label="Filter by swap type">${['All', ...SWAP_TYPES].map(type => `<button data-action="swap-type" data-topic="${esc(type)}" aria-pressed="${type === ui.swapType}">${type === 'All' ? 'All' : SWAP_ICON[type] + ' ' + esc(type)}</button>`).join('')}<a class="chip" href="#stay-dates">🏠 Find home swaps by date ↗</a></div>
+    <div class="filter-row"><label class="visually-hidden" for="swapText">Filter swaps</label><input id="swapText" data-live="swaps" type="search" placeholder="Filter by what’s offered, wanted or the city" value="${esc(ui.swapText)}">
+      <label class="checkbox inline"><input id="swapOpen" data-live="swaps" type="checkbox" ${ui.swapOpen ? 'checked' : ''}>Open listings only</label></div>
+    <div id="liveList">${swapList()}</div></section>`;
+}
+function swapList() {
+  const words = terms(ui.swapText);
+  const list = db.swaps.filter(s => (ui.swapType === 'All' || s.type === ui.swapType) && (!ui.swapOpen || s.status === 'open')
+    && (!words.length || words.every(w => (s.title + ' ' + s.offer + ' ' + s.want + ' ' + s.place).toLowerCase().includes(w))));
+  return list.length ? `<div class="exchange-feed">${list.map(swapTile).join('')}</div>` : '<p class="empty">No listings match yet. Post the first one!</p>';
+}
+function staysPage() {
+  const list = db.swaps.filter(s => s.type === 'Home Swap' && s.status === 'open' && s.to_date >= ukDate()
+    && (!ui.stay.from || s.from_date <= ui.stay.from) && (!ui.stay.to || s.to_date >= ui.stay.to));
+  return `<section class="home"><a class="back" href="#exchange">← Back to Swaps</a><div class="exchange-head"><div class="topline"><h1>Find home swaps by date</h1><button class="primary" data-action="new-swap" data-type="Home Swap">Offer your home</button></div><p>Choose dates to find homes available for the whole period.</p></div>
+    <form id="stayFilter" class="card exchange-date-filter">${dateFields('stay', ui.stay.from, ui.stay.to)}<div class="actions"><button class="primary" type="submit">Find home swaps</button><button type="button" data-action="clear-stay">Clear dates</button></div></form>
+    ${list.length ? `<div class="exchange-feed">${list.map(swapTile).join('')}</div>` : '<p class="empty">No home swaps match these dates.</p>'}</section>`;
+}
+function dateFields(prefix, from = '', to = '') {
+  return `<div class="exchange-dates"><label for="${prefix}-from">Start date<input id="${prefix}-from" name="from" type="date" min="${ukDate()}" value="${esc(from)}"></label>
+    <label for="${prefix}-to">End date<input id="${prefix}-to" name="to" type="date" min="${ukDate()}" value="${esc(to)}"></label></div>`;
+}
+function swapPage(id) {
+  const s = db.swaps.find(item => item.id === id);
+  if (!s) return '<section class="detail"><a class="back" href="#exchange">← Back to Swaps</a><p class="empty">Listing not found. It may have been removed.</p></section>';
+  const own = me?.id === s.author_id;
+  const author = profile(s.author_id);
+  const more = db.swaps.filter(x => x.author_id === s.author_id && x.id !== s.id && x.status === 'open').slice(0, 3);
+  const cityMap = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(s.place + ', UK');
+  return `<section class="detail"><a class="back" href="#exchange">← Back to Swaps</a>
+    <article class="card exchange-body"><div class="q-tags"><span class="tag">${SWAP_ICON[s.type]} ${esc(s.type)}</span>${s.status === 'closed' ? '<span class="tag soft">Swapped · closed</span>' : '<span class="tag ok">Open</span>'}</div>
+    <h1>${esc(s.title)}</h1>
+    <p class="meta">📍 ${esc(s.place)}${s.type === 'Home Swap' ? ' · ' + esc(s.from_date) + ' to ' + esc(s.to_date) : ''} · Posted ${ago(s.created_at)} · <a class="map-link" href="${esc(cityMap)}" target="_blank" rel="noopener noreferrer">View area map ↗</a></p>
+    <div id="swapGallery">${swapImages.has(s.id) ? galleryMarkup(s) : ''}</div>
+    <div class="swap-split"><div><h3>What I can offer</h3><p class="summary">${esc(s.offer)}</p></div><div><h3>What I’d like in return</h3><p class="summary">${esc(s.want || 'Open to suggestions.')}</p></div></div>
+    <div class="author-card">${avatar(s.author_id)}<div>${who(s.author_id)}<p class="meta">${esc(author?.stage || 'Member')}${author?.offers ? ' · Can help with ' + esc(author.offers) : ''}</p></div></div>
+    <div class="actions">${own ? `<button data-action="swap-status" data-id="${esc(s.id)}" data-status="${s.status === 'open' ? 'closed' : 'open'}">${s.status === 'open' ? 'Mark as swapped' : 'Reopen listing'}</button><button class="danger" data-action="delete" data-table="swaps" data-id="${esc(s.id)}" data-after="#exchange">Delete listing</button>`
+      : s.status === 'open' ? `<button class="primary" data-action="swap-message" data-id="${esc(s.id)}">Message ${esc(author?.name || 'her')} about this swap</button>` : ''}</div></article>
+    <aside class="card safety"><h3>Swap safely</h3><ul><li>Chat on HerTech first, and video call before a home swap.</li><li>Meet in a public place to hand over items.</li><li>Never send money, bank details or ID documents.</li><li>If someone makes you uncomfortable, block them from your messages.</li></ul></aside>
+    ${more.length ? `<h2 class="section-title">More from ${esc(author?.name || 'this member')}</h2><div class="exchange-feed">${more.map(swapTile).join('')}</div>` : ''}</section>`;
+}
+function galleryMarkup(s) {
+  const images = (swapImages.get(s.id) || []).filter(src => typeof src === 'string' && /^data:image\/jpeg;base64,[a-z0-9+/]+=*$/i.test(src));
+  return images.length ? `<div class="exchange-gallery">${images.map((src, i) => `<button data-action="swap-image" aria-label="Enlarge image ${i + 1}"><img loading="lazy" src="${src}" alt="${esc(s.title)}, image ${i + 1}"></button>`).join('')}</div>` : '';
+}
+async function loadSwapImages(id) {
+  const s = db.swaps.find(item => item.id === id);
+  if (!s || swapImages.has(id) || !s.cover) return;
+  const {data} = await sb.from('swaps').select('images').eq('id', id).maybeSingle();
+  swapImages.set(id, Array.isArray(data?.images) ? data.images : []);
+  const box = document.querySelector('#swapGallery');
+  if (box && route().path === 'swap-' + id) box.innerHTML = galleryMarkup(s);
+}
+
+// ───────────────────────── Messages ─────────────────────────
+function conversations() {
+  const map = new Map();
+  for (const m of db.messages) {
+    const other = m.sender_id === me.id ? m.recipient_id : m.sender_id;
+    const c = map.get(other) || {other, last:null, unread:0};
+    c.last = m;
+    if (m.recipient_id === me.id && !m.read_at) c.unread++;
+    map.set(other, c);
+  }
+  return [...map.values()].sort((a, b) => new Date(b.last.created_at) - new Date(a.last.created_at));
+}
+function inboxPage() {
+  if (!me) return loginPrompt('Log in to see your messages.');
+  const list = conversations();
+  return `<section class="detail"><h1>Messages</h1><p class="section-note">Private conversations between you and other members.</p>
+    ${list.map(c => `<a class="card convo${c.unread ? ' unread' : ''}" href="#messages-${esc(c.other)}">${avatar(c.other)}<div class="convo-text"><strong>${esc(nameOf(c.other))}</strong><span class="summary clamp1">${c.last.sender_id === me.id ? 'You: ' : ''}${esc(c.last.body)}</span></div><div class="convo-side"><small>${ago(c.last.created_at)}</small>${c.unread ? `<span class="badge">${c.unread}</span>` : ''}</div></a>`).join('')
+      || '<p class="empty">No messages yet. Open a member’s profile or a swap listing and press “Message” to start a conversation.</p>'}</section>`;
+}
+function threadPage(otherId) {
+  if (!me) return loginPrompt('Log in to send messages.');
+  const other = profile(otherId);
+  if (!other || otherId === me.id) return '<section class="detail"><a class="back" href="#messages">← Messages</a><p class="empty">This member can’t be found.</p></section>';
+  const isBlocked = blocked(otherId);
+  return `<section class="detail thread"><a class="back" href="#messages">← Messages</a>
+    <div class="thread-head">${avatar(otherId)}<div><a class="member-link" href="#member-${esc(otherId)}">${esc(other.name)}</a><p class="meta">${esc(other.stage || 'Member')}</p></div>
+    <button class="ghost small" data-action="block" data-id="${esc(otherId)}">${isBlocked ? 'Unblock' : 'Block'}</button></div>
+    <div id="threadBody" class="thread-body" aria-live="polite"></div>
+    ${isBlocked ? '<p class="empty">You’ve blocked this member. Unblock them to send messages.</p>' : `<form id="composer" class="composer"><label class="visually-hidden" for="composerText">Message</label><textarea id="composerText" name="body" rows="2" maxlength="2000" required placeholder="Write a message… (Ctrl + Enter to send)">${esc(ui.composerDraft || '')}</textarea><button class="primary" type="submit">Send</button></form>
+    <p class="form-note">Be kind. Never share passwords, bank details or ID documents in messages.</p>`}</section>`;
+}
+function renderThreadBody() {
+  const box = document.querySelector('#threadBody');
+  const otherId = route().path.slice(9);
+  if (!box || !me) return;
+  const list = db.messages.filter(m => (m.sender_id === me.id && m.recipient_id === otherId) || (m.sender_id === otherId && m.recipient_id === me.id));
+  let lastDay = '';
+  box.innerHTML = list.map(m => {
+    const day = new Date(m.created_at).toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
+    const sep = day !== lastDay ? `<p class="day">${esc(day)}</p>` : '';
+    lastDay = day;
+    return `${sep}<div class="bubble ${m.sender_id === me.id ? 'mine' : 'theirs'}"><p>${esc(m.body)}</p><small>${new Date(m.created_at).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'})}${m.sender_id === me.id && m.read_at ? ' · Seen' : ''}</small></div>`;
+  }).join('') || `<p class="empty">Say hello to ${esc(nameOf(otherId))} 👋</p>`;
+  box.scrollTop = box.scrollHeight;
+}
+function afterThreadRender(otherId) {
+  renderThreadBody();
+  markRead(otherId);
+  const text = document.querySelector('#composerText');
+  if (text) { text.focus(); text.setSelectionRange(text.value.length, text.value.length); }
+  ui.composerDraft = '';
+}
+function loginPrompt(text) {
+  return `<section class="detail"><div class="card"><h1>${esc(text)}</h1><div class="actions"><button class="primary" data-action="login">Log in</button><button data-action="join">Sign up</button></div></div></section>`;
+}
+
+// ───────────────────────── Profiles ─────────────────────────
+function profilePage(id) {
+  const m = profile(id);
+  if (!m) return '<section class="detail"><a class="back" href="#home">← Home</a><p class="empty">Member not found.</p></section>';
+  const own = me?.id === id;
+  const followers = db.follows.filter(f => f.followee_id === id).map(f => f.follower_id).filter(profile);
+  const following = db.follows.filter(f => f.follower_id === id).map(f => f.followee_id).filter(profile);
+  const followed = Boolean(me && followers.includes(me.id));
+  const link = safeUrl(m.link);
+  const questions = db.questions.filter(q => q.author_id === id);
+  const answers = db.answers.filter(a => a.author_id === id);
+  const swaps = db.swaps.filter(s => s.author_id === id);
+  const resources = db.resources.filter(r => r.author_id === id && r.status === 'approved');
+  const people = list => list.length ? '<ul>' + list.map(p => `<li>${who(p)}</li>`).join('') + '</ul>' : '<p class="summary">No members yet.</p>';
+  const section = (title, items, empty) => `<section class="card"><h2 class="activity-heading">${title} · ${items.length}</h2>${items.length ? `<ul class="activity-list">${items.join('')}</ul>` : `<p class="summary">${empty}</p>`}</section>`;
+  return `<section class="detail"><article class="card profile-card">${avatar(id, 'lg')}<div class="profile-main"><h1>${esc(m.name)}</h1><p class="meta">${esc(m.stage || 'Member')}${m.is_admin ? ' · HerTech team' : ''} · Joined ${ago(m.created_at)}</p>
+    ${m.bio ? `<p class="summary">${esc(m.bio)}</p>` : own ? '<p class="summary">Add a short bio so others know who you are.</p>' : ''}
+    ${m.offers ? `<p><strong>Can help with:</strong> ${esc(m.offers)}</p>` : ''}${m.wants ? `<p><strong>Looking for:</strong> ${esc(m.wants)}</p>` : ''}
+    ${link ? `<p><a class="member-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer ugc">${esc(domain(link))} ↗</a></p>` : ''}
+    <div class="actions">${own ? `<button class="primary" data-action="edit-profile">Edit profile</button><button data-action="email-change">Change email</button><a class="btn" href="#messages">My messages</a>`
+      : `<a class="btn primary" href="#messages-${esc(id)}">Message</a><button data-action="follow" data-id="${esc(id)}" aria-pressed="${followed}">${followed ? 'Following' : 'Follow'}</button>`}</div></div></article>
+    ${own ? `<p class="form-note">Logged in as ${esc(me.email)}</p>` : ''}
+    <div class="profile-lists"><section class="card"><h2>Followers · ${followers.length}</h2>${people(followers)}</section><section class="card"><h2>Following · ${following.length}</h2>${people(following)}</section></div>
+    ${section('Questions', questions.map(q => `<li><a class="member-link" href="#q-${esc(q.id)}">${esc(q.title)}</a><p class="summary">${esc(q.topic)} · ${answersOf(q.id).length} answers</p></li>`), own ? 'You haven’t asked anything yet.' : 'No questions yet.')}
+    ${section('Answers', answers.map(a => { const q = db.questions.find(x => x.id === a.question_id); return q ? `<li><a class="member-link" href="#q-${esc(q.id)}">${esc(q.title)}</a><p class="summary clamp">${esc(a.body)}</p></li>` : ''; }), own ? 'You haven’t answered anything yet.' : 'No answers yet.')}
+    ${section('Swaps', swaps.map(s => `<li><a class="member-link" href="#swap-${esc(s.id)}">${esc(s.title)}</a><p class="summary">${esc(s.type)} · ${s.status === 'open' ? 'Open' : 'Swapped'}</p></li>`), 'No swap listings yet.')}
+    ${section('Resources shared', resources.map(r => `<li><a class="member-link" href="${esc(safeUrl(r.url))}" target="_blank" rel="noopener noreferrer ugc">${esc(r.title)} ↗</a><p class="summary">${esc(r.category)}</p></li>`), 'No resources shared yet.')}
+    ${own ? section('Answers you found helpful', db.votes.filter(v => v.voter_id === id).map(v => { const a = db.answers.find(x => x.id === v.answer_id); const q = a && db.questions.find(x => x.id === a.question_id); return q ? `<li><a class="member-link" href="#q-${esc(q.id)}">${esc(q.title)}</a><p class="summary clamp">${esc(a.body)}</p></li>` : ''; }), 'You haven’t marked any answers as helpful yet.') : ''}
+  </section>`;
+}
+
+// ───────────────────────── Coffee Beans ─────────────────────────
+function walletPage() {
+  const bal = me ? balance() : null;
+  const ticket = db.ticket;
+  return `<section class="detail"><h1>Coffee Beans</h1><div class="card points"><div class="balance bean-balance"><img class="coffee-bean" src="./coffee-bean.png" alt="">${me ? bal : '—'} ${beanUnit(me ? bal : 0)}</div>
+    <p>Earn 1 Coffee Bean when two members mark your answer as helpful. Seven days after a question is posted, the top answer earns 2 extra Coffee Beans if it has at least three votes. Tied answers each earn the bonus.</p><p class="form-note">New members get 2 welcome Coffee Beans.${me ? '' : ' Log in to see your balance.'}</p></div>
+    <section class="card ticket"><span class="tag">Online event</span><h3>UK Tech CV Workshop</h3><p>Online · 60 minutes · ${PRICE} ${beanUnit(PRICE)} per ticket · ${ticket.places_left} places left</p>
+    <button class="primary" data-action="redeem" ${ticket.mine || ticket.places_left <= 0 ? 'disabled' : ''}>${ticket.mine ? 'Redeemed · Booking confirmed' : ticket.places_left > 0 ? 'Redeem ticket' : 'Fully booked'}</button></section>
+    <section class="card"><h3>Coffee Bean history</h3>${me ? (db.ledger.map(entry => `<p>${esc(entry.reason)} · <strong>${entry.delta > 0 ? '+' : ''}${entry.delta} ${beanUnit(entry.delta)}</strong> <small>${ago(entry.created_at)}</small></p>`).join('') || '<p class="summary">No Coffee Bean transactions yet.</p>') : '<p class="summary">Log in to see your history.</p>'}</section></section>`;
+}
+
+// ───────────────────────── Events ─────────────────────────
 function visibleEvents() {
-  const today = new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit'}).formatToParts(new Date());
-  const dateKey = ['year','month','day'].map(type => today.find(part => part.type === type).value).join('-');
-  return ukEvents.filter(event => event.ends >= dateKey && (city === 'All' || event.city === city));
+  const today = ukDate();
+  return ukEvents.filter(event => event.ends >= today && (ui.city === 'All' || event.city === ui.city));
 }
 function eventsPage() {
   const events = visibleEvents();
-  const box = areas[city];
-  const centre = [(box[1]+box[3])/2, (box[0]+box[2])/2];
-  const mapLink = 'https://www.openstreetmap.org/#map=' + (city === 'All' ? 5 : 12) + '/' + centre.join('/');
-  return `<section class="home"><h1>Upcoming UK tech events</h1>
-    <div class="tabs" aria-label="Filter by city">${Object.keys(areas).map(area => `<button data-action="city" data-topic="${area}" aria-pressed="${area === city}">${area}</button>`).join('')}</div>
+  const box = areas[ui.city];
+  const centre = [(box[1] + box[3]) / 2, (box[0] + box[2]) / 2];
+  const mapLink = 'https://www.openstreetmap.org/#map=' + (ui.city === 'All' ? 5 : 12) + '/' + centre.join('/');
+  return `<section class="home"><h1>Upcoming UK tech events</h1><p class="section-note">Going to one of these? Start a group so you don’t have to walk in alone.</p>
+    <div class="tabs" aria-label="Filter by city">${Object.keys(areas).map(area => `<button data-action="city" data-topic="${area}" aria-pressed="${area === ui.city}">${area}</button>`).join('')}</div>
     <div id="eventMap" class="map-frame" role="region" aria-label="UK tech events map"></div>
     <a class="map-link" href="${mapLink}" target="_blank" rel="noopener noreferrer">Open in OpenStreetMap ↗</a>
-    <div class="event-list">${events.map((event, index) => `<article class="card"><div class="meta">${event.date} · ${event.city}${event.venue ? ' · ' + event.venue : ' · Venue to be confirmed'}</div><h2>${index + 1}. ${event.name}</h2><div class="actions"><button data-action="pin" data-id="${index}">Show on map</button><a href="${event.url}" target="_blank" rel="noopener noreferrer">Organiser details ↗</a></div>${eventCommunityMarkup(event.id)}</article>`).join('') || '<p class="empty">No upcoming events are listed here. See the organiser’s calendar for more.</p>'}</div>
-    <a class="map-link" href="https://www.techuk.org/events" target="_blank" rel="noopener noreferrer">See more events on techUK ↗</a>
-    </section>`;
+    <div class="event-list">${events.map((event, index) => `<article class="card"><div class="meta">${event.date} · ${event.city}${event.venue ? ' · ' + event.venue : ' · Venue to be confirmed'}</div><h2>${index + 1}. ${event.name}</h2><div class="actions"><button data-action="pin" data-id="${index}">Show on map</button><a href="${event.url}" target="_blank" rel="noopener noreferrer">Organiser details ↗</a></div>${db.failed ? '' : eventCommunity(event.id)}</article>`).join('') || '<p class="empty">No upcoming events are listed here. See the organiser’s calendar for more.</p>'}</div>
+    <a class="map-link" href="https://www.techuk.org/events" target="_blank" rel="noopener noreferrer">See more events on techUK ↗</a></section>`;
 }
-function eventCommunityData(id) {
-  return state.eventCommunity[id] || {comments:[],teams:[]};
-}
-function eventCommunityMarkup(id) {
-  const {comments,teams} = eventCommunityData(id);
-  const member = current();
-  return `<details class="event-community" data-event-community="${id}"${expandedEvents.has(id) ? ' open' : ''}>
-    <summary>Groups & Discussion · ${teams.length} groups · ${comments.length} comments</summary>
-    <div class="actions"><button class="primary" data-action="event-team" data-id="${id}">Start a group</button>
-    <button data-action="event-comment" data-id="${id}">Leave a comment</button></div>
-    ${teams.length ? '<h3>Open groups</h3>' + teams.map(team => {
-      const isHost = team.member === member?.id;
-      const joined = team.members.includes(member?.id);
-      const people = team.members.map(memberById).filter(Boolean).map(person => authorLink({member:person.id,author:person.name}));
-      return `<section class="event-team"><strong>${escape(team.title)}</strong><p class="summary">${escape(team.body)}</p>
-      <div class="meta">Organised by ${authorLink(team)} · ${team.members.length} joined</div>
-      ${people.length ? `<p class="meta">Group members ${people.join(', ')}</p>` : ''}
-      <div class="actions">${isHost ? '' : `<button data-action="event-team-join" data-id="${id}" data-target="${escape(team.id)}">${joined ? 'Leave group' : 'Join group'}</button>`}
-      <button data-action="event-comment" data-id="${id}" data-target="${escape(team.id)}">Message the group</button></div></section>`;
+function eventCommunity(id) {
+  const groups = db.groups.filter(g => g.event_id === id);
+  const comments = commentsOn('event', id);
+  return `<details class="event-community" data-event-community="${id}"${ui.expandedEvents.has(id) ? ' open' : ''}>
+    <summary>Groups & discussion · ${groups.length} groups · ${comments.length} comments</summary>
+    <div class="actions"><button class="primary" data-action="event-group" data-id="${id}">Start a group</button><button data-action="event-comment" data-id="${id}">Leave a comment</button></div>
+    ${groups.length ? '<h3>Open groups</h3>' + groups.map(g => {
+      const members = db.groupMembers.filter(x => x.group_id === g.id).map(x => x.member_id);
+      const host = me?.id === g.author_id, joined = Boolean(me && members.includes(me.id));
+      return `<section class="event-team"><strong>${esc(g.title)}</strong><p class="summary">${esc(g.body)}</p><div class="meta">Organised by ${who(g.author_id)} · ${members.length} joined</div>
+        ${members.length ? `<p class="meta">Members: ${members.map(who).join(', ')}</p>` : ''}
+        <div class="actions">${host ? `<button class="danger" data-action="delete" data-table="event_groups" data-id="${esc(g.id)}">Delete group</button>` : `<button data-action="group-join" data-id="${id}" data-target="${esc(g.id)}">${joined ? 'Leave group' : 'Join group'}</button>`}
+        <button data-action="event-comment" data-id="${id}" data-target="${esc(g.id)}">Message the group</button></div></section>`;
     }).join('') : ''}
     <h3>Event discussion</h3>
-    ${comments.length ? `<ul class="comment-list">${comments.map(comment => {
-      const parent = comments.find(item => item.id === comment.replyTo);
-      const team = teams.find(item => item.id === comment.teamId);
-      return `<li${parent ? ' class="event-reply"' : ''}>${authorLink(comment)}
-        ${parent ? `<small>Reply to ${authorLink(parent)}</small>` : team ? `<small>Message to “${escape(team.title)}”</small>` : ''}
-        <p class="summary">${escape(comment.body)}</p>
-        <button type="button" class="link member-link" data-action="event-reply" data-id="${id}" data-target="${escape(comment.id)}">Reply</button></li>`;
+    ${comments.length ? `<ul class="comment-list">${comments.map(c => {
+      const parent = comments.find(x => x.id === c.reply_to);
+      const group = groups.find(x => x.id === c.group_id);
+      return `<li${parent ? ' class="event-reply"' : ''}>${who(c.author_id)} <small>${ago(c.created_at)}</small>${parent ? ` <small>replying to ${esc(nameOf(parent.author_id))}</small>` : group ? ` <small>to “${esc(group.title)}”</small>` : ''}
+        <p class="summary">${esc(c.body)}</p><button type="button" class="link-btn" data-action="event-reply" data-id="${id}" data-target="${esc(c.id)}">Reply</button>${me && (c.author_id === me.id || isAdmin()) ? ` <button class="link-btn danger" data-action="delete" data-table="comments" data-id="${esc(c.id)}">Delete</button>` : ''}</li>`;
     }).join('')}</ul>` : '<p class="summary">No comments yet.</p>'}</details>`;
 }
 app.addEventListener('toggle', event => {
   const id = event.target.dataset?.eventCommunity;
   if (!id || !event.target.isConnected) return;
-  if (event.target.open) expandedEvents.add(id);
-  else expandedEvents.delete(id);
+  if (event.target.open) ui.expandedEvents.add(id); else ui.expandedEvents.delete(id);
 }, true);
 function showEventMap() {
   const container = document.querySelector('#eventMap');
-  if (!window.L) {
-    container.textContent = 'The map is temporarily unavailable. Use an event’s map link to see its location.';
-    return;
-  }
+  if (!container) return;
+  if (!window.L) { container.textContent = 'The map is temporarily unavailable. Use an event’s map link to see its location.'; return; }
   const L = window.L;
-  const [west,south,east,north] = areas[city];
+  const [west, south, east, north] = areas[ui.city];
   eventMap = L.map(container, {maxZoom:19});
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(eventMap);
-  pins = visibleEvents().map((event,index) => {
-    const icon = L.divIcon({className:'event-pin' + (event.venue ? '' : ' approx'), html:index+1, iconSize:[28,28], iconAnchor:[14,14]});
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(eventMap);
+  pins = visibleEvents().map((event, index) => {
+    const icon = L.divIcon({className:'event-pin' + (event.venue ? '' : ' approx'), html:index + 1, iconSize:[28,28], iconAnchor:[14,14]});
     return L.marker(event.marker, {icon, title:event.name, alt:event.name}).addTo(eventMap)
-      .bindPopup('<strong>' + escape(event.name) + '</strong><br>' + escape(event.date + ' · ' + (event.venue || 'Central London (approximate location)')) + '<br><a target="_blank" rel="noopener noreferrer" href="' + escape(event.url) + '">Organiser details ↗</a>');
+      .bindPopup('<strong>' + esc(event.name) + '</strong><br>' + esc(event.date + ' · ' + (event.venue || 'Central London (approximate location)')) + '<br><a target="_blank" rel="noopener noreferrer" href="' + esc(event.url) + '">Organiser details ↗</a>');
   });
-  if (pins.length > 1) eventMap.fitBounds(L.featureGroup(pins).getBounds(), {padding:[32,32],maxZoom:16});
+  if (pins.length > 1) eventMap.fitBounds(L.featureGroup(pins).getBounds(), {padding:[32,32], maxZoom:16});
   else if (pins.length === 1) eventMap.setView(pins[0].getLatLng(), 13);
-  else eventMap.fitBounds([[south,west],[north,east]]);
+  else eventMap.fitBounds([[south, west], [north, east]]);
 }
-function profilePage() {
-  const member = memberById(profileId());
-  if (!member) return '<section class="detail"><p>Member not found.</p><button data-action="home">Back to home</button></section>';
-  const followers = state.follows.filter(edge => edge.to === member.id).map(edge => memberById(edge.from)).filter(Boolean);
-  const following = state.follows.filter(edge => edge.from === member.id).map(edge => memberById(edge.to)).filter(Boolean);
-  const own = current()?.id === member.id;
-  const followed = followers.some(item => item.id === current()?.id);
-  const list = items => items.length ? '<ul>' + items.map(item => `<li>${authorLink({member:item.id,author:item.name})}</li>`).join('') + '</ul>' : '<p class="summary">No members yet.</p>';
-  return `<section class="detail"><button class="back" data-action="home">← Back to home</button>
-    <div class="card"><h1>${escape(member.name)}</h1><p class="meta">${escape(member.stage)}${member.id.startsWith('sample-') ? ' · Demo member' : ''}</p>
-    ${own ? `<p>Verified email · ${escape(verifiedUser.email)}</p><button data-action="email-change">Change email</button>` : `<button class="primary" data-action="follow" aria-pressed="${followed}">${followed ? 'Unfollow' : 'Follow'}</button>`}</div>
-    <div class="profile-lists"><section class="card"><h2>Followers · ${followers.length}</h2>${list(followers)}</section>
-    <section class="card"><h2>Following · ${following.length}</h2>${list(following)}</section></div>
-    ${own ? memberActivity(member.id) : ''}</section>`;
+
+// ───────────────────────── About ─────────────────────────
+function aboutPage() {
+  return `<section class="about-page" aria-labelledby="about-title"><article class="about-copy"><h1 id="about-title">Who are we?</h1>
+    <p>We met at DurHack, a hackathon in Durham. While working on a project together, we noticed how few women were in the room. It got us talking: would it be easier to go to your first tech event if someone invited you along and there was a friendly face when you arrived?</p>
+    <p>That’s what we want to make happen. <strong>We want to run events for women in the UK who work in tech or want to get into it.</strong> From hands-on workshops to informal career meetups, you can build something together, hear how others found their first tech job and meet people who’ll practise interviews with you or help you work out your next step.</p>
+    <p>The connections can carry on after the event. You might teach someone to code and borrow a toolkit in return. If you’re heading to an event in another city, you might even arrange a weekend home swap with a friend who lives there.</p>
+    <p lang="en-GB"><strong>Help Her Dream Take Shape.</strong></p></article>
+    <figure class="about-comic"><a href="./hertech-comic-en.png" target="_blank" rel="noopener" aria-label="Open the full-size HerTech comic"><img src="./hertech-comic-en.png" width="724" height="2172" alt="HerTech’s story in six panels: meeting at DurHack, running tech events for women, practising interviews, swapping skills and sharing tools, and arranging home swaps."></a><figcaption>View the full-size comic</figcaption></figure></section>`;
 }
-function memberActivity(memberId) {
-  const questions = [];
-  const comments = [];
-  const likes = [];
-  for (const question of state.questions) {
-    if (question.member === memberId) {
-      questions.push({question, detail:question.topic + ' · ' + question.answers.length + ' answers'});
-    }
-    for (const comment of question.comments || []) {
-      if (comment.member === memberId) comments.push({question, detail:comment.body});
-    }
-    for (const answer of question.answers) {
-      if (answer.votes.includes(memberId)) likes.push({question, detail:answer.body});
-      for (const comment of answer.comments || []) {
-        if (comment.member === memberId) comments.push({question, detail:comment.body});
-      }
-    }
-  }
-  return [
-    {title:'My Questions', items:questions, empty:'You haven’t posted any questions yet.'},
-    {title:'My Comments', items:comments, empty:'You haven’t posted any comments yet.'},
-    {title:'My Likes', items:likes, empty:'You haven’t marked any answers as helpful yet.'}
-  ].map(({title,items,empty}) => `<section class="card"><h2 class="activity-heading">${title} · ${items.length}</h2>
-    ${items.length ? `<ul class="activity-list">${items.map(({question,detail}) => `<li><a class="member-link" href="#q-${escape(question.id)}">${escape(question.title)}</a><p class="summary">${escape(detail)}</p></li>`).join('')}</ul>` : `<p class="summary">${empty}</p>`}</section>`).join('');
+
+// ───────────────────────── Forms ─────────────────────────
+const authForms = ['join', 'login', 'email-change', 'resend'];
+const emailField = '<label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254">';
+const passwordField = isNew => '<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="' + (isNew ? 'new-password" minlength="10' : 'current-password') + '" required maxlength="72">';
+const select = (id, name, options, value) => `<select id="${id}" name="${name}">${options.map(o => `<option ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+function showForm(kind, extra = {}) {
+  if (authForms.includes(kind) && !auth) { tell(location.protocol === 'file:' ? 'Open the online HerTech site to sign up or log in.' : 'We couldn’t connect to the account service. Please refresh and try again.'); return; }
+  activeForm = kind;
+  ui.swapFiles = [];
+  const p = me ? profile(me.id) : null;
+  const ed = ui.editing;
+  const forms = {
+    join: ['Sign up for HerTech', '<p class="form-note">For women in the UK who work in tech, study STEM or plan to enter the tech industry.</p><label for="name">Display name</label><input id="name" name="name" required maxlength="30" placeholder="e.g. Jasmine · London">' + emailField + passwordField(true) + '<p class="form-note">Use at least 10 characters. Check your inbox for a verification email after signing up.</p><label for="stage">Career stage</label>' + select('stage', 'stage', STAGES) + '<label class="checkbox"><input type="checkbox" required>I meet the community membership criteria and will follow the community guidelines</label><button type="button" class="link-btn" data-action="login">Already have an account? Log in</button>', 'Sign up and send verification email'],
+    login: ['Log in to HerTech', emailField + passwordField(false) + '<div class="actions"><button type="button" class="link-btn" data-action="join">Create an account</button><button type="button" class="link-btn" data-action="resend">Resend verification email</button></div>', 'Log in'],
+    resend: ['Resend verification email', emailField + '<button type="button" class="link-btn" data-action="login">Back to log in</button>', 'Send verification email'],
+    'email-change': ['Change email address', '<p class="form-note">Follow the instructions in the verification email to confirm the change, then log in with your new email and current password.</p>' + emailField, 'Send confirmation email'],
+    ask: ['Ask a question', `<label for="ask-title">Question title</label><input id="ask-title" name="title" required maxlength="120" value="${esc(extra.title ?? ui.draftTitle)}" autocomplete="off"><div id="similar" aria-live="polite"></div><label for="ask-topic">Topic</label>${select('ask-topic', 'topic', TOPICS, ui.qTopic)}<label for="ask-body">Background</label><textarea id="ask-body" name="body" required maxlength="2500" placeholder="Give a bit of context: your background, what you’ve tried and what would help."></textarea>`, 'Post question'],
+    'edit-question': ['Edit your question', `<label for="ask-title">Question title</label><input id="ask-title" name="title" required maxlength="120" value="${esc(ed?.title)}"><label for="ask-body">Background</label><textarea id="ask-body" name="body" required maxlength="2500">${esc(ed?.body)}</textarea>`, 'Save changes'],
+    answer: ['Write an answer', '<label for="body">Your experience or advice</label><textarea id="body" name="body" required maxlength="4000" placeholder="Share what worked for you. Specific steps and links help most."></textarea>', 'Post answer'],
+    'edit-answer': ['Edit your answer', `<label for="body">Your answer</label><textarea id="body" name="body" required maxlength="4000">${esc(ed?.body)}</textarea>`, 'Save changes'],
+    comment: ['Write a comment', '<label for="body">Comment</label><textarea id="body" name="body" required maxlength="1500"></textarea>', 'Post comment'],
+    'event-group': ['Start a group', '<label for="g-title">Group title</label><input id="g-title" name="title" required maxlength="100" placeholder="For example: Head to the event together from central Manchester"><label for="g-body">Group details</label><textarea id="g-body" name="body" required maxlength="1500" placeholder="Share where to meet or which sessions you’d like to attend together."></textarea>', 'Start a group'],
+    'event-comment': [ui.eventDraft?.replyTo ? 'Reply to a comment' : ui.eventDraft?.groupId ? 'Message the group' : 'Event discussion', '<label for="body">Message</label><textarea id="body" name="body" required maxlength="1500"></textarea>', 'Post message'],
+    'swap-post': ['Post a swap listing', `<label for="s-type">Listing type</label>${select('s-type', 'type', SWAP_TYPES, extra.type || (ui.swapType === 'All' ? 'Skill Swap' : ui.swapType))}<label for="s-title">Title</label><input id="s-title" name="title" required maxlength="120" placeholder="e.g. CV review in exchange for Python help"><label for="s-place">Your city or neighbourhood</label><input id="s-place" name="place" required maxlength="80" placeholder="e.g. Stratford, London"><p class="form-note">A city or neighbourhood is enough. Never post your full address.</p><div id="s-dates">${dateFields('s')}</div><label for="s-offer">What can you offer?</label><textarea id="s-offer" name="offer" required maxlength="1500" placeholder="Describe the skill, item or home you’re offering."></textarea><label for="s-want">What would you like in return?</label><textarea id="s-want" name="want" maxlength="1000" placeholder="e.g. Help with SQL, a book on UX design, or open to ideas."></textarea><label for="s-images">Photos (optional)</label><input id="s-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="form-note">Up to 3 images, 10 MB each.</p><p id="s-image-msg" class="form-note" aria-live="polite"></p><div id="s-preview" class="exchange-gallery exchange-preview"></div>`, 'Post listing'],
+    'share-resource': ['Share a resource', `<p class="form-note">Share a course, guide, job board, tool or community that genuinely helped you. The HerTech team reviews every submission before it appears.</p><label for="r-title">Title</label><input id="r-title" name="title" required maxlength="120"><label for="r-url">Link</label><input id="r-url" name="url" type="url" required maxlength="500" placeholder="https://"><label for="r-cat">Category</label>${select('r-cat', 'category', RES_CATS, ui.resCat === 'All' ? 'Learning' : ui.resCat)}<label for="r-cost">Cost</label>${select('r-cost', 'cost', COSTS, 'Free')}<label for="r-desc">Why is it useful?</label><textarea id="r-desc" name="description" required maxlength="600" placeholder="Who is it for and what will they get out of it?"></textarea><label class="checkbox"><input type="checkbox" required>This is my honest recommendation, not a paid advert</label>`, 'Submit for review'],
+    'edit-profile': ['Edit profile', `<label for="p-name">Display name</label><input id="p-name" name="name" required maxlength="30" value="${esc(p?.name)}"><label for="p-stage">Career stage</label>${select('p-stage', 'stage', STAGES, p?.stage)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><label for="p-link">LinkedIn or portfolio link</label><input id="p-link" name="link" type="url" maxlength="200" value="${esc(p?.link)}" placeholder="https://">`, 'Save profile'],
+    redeem: ['Confirm redemption', `<p>Use ${PRICE} Coffee Beans to book a place at the UK Tech CV Workshop?</p><p class="form-note">Your balance: ${me ? balance() : 0} ${beanUnit(me ? balance() : 0)}</p>`, 'Confirm redemption']
+  };
+  const [title, fields, submit] = forms[kind];
+  dialog.innerHTML = `<form><h2 id="dialogTitle">${title}</h2>${fields}<p class="form-note" aria-live="polite" data-form-message hidden></p><div class="actions"><button type="button" data-action="cancel">Cancel</button><button class="primary" type="submit">${submit}</button></div></form>`;
+  if (kind === 'swap-post') syncSwapDates();
+  if (kind === 'ask') updateSimilar();
+  if (!dialog.open) dialog.showModal();
+  dialog.querySelector('input:not([type=hidden]):not([type=checkbox]),textarea')?.focus();
 }
-function commentsSection(record) {
-  const comments = record.comments || [];
-  return `<div class="actions"><button data-action="comment" data-id="${escape(record.id)}">Comment · ${comments.length}</button></div>
-  ${comments.length ? `<ul class="comment-list" aria-label="Comments">${comments.map(comment => `<li>${authorLink(comment)}<p class="summary">${escape(comment.body)}</p></li>`).join('')}</ul>` : ''}`;
+function syncSwapDates() {
+  const dates = dialog.querySelector('#s-dates');
+  const home = dialog.querySelector('#s-type').value === 'Home Swap';
+  dates.hidden = !home;
+  for (const field of dates.querySelectorAll('input')) { field.disabled = !home; field.required = home; }
 }
-function questionPage(q) {
-  const answers = [...q.answers];
-  if (sort === 'popular') answers.sort((a,b) => b.votes.length - a.votes.length);
-  else answers.reverse();
-  const winning = q.winnerIds || [];
-  return `<section class="detail"><button class="back" data-action="home">← Back to Q&A</button><article class="card"><span class="tag">${escape(q.topic)}</span><h1>${escape(q.title)}</h1><p class="summary">${escape(q.body)}</p><p class="meta">${authorLink(q)} · ${q.settled ? 'Top answer bonus awarded' : 'The top answer bonus is awarded seven days after the question is posted'}</p><button class="primary" data-action="answer">Write an answer</button>${commentsSection(q)}</article>
-  <div class="topline"><h2>${answers.length} answers</h2><div class="tabs" aria-label="Sort answers"><button data-action="popular" aria-pressed="${sort === 'popular'}">Most helpful</button><button data-action="latest" aria-pressed="${sort === 'latest'}">Newest</button></div></div>
-  ${answers.map(a => `<article class="card"><strong>${authorLink(a)}</strong> ${winning.includes(a.id) ? '<small class="winner">Top answer</small>' : ''}<p class="summary">${escape(a.body)}</p><div class="actions"><button class="${a.votes.includes(state.member) ? 'voted' : ''}" aria-pressed="${a.votes.includes(state.member)}" data-action="vote" data-id="${a.id}">↑ Helpful · ${a.votes.length}</button></div>${commentsSection(a)}</article>`).join('') || '<p class="empty">No answers yet. Share your experience.</p>'}</section>`;
+function updateSimilar() {
+  const box = dialog.querySelector('#similar');
+  const title = dialog.querySelector('#ask-title')?.value || '';
+  if (!box) return;
+  const similar = rank(db.questions, questionScore, title).items.slice(0, 3);
+  box.innerHTML = similar.length && terms(title).length >= 2 ? `<div class="similar"><strong>Similar questions already asked</strong>${similar.map(q => `<a href="#q-${esc(q.id)}" data-close-dialog>${esc(q.title)} <small>${answersOf(q.id).length} answers</small></a>`).join('')}</div>` : '';
 }
-function ukDate() {
-  const parts = new Intl.DateTimeFormat('en-GB', {timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
-  return ['year','month','day'].map(type => parts.find(part => part.type === type).value).join('-');
-}
-function dateFields(prefix, from = '', to = '') {
-  return `<div class="exchange-dates"><label for="${prefix}-from">Start date<input id="${prefix}-from" name="from" type="date" min="${ukDate()}" value="${escape(from)}"></label>
-    <label for="${prefix}-to">End date<input id="${prefix}-to" name="to" type="date" min="${ukDate()}" value="${escape(to)}"></label></div>`;
-}
-function exchangePage(stays) {
-  const posts = state.exchanges.filter(post => {
-    if (!stays) return exchangeType === 'All' || post.type === exchangeType;
-    return post.type === 'Home Swap' && post.to >= ukDate() &&
-      (!stayFilter.from || post.from <= stayFilter.from) && (!stayFilter.to || post.to >= stayFilter.to);
-  });
-  const heading = stays ? 'Find home swaps by date' : 'Community Swaps';
-  return `<section class="home">
-    ${stays ? '<button data-action="exchange">← Back to Swaps</button>' : ''}
-    <div class="exchange-head"><div class="topline"><h1>${heading}</h1><button class="primary" data-action="new-exchange">Post a listing</button></div>
-    <p>${stays ? 'Choose dates to find home swaps available for the whole period.' : 'Find an interview practice partner, swap items or arrange a home swap.'}</p></div>
-    ${stays ? `<form id="stayFilter" class="card exchange-date-filter">${dateFields('stay', stayFilter.from, stayFilter.to)}<div class="actions"><button class="primary" type="submit">Find home swaps</button><button type="button" data-action="clear-stay">Clear dates</button></div></form>`
-      : `<div class="tabs" aria-label="Filter by swap category">${['All',...exchangeTypes].map(type => `<button data-action="exchange-type" data-topic="${type}" aria-pressed="${type === exchangeType}">${type}</button>`).join('')}<button data-action="stay-dates">Find home swaps by date ↗</button></div>`}
-    ${posts.length ? `<div class="exchange-feed">${posts.map(post => exchangeTile(post, stays)).join('')}</div>`
-      : `<p class="empty">${stays ? 'No home swaps match these dates.' : 'No listings in this category yet.'}</p>`}
-    </section>`;
-}
-function exchangeTile(post, stays) {
-  const cover = post.images?.find(image => exchangeImageFormat.test(image));
-  return `<a class="exchange-tile" href="#exchange-post-${encodeURIComponent(post.id)}${stays ? '/stay' : ''}">
-    <div class="exchange-cover">${cover ? `<img loading="lazy" src="${cover}" alt="">` : 'No image'}</div>
-    <div class="exchange-caption"><h3>${escape(post.title)}</h3><p>${escape(post.place)}</p></div>
-    </a>`;
-}
-function exchangePostPage(route) {
-  const [id, source] = route.split('/');
-  const post = state.exchanges.find(item => encodeURIComponent(item.id) === id);
-  const back = source === 'stay' ? 'stay-dates' : 'exchange';
-  const backButton = `<button class="back" data-action="${back}">← Back to ${source === 'stay' ? 'home swap dates' : 'Swaps'}</button>`;
-  if (!post) return `<section class="detail">${backButton}<p>Listing not found.</p></section>`;
-  const cityMap = 'https://www.openstreetmap.org/search?query=' + encodeURIComponent(post.place + ', UK');
-  return `<section class="detail">${backButton}<article class="card exchange-body"><span class="tag">${escape(post.type)}</span>
-    <h1>${escape(post.title)}</h1>
-    <p class="meta">${authorLink(post)} · ${escape(post.place)}${post.type === 'Home Swap' ? ' · ' + escape(post.from) + ' to ' + escape(post.to) : ''}</p>
-    ${exchangeGallery(post)}
-    <p class="summary">${escape(post.body)}</p>
-    <a class="map-link" href="${escape(cityMap)}" target="_blank" rel="noopener noreferrer">View area map ↗</a>
-    </article></section>`;
-}
-function exchangeGallery(post) {
-  const images = (post.images || []).filter(image => exchangeImageFormat.test(image));
-  if (!images.length) return '';
-  return `<div class="exchange-gallery">${images.map((image,index) => `<button data-action="exchange-image" aria-label="Enlarge image ${index+1}"><img loading="lazy" src="${image}" alt="${escape(post.title)}, image ${index+1}"></button>`).join('')}</div>`;
-}
-function clearExchangePreviews() {
-  for (const url of exchangePreviewUrls) URL.revokeObjectURL(url);
-  exchangeImageFiles = [];
-  exchangePreviewUrls = [];
-}
-function previewExchangeImages(input) {
-  clearExchangePreviews();
-  const preview = dialog.querySelector('#exchange-preview');
-  const message = dialog.querySelector('#exchange-image-message');
-  preview.replaceChildren();
-  const files = Array.from(input.files);
-  const valid = files.length <= exchangeImageLimit &&
-    files.every(file => ['image/jpeg','image/png','image/webp'].includes(file.type) && file.size <= 10 * 1024 * 1024);
-  if (!valid) {
-    input.value = '';
-    message.textContent = 'Choose up to 3 JPG, PNG or WebP images, each no larger than 10 MB.';
-    return;
-  }
-  message.textContent = '';
-  exchangeImageFiles = files;
-  for (const [index,file] of files.entries()) {
-    const url = URL.createObjectURL(file);
-    exchangePreviewUrls.push(url);
-    const image = document.createElement('img');
-    image.src = url;
-    image.alt = 'Preview image ' + (index + 1);
-    preview.append(image);
-  }
-}
-async function compressExchangeImage(file) {
+async function compressImage(file) {
   const bitmap = await createImageBitmap(file);
   try {
     const canvas = document.createElement('canvas');
@@ -528,310 +986,324 @@ async function compressExchangeImage(file) {
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
       const data = canvas.toDataURL('image/jpeg', 0.78);
-      if (data.length <= 230000 && exchangeImageFormat.test(data)) return data;
+      if (data.length <= 230000) return data;
     }
     throw new Error('Image could not be compressed');
-  } finally {
-    bitmap.close();
-  }
-}
-const beanUnit = amount => Math.abs(amount) === 1 ? 'Coffee Bean' : 'Coffee Beans';
-function walletPage() {
-  const remaining = seats - state.redemptions.length;
-  const redeemed = state.redemptions.includes(state.member);
-  const entries = state.ledger.filter(entry => entry.member === state.member).slice().reverse();
-  return `<section class="detail"><h1>Points & Events</h1><div class="card points"><div class="balance bean-balance"><img class="coffee-bean" src="./coffee-bean.png" alt="">${current() ? balance() : '—'} ${beanUnit(current() ? balance() : 0)}</div><p>Earn 1 Coffee Bean when two members mark your answer as helpful. After seven days, the top answer earns 2 extra Coffee Beans if it has at least three votes. Tied answers each earn the bonus.</p><p class="form-note">You keep any Coffee Beans already awarded. New accounts receive 2 demo Coffee Beans to try ticket redemption.</p></div><section class="card ticket"><span class="tag">Demo event</span><h3>UK Tech CV Workshop</h3><p>Online · 60 minutes · ${PRICE} ${beanUnit(PRICE)} per ticket · ${remaining} places left</p>
-  <button class="primary" data-action="redeem" ${redeemed || remaining <= 0 ? 'disabled' : ''}>${redeemed ? 'Redeemed · Booking confirmed' : remaining > 0 ? 'Redeem ticket' : 'Fully booked'}</button></section>
-  <section class="card"><h3>Coffee Bean History</h3>${entries.map(entry => `<p>${escape(entry.reason)} · <strong>${entry.delta > 0 ? '+' : ''}${entry.delta} ${beanUnit(entry.delta)}</strong></p>`).join('') || '<p class="summary">No Coffee Bean transactions yet.</p>'}</section></section>`;
-}
-const authForms = ['join','login','email-change','resend'];
-const emailField = '<label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254">';
-function passwordField(newPassword) {
-  return '<label for="password">Password</label><input id="password" name="password" type="password" autocomplete="' +
-    (newPassword ? 'new-password" minlength="10' : 'current-password') + '" required maxlength="72">';
-}
-function showForm(kind) {
-  if (authForms.includes(kind) && !auth) {
-    tell(location.protocol === 'file:' ? 'Open the online HerTech site to sign up or log in.' : 'We couldn’t connect to the account service. Please refresh and try again.');
-    return;
-  }
-  clearExchangePreviews();
-  activeForm = kind;
-  const forms = {
-    join: ['Sign up for HerTech', '<p class="form-note">For women in the UK who work in tech, study STEM or plan to enter the tech industry.</p><label for="name">Display name</label><input id="name" name="name" required maxlength="30">' + emailField + passwordField(true) + '<p class="form-note">Use at least 10 characters. Check your inbox for a verification email after signing up.</p><label for="stage">Career stage</label><select id="stage" name="stage"><option>Studying</option><option>Job hunting or changing careers</option><option>Employed</option></select><label class="checkbox"><input type="checkbox" required>I meet the community membership criteria</label><button type="button" class="link member-link" data-action="login">Already have an account? Log in</button>', 'Sign up and send verification email'],
-    login: ['Log in to HerTech', emailField + passwordField(false) + '<div class="actions"><button type="button" class="link member-link" data-action="join">Create an account</button><button type="button" class="link member-link" data-action="resend">Resend verification email</button></div>', 'Log in'],
-    resend: ['Resend verification email', emailField + '<button type="button" class="link member-link" data-action="login">Back to log in</button>', 'Send verification email'],
-    'email-change': ['Change email address', '<p class="form-note">Follow the instructions in the verification email to confirm the change. Then log in using your new email address and your current password.</p>' + emailField, 'Send confirmation email'],
-    'event-team': ['Start a group', '<label for="event-team-title">Group title</label><input id="event-team-title" name="title" required maxlength="100" placeholder="For example: Head to the event together from central Manchester"><label for="event-message">Group details</label><textarea id="event-message" name="body" required maxlength="1500" placeholder="Share where to meet or which sessions you’d like to attend together."></textarea>', 'Start a group'],
-    'event-comment': [eventDraft?.replyTo ? 'Reply to a comment' : eventDraft?.teamId ? 'Message the group' : 'Event discussion', '<label for="event-message">Message</label><textarea id="event-message" name="body" required maxlength="1500"></textarea>', 'Post message'],
-    'exchange-post': ['Post a swap listing', '<label for="exchange-category">Listing category</label><select id="exchange-category" name="type">' +
-      exchangeTypes.map(type => `<option${type === (location.hash === '#stay-dates' ? 'Home Swap' : exchangeType) ? ' selected' : ''}>${type}</option>`).join('') +
-      '</select><label for="exchange-title">Title</label><input id="exchange-title" name="title" required maxlength="120"><label for="exchange-place">Your city or neighbourhood</label><input id="exchange-place" name="place" required maxlength="80" placeholder="For example: Stratford, London"><p class="form-note">This location appears on your listing. A city or neighbourhood is enough.</p><div id="exchange-dates">' + dateFields('exchange') +
-      '</div><label for="exchange-body">Swap details</label><textarea id="exchange-body" name="body" required maxlength="2500" placeholder="Describe what you can offer and what you’d like in return."></textarea><label for="exchange-images">Photos (optional)</label><input id="exchange-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="form-note">Up to 3 images, 10 MB each.</p><p id="exchange-image-message" class="form-note" aria-live="polite"></p><div id="exchange-preview" class="exchange-gallery exchange-preview"></div>', 'Post a listing'],
-    ask: ['Ask a question', '<label for="title">Question title</label><input id="title" name="title" required maxlength="120" value="' + escape(draftTitle) + '"><label for="topic">Topic</label><select id="topic" name="topic">' + topics.map(topic => '<option>' + topic + '</option>').join('') + '</select><label for="body">Background</label><textarea id="body" name="body" required maxlength="2500"></textarea>', 'Post question'],
-    comment: ['Write a comment', '<label for="body">Comment</label><textarea id="body" name="body" required maxlength="1000"></textarea>', 'Post comment'],
-    answer: ['Write an answer', '<label for="body">Your experience or advice</label><textarea id="body" name="body" required maxlength="4000"></textarea>', 'Post answer'],
-    redeem: ['Confirm redemption', '<p>Use 2 Coffee Beans to redeem a demo ticket for the UK Tech CV Workshop?</p>', 'Confirm redemption']
-  };
-  const [title, fields, submit] = forms[kind];
-  dialog.innerHTML = `<form><h2 id="dialogTitle">${title}</h2>${fields}<p class="form-note" aria-live="polite" data-form-message hidden></p><div class="actions"><button type="button" data-action="cancel">Cancel</button><button class="primary" type="submit">${submit}</button></div></form>`;
-  if (kind === 'exchange-post') syncExchangeDateFields();
-  if (!dialog.open) dialog.showModal();
-}
-function syncExchangeDateFields() {
-  const dates = dialog.querySelector('#exchange-dates');
-  const stays = dialog.querySelector('#exchange-category').value === 'Home Swap';
-  dates.hidden = !stays;
-  for (const field of dates.querySelectorAll('input')) {
-    field.disabled = !stays;
-    field.required = stays;
-  }
+  } finally { bitmap.close(); }
 }
 dialog.addEventListener('change', event => {
-  if (event.target.id === 'exchange-category') syncExchangeDateFields();
-  if (event.target.id === 'exchange-images') previewExchangeImages(event.target);
+  if (event.target.id === 's-type') syncSwapDates();
+  if (event.target.id === 's-images') {
+    const files = Array.from(event.target.files);
+    const msg = dialog.querySelector('#s-image-msg'), preview = dialog.querySelector('#s-preview');
+    preview.replaceChildren();
+    const ok = files.length <= 3 && files.every(f => ['image/jpeg','image/png','image/webp'].includes(f.type) && f.size <= 10 * 1024 * 1024);
+    if (!ok) { event.target.value = ''; ui.swapFiles = []; msg.textContent = 'Choose up to 3 JPG, PNG or WebP images, each no larger than 10 MB.'; return; }
+    msg.textContent = '';
+    ui.swapFiles = files;
+    for (const f of files) { const img = document.createElement('img'); img.src = URL.createObjectURL(f); img.alt = ''; img.onload = () => URL.revokeObjectURL(img.src); preview.append(img); }
+  }
 });
+dialog.addEventListener('input', event => { if (event.target.id === 'ask-title' && activeForm === 'ask') updateSimilar(); });
+dialog.addEventListener('click', event => { if (event.target.closest('[data-close-dialog]')) dialog.close(); });
+dialog.addEventListener('cancel', () => { resumeAsk = false; });
+
+dialog.addEventListener('submit', async event => {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const value = key => String(data.get(key) || '').trim();
+  const submit = form.querySelector('[type=submit]');
+  const message = form.querySelector('[data-form-message]');
+  const say = text => { message.textContent = text; message.hidden = false; };
+  if (authForms.includes(activeForm)) { submitAuth(activeForm, form, data); return; }
+  if (!me) { showForm('login'); return; }
+  if (submit.disabled) return;
+  submit.disabled = true;
+  let ok = null, after = null;
+  try {
+    switch (activeForm) {
+      case 'ask': {
+        if (!value('title') || !value('body')) { say('Enter a question title and some background.'); return; }
+        ok = await run(() => sb.from('questions').insert({title:value('title'), topic:value('topic'), body:value('body')}).select('id').single(), 'Question posted.');
+        if (ok) { ui.draftTitle = ''; after = '#q-' + ok.data.id; }
+        break;
+      }
+      case 'edit-question':
+        ok = await run(() => sb.from('questions').update({title:value('title'), body:value('body')}).eq('id', ui.editing.id), 'Question updated.');
+        break;
+      case 'answer':
+        if (!value('body')) { say('Write an answer.'); return; }
+        ok = await run(() => sb.from('answers').insert({question_id:ui.editing.id, body:value('body')}), 'Answer posted.');
+        break;
+      case 'edit-answer':
+        ok = await run(() => sb.from('answers').update({body:value('body')}).eq('id', ui.editing.id), 'Answer updated.');
+        break;
+      case 'comment':
+        if (!value('body')) { say('Write a comment.'); return; }
+        ok = await run(() => sb.from('comments').insert({target_type:ui.commentTarget.type, target_id:ui.commentTarget.id, body:value('body')}), 'Comment posted.');
+        break;
+      case 'event-group':
+        ok = await run(() => sb.from('event_groups').insert({event_id:ui.eventDraft.id, title:value('title'), body:value('body')}), 'Group started.');
+        break;
+      case 'event-comment':
+        ok = await run(() => sb.from('comments').insert({target_type:'event', target_id:ui.eventDraft.id, reply_to:ui.eventDraft.replyTo || null, group_id:ui.eventDraft.groupId || null, body:value('body')}), 'Message posted.');
+        break;
+      case 'swap-post': {
+        const type = value('type');
+        const row = {type, title:value('title'), place:value('place'), offer:value('offer'), want:value('want')};
+        if (type === 'Home Swap') {
+          row.from_date = value('from'); row.to_date = value('to');
+          if (!row.from_date || !row.to_date || row.from_date < ukDate() || row.to_date < row.from_date) { say('Choose a valid start and end date for the home swap.'); return; }
+        }
+        try { row.images = []; for (const f of ui.swapFiles || []) row.images.push(await compressImage(f)); }
+        catch { say('We couldn’t process an image. Pick a different one and try again.'); return; }
+        ok = await run(() => sb.from('swaps').insert(row).select('id').single(), 'Swap listing posted.');
+        if (ok) after = '#swap-' + ok.data.id;
+        break;
+      }
+      case 'share-resource': {
+        const url = value('url');
+        if (!safeUrl(url)) { say('Enter a full link starting with https://'); return; }
+        const row = {title:value('title'), url, category:value('category'), cost:value('cost'), description:value('description')};
+        if (isAdmin()) row.status = 'approved';
+        ok = await run(() => sb.from('resources').insert(row), isAdmin() ? 'Resource shared.' : 'Thanks! The HerTech team will review it soon.');
+        break;
+      }
+      case 'edit-profile': {
+        const link = value('link');
+        if (link && !safeUrl(link)) { say('Links must start with https://'); return; }
+        ok = await run(() => sb.from('profiles').update({name:value('name'), stage:value('stage'), bio:value('bio'), offers:value('offers'), wants:value('wants'), link}).eq('id', me.id), 'Profile saved.');
+        break;
+      }
+      case 'redeem': {
+        const res = await run(() => sb.rpc('redeem_ticket', {event:TICKET}));
+        const messages = {ok:'Ticket redeemed. Your booking is confirmed.', already:'You already have a ticket.', full:'Sorry, this workshop is fully booked.', balance:'You need ' + PRICE + ' Coffee Beans to redeem a ticket.', login:'Log in first.'};
+        if (res) tell(messages[res.data] || 'Couldn’t redeem the ticket.');
+        ok = res;
+        break;
+      }
+    }
+  } finally { submit.disabled = false; }
+  if (!ok) return;
+  ui.eventDraft = null;
+  dialog.close();
+  await refresh();
+  if (after) go(after);
+});
+
+// ───────────────────────── Clicks ─────────────────────────
 document.addEventListener('click', async event => {
   const button = event.target.closest('button[data-action]');
   if (!button) return;
-  const {action, topic, id} = button.dataset;
-  const q = lookup();
-  const member = current();
-  if (action === 'about') go('#who-are-we');
-  if (action === 'home') { filter = 'All'; go('#home'); }
-  if (action === 'wallet') go('#points');
-  if (action === 'exchange') go('#exchange');
-  if (action === 'stay-dates') go('#stay-dates');
-  if (action === 'exchange-type') { exchangeType = topic; render(); }
-  if (action === 'clear-stay') { stayFilter = {from:'',to:''}; render(); }
-  if (action === 'exchange-image') {
-    const source = button.querySelector('img');
-    if (!exchangeImageFormat.test(source.src)) return;
-    activeForm = '';
-    dialog.innerHTML = '<h2 id="dialogTitle">View image</h2><div class="actions"><button type="button" data-action="cancel">Close</button></div>';
-    const image = source.cloneNode();
-    image.className = 'exchange-full-image';
-    dialog.querySelector('.actions').before(image);
-    dialog.showModal();
-  }
-  if (action === 'new-exchange') showForm(member ? 'exchange-post' : 'login');
-  if (['event-team','event-comment','event-reply','event-team-join'].includes(action)) {
-    if (!visibleEvents().some(item => item.id === id)) return;
-    const data = eventCommunityData(id);
-    const target = button.dataset.target;
-    expandedEvents.add(id);
-    if (!member) { showForm('login'); return; }
-    if (action === 'event-team-join') {
-      const team = data.teams.find(item => item.id === target);
-      if (!team || team.member === member.id) return;
-      const index = team.members.indexOf(member.id);
-      if (index < 0) team.members.push(member.id);
-      else team.members.splice(index,1);
-      render();
-      tell(index < 0 ? 'You joined the group.' : 'You left the group.');
+  const {action, topic, id, target} = button.dataset;
+  switch (action) {
+    case 'cancel': resumeAsk = false; dialog.close(); return;
+    case 'reload': db.loaded = false; render(); loadAll(); return;
+    case 'topic': ui.qTopic = topic; go('#questions'); return;
+    case 'q-topic': ui.qTopic = topic; render(); return;
+    case 'q-sort': ui.qSort = topic; render(); return;
+    case 'answer-sort': ui.answerSort = topic; render(); return;
+    case 'res-cat': ui.resCat = topic; render(); return;
+    case 'swap-type': ui.swapType = topic; render(); return;
+    case 'clear-stay': ui.stay = {from:'', to:''}; render(); return;
+    case 'city': if (Object.hasOwn(areas, topic)) { ui.city = topic; render(); } return;
+    case 'copy-link':
+      try { await navigator.clipboard.writeText(location.href); tell('Link copied.'); } catch { tell('Copy the address from your browser bar.'); }
+      return;
+    case 'pin': {
+      const ev = visibleEvents()[Number(id)], pin = pins[Number(id)];
+      if (!ev) return;
+      if (!eventMap || !pin) { const [lat, lon] = ev.marker; window.open('https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon, '_blank', 'noopener,noreferrer'); return; }
+      document.querySelector('#eventMap').scrollIntoView({block:'nearest'});
+      eventMap.setView(pin.getLatLng(), 16); pin.openPopup();
       return;
     }
-    const parent = action === 'event-reply' ? data.comments.find(item => item.id === target) : null;
-    eventDraft = {id,replyTo:parent?.id,teamId:parent?.teamId || (action === 'event-comment' ? target : undefined)};
-    showForm(action === 'event-team' ? 'event-team' : 'event-comment');
-  }
-  if (action === 'events') { city = 'All'; go('#uk-events'); }
-  if (action === 'pin') {
-    const event = visibleEvents()[Number(id)];
-    if (!event) return;
-    const pin = pins[Number(id)];
-    if (!eventMap || !pin) {
-      const [lat,lon] = event.marker;
-      window.open('https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon, '_blank', 'noopener,noreferrer');
+    case 'swap-image': {
+      const img = button.querySelector('img').cloneNode();
+      img.className = 'exchange-full-image';
+      activeForm = '';
+      dialog.innerHTML = '<h2 id="dialogTitle">Photo</h2><div class="actions"><button type="button" data-action="cancel">Close</button></div>';
+      dialog.querySelector('.actions').before(img);
+      dialog.showModal();
       return;
     }
-    document.querySelector('#eventMap').scrollIntoView({block:'nearest'});
-    eventMap.setView(pin.getLatLng(), 16);
-    pin.openPopup();
+    case 'logout':
+      button.disabled = true;
+      try { const {error} = await auth.signOut({scope:'local'}); if (error) throw error; await setUser(null); go('#home'); tell('You’re logged out.'); }
+      catch { tell('Couldn’t log out. Please try again.'); button.disabled = false; }
+      return;
   }
-  if (action === 'city' && Object.hasOwn(areas, topic)) { city = topic; render(); }
-  if (action === 'filter') { filter = topic; go('#topics'); }
-  if (action === 'popular' || action === 'latest') { sort = action; render(); }
-  if (action === 'cancel') { resumeAsk = false; dialog.close(); }
-  if (action === 'logout') {
-    button.disabled = true;
-    try {
-      const {error} = await auth.signOut({scope:'local'});
-      if (error) throw error;
-      syncUser(null);
-      go('#home');
-      tell('You’re logged out.');
-    } catch {
-      tell('Couldn’t log out. Please try again.');
-      button.disabled = false;
-    }
-  }
-  if (authForms.includes(action)) showForm(action);
-  if (action === 'my-profile' && member) go('#member-' + member.id);
-  if (action === 'follow') {
-    if (!member) { showForm('login'); return; }
-    const target = memberById(profileId());
-    if (!target || target.id === member.id) return;
-    const index = state.follows.findIndex(edge => edge.from === member.id && edge.to === target.id);
-    if (index < 0) state.follows.push({from:member.id,to:target.id});
-    else state.follows.splice(index, 1);
-    render();
-  }
-  if (action === 'comment' && q) {
-    if (!member) { showForm('login'); return; }
-    commentTargetId = id;
-    showForm('comment');
-  }
-  if (['ask','answer','redeem','vote'].includes(action) && !member) {
-    showForm('login');
+  if (authForms.includes(action)) { showForm(action); return; }
+  // Everything below needs an account
+  if (['ask','answer','comment','vote','edit-question','edit-answer','event-group','event-comment','event-reply','group-join','new-swap','swap-message','swap-status','share-resource','res-vote','follow','block','edit-profile','redeem','delete','res-review'].includes(action) && needLogin()) {
+    if (action === 'ask') resumeAsk = true;
     return;
   }
-  if (['ask','answer','redeem'].includes(action)) showForm(action);
-  if (action === 'vote' && q) {
-    const a = q.answers.find(item => item.id === id);
-    if (!a) return;
-    if (a.member === member.id) { tell('You can only mark other members’ answers as helpful.'); return; }
-    settle();
-    if (a.votes.includes(member.id)) {
-      a.votes = a.votes.filter(v => v !== member.id);
-    } else {
-      a.votes.push(member.id);
-      if (a.votes.length >= 2) credit(a.member, 1, 'Answer marked helpful by two members', 'help-' + a.id);
+  switch (action) {
+    case 'ask': showForm('ask', {title: button.dataset.title}); break;
+    case 'answer': ui.editing = {id}; showForm('answer'); break;
+    case 'edit-question': ui.editing = db.questions.find(q => q.id === id); showForm('edit-question'); break;
+    case 'edit-answer': ui.editing = db.answers.find(a => a.id === id); showForm('edit-answer'); break;
+    case 'comment': ui.commentTarget = {type:button.dataset.type, id}; showForm('comment'); break;
+    case 'vote': {
+      const mine = db.votes.find(v => v.answer_id === id && v.voter_id === me.id);
+      button.disabled = true;
+      if (await run(() => mine ? sb.from('answer_votes').delete().eq('answer_id', id).eq('voter_id', me.id) : sb.from('answer_votes').insert({answer_id:id}))) await refresh();
+      break;
     }
-    render();
+    case 'event-group': case 'event-comment': case 'event-reply': {
+      ui.expandedEvents.add(id);
+      const parent = action === 'event-reply' ? db.comments.find(c => c.id === target) : null;
+      ui.eventDraft = {id, replyTo:parent?.id, groupId:parent?.group_id || (action === 'event-comment' ? target : undefined)};
+      showForm(action === 'event-group' ? 'event-group' : 'event-comment');
+      break;
+    }
+    case 'group-join': {
+      ui.expandedEvents.add(id);
+      const joined = db.groupMembers.some(x => x.group_id === target && x.member_id === me.id);
+      if (await run(() => joined ? sb.from('event_group_members').delete().eq('group_id', target).eq('member_id', me.id) : sb.from('event_group_members').insert({group_id:target}), joined ? 'You left the group.' : 'You joined the group.')) await refresh();
+      break;
+    }
+    case 'new-swap': showForm('swap-post', {type:button.dataset.type}); break;
+    case 'swap-message': {
+      const s = db.swaps.find(x => x.id === id);
+      if (!s) return;
+      ui.composerDraft = `Hi ${nameOf(s.author_id).split(/[ ·]/)[0]}! I’m interested in your swap “${s.title}”. `;
+      go('#messages-' + s.author_id);
+      break;
+    }
+    case 'swap-status':
+      if (await run(() => sb.from('swaps').update({status:button.dataset.status}).eq('id', id), button.dataset.status === 'closed' ? 'Marked as swapped. Congratulations!' : 'Listing reopened.')) await refresh();
+      break;
+    case 'share-resource': showForm('share-resource'); break;
+    case 'res-vote': {
+      const mine = db.resourceVotes.some(v => v.resource_id === id && v.member_id === me.id);
+      button.disabled = true;
+      if (await run(() => mine ? sb.from('resource_votes').delete().eq('resource_id', id).eq('member_id', me.id) : sb.from('resource_votes').insert({resource_id:id}))) await refresh();
+      break;
+    }
+    case 'res-review':
+      if (await run(() => sb.from('resources').update({status:button.dataset.status, is_pick:button.dataset.pick === 'true'}).eq('id', id), button.dataset.status === 'approved' ? 'Resource approved.' : 'Resource rejected.')) await refresh();
+      break;
+    case 'follow': {
+      const following = db.follows.some(f => f.follower_id === me.id && f.followee_id === id);
+      if (await run(() => following ? sb.from('follows').delete().eq('follower_id', me.id).eq('followee_id', id) : sb.from('follows').insert({followee_id:id}))) await refresh();
+      break;
+    }
+    case 'block': {
+      const isBlocked = blocked(id);
+      if (!isBlocked && button.dataset.armed !== 'yes') { button.dataset.armed = 'yes'; button.textContent = 'Click again to block'; setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.textContent = 'Block'; } }, 4000); return; }
+      if (await run(() => isBlocked ? sb.from('blocks').delete().eq('blocker_id', me.id).eq('blocked_id', id) : sb.from('blocks').insert({blocked_id:id}), isBlocked ? 'Unblocked.' : 'Blocked. They can no longer message you.')) { await loadPrivate(); render(); }
+      break;
+    }
+    case 'edit-profile': showForm('edit-profile'); break;
+    case 'redeem': showForm('redeem'); break;
+    case 'delete': {
+      if (button.dataset.armed !== 'yes') { button.dataset.armed = 'yes'; const label = button.textContent; button.textContent = 'Click again to delete'; setTimeout(() => { if (button.isConnected) { button.dataset.armed = ''; button.textContent = label; } }, 4000); return; }
+      const table = button.dataset.table;
+      if (!['questions','answers','comments','swaps','resources','event_groups'].includes(table)) return;
+      if (await run(() => sb.from(table).delete().eq('id', id), 'Deleted.')) { await refresh(); if (button.dataset.after) go(button.dataset.after); }
+      break;
+    }
   }
 });
-app.addEventListener('submit', event => {
-  if (event.target.id === 'stayFilter') {
+
+// ───────────────────────── Page forms & live filters ─────────────────────────
+app.addEventListener('submit', async event => {
+  const form = event.target;
+  if (['homeSearch','pageSearch','searchForm'].includes(form.id)) {
     event.preventDefault();
-    const data = new FormData(event.target);
-    const from = String(data.get('from') || '');
-    const to = String(data.get('to') || from);
+    const q = String(new FormData(form).get('q') || '').trim();
+    go('#search' + (q ? '?q=' + encodeURIComponent(q) : ''));
+    return;
+  }
+  if (form.id === 'quickAsk') {
+    event.preventDefault();
+    ui.draftTitle = String(new FormData(form).get('title') || '').trim().replace(/\s*\n\s*/g, ' ');
+    if (!ui.draftTitle) return tell('Enter a question title.');
+    if (!me) { resumeAsk = true; showForm('login'); return; }
+    showForm('ask', {title: ui.draftTitle});
+    return;
+  }
+  if (form.id === 'stayFilter') {
+    event.preventDefault();
+    const data = new FormData(form);
+    const from = String(data.get('from') || ''), to = String(data.get('to') || from);
     if (!from || from < ukDate() || to < from) return tell('Choose a valid start and end date.');
-    stayFilter = {from,to};
+    ui.stay = {from, to};
     render();
     return;
   }
-  if (event.target.id !== 'quickAsk') return;
-  event.preventDefault();
-  draftTitle = String(new FormData(event.target).get('title') || '').trim().replace(/\s*\n\s*/g, ' ');
-  if (!draftTitle) return tell('Enter a question title.');
-  resumeAsk = !current();
-  showForm(resumeAsk ? 'login' : 'ask');
+  if (form.id === 'composer') {
+    event.preventDefault();
+    await sendMessage(form);
+  }
 });
-dialog.addEventListener('cancel', () => { resumeAsk = false; });
-dialog.addEventListener('close', clearExchangePreviews);
-dialog.addEventListener('submit', async event => {
-  event.preventDefault();
-  const data = new FormData(event.target);
-  const value = name => String(data.get(name) || '').trim();
-  const q = lookup();
-  const member = current();
-  if (authForms.includes(activeForm)) {
-    void submitAuth(activeForm, event.target, data);
-    return;
+async function sendMessage(form) {
+  const text = form.querySelector('textarea');
+  const body = text.value.trim();
+  const otherId = route().path.slice(9);
+  const button = form.querySelector('[type=submit]');
+  if (!body || !me || button.disabled) return;
+  button.disabled = true;
+  const res = await run(() => sb.from('messages').insert({recipient_id:otherId, body}).select('*').single());
+  button.disabled = false;
+  if (!res) return;
+  text.value = '';
+  if (!db.messages.some(m => m.id === res.data.id)) db.messages.push(res.data);
+  renderThreadBody();
+  text.focus();
+}
+app.addEventListener('keydown', event => {
+  if (event.target.id === 'composerText' && event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault();
+    event.target.form.requestSubmit();
   }
-  if (['event-team','event-comment'].includes(activeForm) && member && eventDraft) {
-    const {id, replyTo, teamId} = eventDraft;
-    if (location.hash !== '#uk-events' || !visibleEvents().some(item => item.id === id)) return tell('This event is no longer in the current list.');
-    const body = value('body'), title = value('title');
-    if (!body || (activeForm === 'event-team' && !title)) return tell('Complete the required fields.');
-    const community = state.eventCommunity[id] ??= {comments:[],teams:[]};
-    const record = {id:uid(),member:member.id,author:member.name,body};
-    if (activeForm === 'event-team') {
-      community.teams.push({...record,title,members:[]});
-      tell('Group posted.');
-    } else {
-      community.comments.push({...record,replyTo,teamId});
-      tell('Message posted.');
-    }
-    eventDraft = null;
-  }
-  if (activeForm === 'exchange-post' && member) {
-    const type = value('type'), title = value('title'), place = value('place'), body = value('body');
-    if (!exchangeTypes.includes(type) || !title || !place || !body) return tell('Choose a category and enter a title, location and description.');
-    const post = {id:uid(),type,title,place,body,member:member.id,author:member.name};
-    if (type === 'Home Swap') {
-      const from = value('from'), to = value('to');
-      if (!from || !to || from < ukDate() || to < from) return tell('Choose a valid start and end date for the home swap.');
-      post.from = from;
-      post.to = to;
-    }
-    const form = event.target;
-    const submit = form.querySelector('[type=submit]');
-    if (submit.disabled) return;
-    submit.disabled = true;
-    try {
-      post.images = [];
-      for (const file of exchangeImageFiles) post.images.push(await compressExchangeImage(file));
-    } catch {
-      tell('We couldn’t process an image. Pick a different one and try again.');
-      return;
-    } finally {
-      submit.disabled = false;
-    }
-    if (!dialog.open || !form.isConnected || current()?.id !== member.id) return;
-    state.exchanges.unshift(post);
-    try {
-      localStorage.setItem(KEY, JSON.stringify(state));
-    } catch {
-      state.exchanges.shift();
-      tell('Your browser is out of storage. Try again with fewer photos.');
-      return;
-    }
-    if (location.hash === '#stay-dates' && type === 'Home Swap') stayFilter = {from:'',to:''};
-    else { exchangeType = type; go('#exchange'); }
-    tell('Swap listing posted.');
-  }
-  if (activeForm === 'ask' && member) {
-    if (!value('title') || !value('body')) return tell('Enter a question title and some background.');
-    const id = uid(), now = Date.now();
-    state.questions.unshift({id, title:value('title'), topic:value('topic'), body:value('body'), author:member.name, member:member.id, created:now, close:now+week, answers:[]});
-    draftTitle = '';
-    go('#q-' + id);
-    tell('Question posted.');
-  }
-  if (activeForm === 'answer' && member && q) {
-    if (!value('body')) return tell('Write an answer.');
-    q.answers.push({id:uid(), author:member.name, member:member.id, body:value('body'), votes:[]});
-    tell('Answer posted.');
-  }
-  if (activeForm === 'comment' && member && q) {
-    const target = q.id === commentTargetId ? q : q.answers.find(answer => answer.id === commentTargetId);
-    if (!target) { dialog.close(); return; }
-    if (!value('body')) return tell('Write a comment.');
-    target.comments ??= [];
-    target.comments.push({member:member.id,author:member.name,body:value('body')});
-    tell('Comment posted.');
-  }
-  if (activeForm === 'redeem' && member) {
-    if (state.redemptions.includes(member.id) || state.redemptions.length >= seats || balance() < PRICE) {
-      dialog.close();
-      tell('Couldn’t redeem the ticket. Check your Coffee Bean balance and the remaining places.');
-      return;
-    }
-    state.redemptions.push(member.id);
-    credit(member.id, -PRICE, 'Redeemed a CV workshop ticket', 'ticket-' + member.id);
-    tell('Ticket redeemed. Your booking is confirmed.');
-  }
-  dialog.close();
-  render();
 });
-function syncUser(user) {
-  verifiedUser = user?.email_confirmed_at ? user : null;
-  state.member = verifiedUser?.id ?? null;
-  if (verifiedUser && !state.members.some(profile => profile.id === verifiedUser.id)) {
-    const {name, stage} = verifiedUser.user_metadata || {};
-    state.members.push({id:verifiedUser.id,name:String(name || 'HerTech member').slice(0,30),stage:String(systemLabel(legacyStages, stage) || '').slice(0,40)});
-    credit(verifiedUser.id, 2, 'Welcome Coffee Beans', 'join-' + verifiedUser.id);
+let liveTimer;
+app.addEventListener('input', event => {
+  const el = event.target;
+  if (el.id === 'searchInput') {
+    clearTimeout(liveTimer);
+    liveTimer = setTimeout(() => {
+      const params = route().params;
+      params.set('q', el.value);
+      history.replaceState(null, '', '#search?' + params.toString());
+      document.querySelector('#searchResults').innerHTML = searchResults(params);
+    }, 220);
   }
-  render();
+  if (el.dataset.live) liveFilter(el);
+});
+app.addEventListener('change', event => { if (event.target.dataset.live) liveFilter(event.target); });
+function liveFilter(el) {
+  if (el.dataset.live === 'resources') {
+    ui.resText = document.querySelector('#resText').value;
+    ui.resCost = document.querySelector('#resCost').value;
+    document.querySelector('#liveList').innerHTML = resourceList();
+  } else if (el.dataset.live === 'swaps') {
+    ui.swapText = document.querySelector('#swapText').value;
+    ui.swapOpen = document.querySelector('#swapOpen').checked;
+    document.querySelector('#liveList').innerHTML = swapList();
+  }
+}
+
+// ───────────────────────── Accounts ─────────────────────────
+async function setUser(user) {
+  const next = user?.email_confirmed_at ? user : null;
+  const changed = next?.id !== me?.id;
+  me = next;
+  if (!changed) { renderHeader(); return; }
+  unsubscribeMessages();
+  if (me && db.loaded && !db.profiles.has(me.id)) { await loadAll(); }
+  else { await loadPrivate(); render(); }
+  if (me) subscribeMessages();
 }
 function authError(error) {
   const messages = {
     invalid_credentials:'Incorrect email or password.',
     email_not_confirmed:'Your email is awaiting verification. Open the verification email or request a new one.',
-    email_address_not_authorized:'Test emails can currently be sent only to Supabase project team members.',
+    email_address_not_authorized:'We can’t send emails to this address yet. HerTech is still in testing.',
     over_email_send_rate_limit:'Too many requests. Please try again later.',
     weak_password:'Choose a stronger password.'
   };
@@ -844,56 +1316,51 @@ async function submitAuth(kind, form, data) {
   const email = String(data.get('email') || '').trim().toLowerCase();
   const password = String(data.get('password') || '');
   const name = String(data.get('name') || '').trim();
-  const setMessage = text => { message.textContent = text; message.hidden = false; };
-  if (kind === 'join' && !name) { setMessage('Enter a display name.'); return; }
+  const say = text => { message.textContent = text; message.hidden = false; };
+  if (kind === 'join' && !name) { say('Enter a display name.'); return; }
   submit.disabled = true;
-  setMessage('Working…');
+  say('Working…');
   try {
     if (kind === 'join') {
-      const {error} = await auth.signUp({email,password,options:{emailRedirectTo:authRedirect,data:{name,stage:data.get('stage')}}});
+      const {error} = await auth.signUp({email, password, options:{emailRedirectTo:authRedirect, data:{name, stage:data.get('stage')}}});
       if (error) throw error;
       form.querySelector('[name=password]').value = '';
-      setMessage('If this address can be registered, you’ll receive a verification email. Verify your address before logging in.');
+      say('If this address can be registered, you’ll receive a verification email. Verify your address before logging in.');
     } else if (kind === 'login') {
-      const {data:result,error} = await auth.signInWithPassword({email,password});
+      const {data:result, error} = await auth.signInWithPassword({email, password});
       if (error) throw error;
-      if (!result.user?.email_confirmed_at) {
-        await auth.signOut({scope:'local'});
-        setMessage(authError({code:'email_not_confirmed'}));
-        return;
-      }
-      syncUser(result.user);
-      if (form.isConnected && dialog.open) {
-        dialog.close();
-        if (resumeAsk) {
-          resumeAsk = false;
-          showForm('ask');
-        }
-      }
+      if (!result.user?.email_confirmed_at) { await auth.signOut({scope:'local'}); say(authError({code:'email_not_confirmed'})); return; }
+      if (form.isConnected && dialog.open) dialog.close();
+      await setUser(result.user);
       tell('You’re logged in to HerTech.');
+      if (resumeAsk) { resumeAsk = false; showForm('ask'); }
     } else if (kind === 'resend') {
-      const {error} = await auth.resend({type:'signup',email,options:{emailRedirectTo:authRedirect}});
+      const {error} = await auth.resend({type:'signup', email, options:{emailRedirectTo:authRedirect}});
       if (error) throw error;
-      setMessage('If a registration for this address is awaiting verification, a new email will be sent.');
+      say('If a registration for this address is awaiting verification, a new email will be sent.');
     } else {
-      const {error} = await auth.updateUser({email},{emailRedirectTo:authRedirect});
+      const {error} = await auth.updateUser({email}, {emailRedirectTo:authRedirect});
       if (error) throw error;
-      setMessage('Follow the instructions in the verification email to confirm the change.');
+      say('Follow the instructions in the verification email to confirm the change.');
     }
   } catch (error) {
-    setMessage(authError(error));
+    say(authError(error));
   } finally {
     submit.disabled = false;
   }
 }
-window.addEventListener('hashchange', () => { sort = 'popular'; render(); window.scrollTo(0, 0); });
+
+window.addEventListener('hashchange', () => { ui.answerSort = 'popular'; render(); window.scrollTo(0, 0); });
 render();
-if (auth) {
-  auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_OUT') syncUser(null);
-    else syncUser(session?.user);
-  });
-}
+(async () => {
+  if (auth) {
+    const {data} = await auth.getSession();
+    me = data.session?.user?.email_confirmed_at ? data.session.user : null;
+    auth.onAuthStateChange((evt, session) => { setTimeout(() => setUser(evt === 'SIGNED_OUT' ? null : session?.user), 0); });
+  }
+  await loadAll();
+  if (me) subscribeMessages();
+})();
 </script>
 </body>
 </html>
