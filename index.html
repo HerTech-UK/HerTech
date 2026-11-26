@@ -1179,11 +1179,9 @@ async function loadSponsors() {
   if (!sb) { box.innerHTML = '<p class="empty">Open the online HerTech site to search the register.</p>'; return; }
   const run = ++sponsorRun;
   const q = ui.sp.q.replace(/[%_*,()\\]/g, ' ').trim();
-  let req = sb.from('sponsors').select('name,city,routes,rating,is_tech', {count:'exact'});
-  if (q) req = req.ilike('name', '%' + q + '%');
-  if (ui.sp.tech) req = req.eq('is_tech', true);
-  if (ui.sp.city !== 'Any') req = req.ilike('city', ui.sp.city);
-  const {data, count, error} = await req.order('name').limit(50);
+  // Ranked on the server: exact name, then names starting with the search, then a word starting with it, then anything containing it.
+  const {data, error} = await sb.rpc('search_sponsors', {q, p_city:ui.sp.city === 'Any' ? '' : ui.sp.city, tech_only:ui.sp.tech, lim:50});
+  const count = data?.[0]?.total;
   if (run !== sponsorRun || !document.querySelector('#sponsorResults')) return;
   if (error) { box.innerHTML = '<p class="empty">We couldn’t search the register right now. Try again in a moment.</p>'; return; }
   if (!sponsorUpdated) {
@@ -1192,7 +1190,7 @@ async function loadSponsors() {
   }
   const stamp = document.querySelector('#sponsorUpdated');
   if (stamp && sponsorUpdated) stamp.textContent = 'Last updated ' + new Date(sponsorUpdated + 'T12:00:00').toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'}) + '.';
-  const total = count ?? data.length;
+  const total = Number(count ?? data.length);
   box.innerHTML = data.length
     ? `<p class="sp-count">${total.toLocaleString('en-GB')} ${total === 1 ? 'company' : 'companies'}${total > data.length ? `, showing the first ${data.length}. Type a name to narrow it down` : ''}.</p>${data.map(sponsorCard).join('')}`
     : `<p class="empty">${q ? `No ${ui.sp.tech ? 'tech ' : ''}sponsor called “${esc(q)}” found.${ui.sp.tech ? ' Try unticking “Tech companies only”.' : ' Check the spelling, or try part of the name.'}` : 'The register is being loaded. Check back soon.'}</p>`;
