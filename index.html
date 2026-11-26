@@ -12,8 +12,8 @@
 <meta property="og:site_name" content="HerTech">
 <meta property="og:title" content="HerTech · A UK community for women in tech">
 <meta property="og:description" content="Ask questions, share resources, swap skills and go to tech events together.">
-<meta property="og:url" content="https://hertech-uk.github.io/HerTech/">
-<meta property="og:image" content="https://hertech-uk.github.io/HerTech/og-image.png">
+<meta property="og:url" content="https://hertech.uk/">
+<meta property="og:image" content="https://hertech.uk/og-image.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -339,7 +339,7 @@ footer .foot-links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
 <nav id="nav" aria-label="Main navigation"></nav>
 <div id="account" class="account"></div>
 </div></header>
-<div class="wrap"><main id="app"></main><footer>HerTech · A UK community for women in tech · Be kind, share generously, and keep personal details private.<div class="foot-links"><a href="#guidelines">Community guidelines</a><a href="#terms">Terms of use</a><a href="#privacy">Privacy policy</a><a href="mailto:2335698577@qq.com">Contact us</a></div></footer></div>
+<div class="wrap"><main id="app"></main><footer>HerTech · A UK community for women in tech · Be kind, share generously, and keep personal details private.<div class="foot-links"><a href="#guidelines">Community guidelines</a><a href="#terms">Terms of use</a><a href="#privacy">Privacy policy</a><a href="mailto:hello@hertech.uk">Contact us</a></div></footer></div>
 <dialog id="dialog" aria-labelledby="dialogTitle"></dialog>
 <div id="notice" role="status" aria-live="polite"></div>
 <script>
@@ -1324,7 +1324,7 @@ function adminPage() {
     ${banned.map(p => `<article class="card member-row">${avatar(p.id)}<div>${who(p.id)}<p class="meta">${esc(p.stage || 'Member')}</p><div class="actions"><button data-action="suspend" data-id="${esc(p.id)}" data-value="false">Restore member</button></div></div></article>`).join('') || '<p class="empty">Nobody is suspended.</p>'}</section>`;
 }
 const TEAM_ID = '32057026-1f99-4ea2-849d-14f5cfa8e9ce';
-const CONTACT_EMAIL = '2335698577@qq.com';
+const CONTACT_EMAIL = 'hello@hertech.uk';
 const CONTACT_LINK = `email us at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>`;
 function legalPage(kind) {
   const updated = '26 November 2026';
