@@ -303,6 +303,33 @@ footer .foot-links{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
 .lp-cta .primary{background:var(--honey);color:var(--ink);border-color:var(--honey)}
 @media (max-width:820px){.lp-hero{grid-template-columns:1fr;padding-top:18px}.lp-hero-art{min-height:0;max-width:420px;display:flex;flex-direction:column;gap:10px}.lp-chip{position:static;min-width:0}.lp-swap{transform:rotate(-2deg);margin-right:18%}.lp-bean{transform:rotate(1.5deg);margin-left:14%}.lp-group{transform:rotate(-1deg);margin-right:24%}.lp-steps{grid-template-columns:1fr}.lp-tiles{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:480px){.lp-tiles{grid-template-columns:1fr}.lp-chip{min-width:0;padding:12px 16px}.lp-cta{padding:28px 18px}}
+.match-card{display:flex;gap:18px;align-items:flex-start}
+.match-main{flex:1;min-width:0}
+.match-main h3{margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.match-main p{margin:6px 0}
+.pick-tag{background:#FFF2CC;color:#7a5600}
+.match-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.match-mini{display:flex;gap:12px;align-items:center;margin:0;text-decoration:none;color:var(--body)}
+.match-mini span{display:flex;flex-direction:column;min-width:0}
+.match-mini strong{color:var(--ink)}
+.match-mini small{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:820px){.match-strip{grid-template-columns:1fr}.match-card{flex-direction:column}}
+.lp-banner{display:flex;align-items:center;gap:12px;margin:18px 0 0;padding:14px 18px;border-radius:18px;background:#fff;border:1px solid var(--line);text-decoration:none;color:var(--body);transition:box-shadow .15s}
+.lp-banner:hover{box-shadow:0 12px 30px rgba(11,16,51,.10)}
+.lp-banner strong{color:var(--ink)}
+.lp-banner span:nth-child(2){flex:1}
+.sp-filters{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:12px 0 4px}
+.sp-filters select{width:auto;min-width:160px}
+.sp-filters .checkbox{margin:0}
+.sp-count{color:var(--muted);margin:14px 0 10px}
+.sp-card{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.sp-main{min-width:0;flex:1 1 320px}
+.sp-main h3{margin:0}
+.sp-main .meta{margin:4px 0 8px}
+.sp-card .actions{margin:0}
+.sp-note{margin-top:22px}
+.sp-note ul{margin:8px 0 0;padding-left:20px;line-height:1.6}
+@media (min-width:821px) and (max-width:1360px){.bar{gap:14px}.bar nav a{padding:8px 9px;font-size:14.5px}}
 </style>
 </head>
 <body>
@@ -508,6 +535,8 @@ async function loadPrivate() {
   db.messages = messages.data || [];
   db.blocks = blocks.data || [];
   db.ticket = ticket.data?.[0] || db.ticket;
+  const pref = await sb.from('profiles').select('email_notifications').eq('id', me.id).maybeSingle();
+  db.notify = pref.data ? pref.data.email_notifications !== false : true;
   if (isAdmin()) { const {data} = await sb.from('reports').select('*').order('created_at', {ascending:false}).limit(500); db.reports = data || []; } else db.reports = [];
 }
 async function refresh() { await loadAll(); }
@@ -556,7 +585,7 @@ async function markRead(otherId) {
 }
 
 // ───────────────────────── Layout ─────────────────────────
-const NAV = [['about','who-are-we','Who are we'], ['qa','home','Community Q&A'], ['resources','resources','Resources'], ['events','uk-events','UK Tech Events'], ['beans','points','Points & Events'], ['swaps','exchange','Swaps']];
+const NAV = [['about','who-are-we','Who are we'], ['qa','home','Community Q&A'], ['resources','resources','Resources'], ['visa','visa-sponsors','Visas'], ['events','uk-events','UK Tech Events'], ['beans','points','Points & Events'], ['swaps','exchange','Swaps']];
 function navKey(path) {
   if (path === 'who-are-we') return 'about';
   if (path.startsWith('resources')) return 'resources';
@@ -564,6 +593,8 @@ function navKey(path) {
   if (path === 'uk-events') return 'events';
   if (path === 'points') return 'beans';
   if (path.startsWith('messages') || path.startsWith('member-')) return '';
+  if (path === 'visa-sponsors') return 'visa';
+  if (path === 'matches') return '';
   return 'qa';
 }
 function renderHeader() {
@@ -596,6 +627,8 @@ function render() {
   else if (path === 'messages') html = inboxPage();
   else if (path.startsWith('messages-')) html = threadPage(path.slice(9));
   else if (path.startsWith('member-')) html = profilePage(path.slice(7));
+  else if (path === 'matches') html = matchesPage(params);
+  else if (path === 'visa-sponsors') html = sponsorsPage();
   else if (path === 'points') html = walletPage();
   else if (path === 'uk-events') html = eventsPage();
   else if (path === 'admin') html = adminPage();
@@ -603,6 +636,7 @@ function render() {
   else html = homePage();
   app.innerHTML = (suspended() ? '<div class="suspended-banner" role="alert">Your account is suspended, so you can read HerTech but can’t post or send messages. If you think this is a mistake, email ' + CONTACT_EMAIL + '.</div>' : '') + html;
   if (path === 'uk-events') showEventMap();
+  if (path === 'visa-sponsors') loadSponsors();
   if (path === 'resources' && isAdmin()) autoCovers();
   if (path.startsWith('messages-')) afterThreadRender(path.slice(9));
   if (path.startsWith('swap-')) loadSwapImages(path.slice(5));
@@ -645,6 +679,8 @@ function homePage() {
         <div class="lp-chip lp-group"><span class="lp-k">Event buddies</span><strong>3 going together</strong><span class="lp-s">“Don’t walk in alone”</span></div>
       </div>
     </section>
+    <a class="lp-banner" href="#visa-sponsors"><span class="tag pick-tag">New</span><span><strong>Can this company sponsor your visa?</strong> Search the UK’s official register of visa sponsors.</span><span aria-hidden="true">→</span></a>
+    ${me && matchesFor(me.id).length ? `<section class="lp-section" aria-labelledby="forYouTitle"><div class="topline"><h2 class="section-title" id="forYouTitle">People for you</h2><a class="btn" href="#matches">See all</a></div><div class="match-strip">${matchesFor(me.id).map(m => `<a class="card match-mini" href="#member-${esc(m.p.id)}">${avatar(m.p.id)}<span><strong>${esc(m.p.name)}</strong><small>${esc((m.canHelpMe.length ? 'Can help with ' + m.canHelpMe.slice(0, 2).join(', ') : 'Looking for ' + m.iCanHelp.slice(0, 2).join(', ')))}</small></span></a>`).join('')}</div></section>` : ''}
     ${stats.length ? `<div class="lp-stats">${stats.map(([n, label]) => `<div><strong>${n}</strong><span>${label}</span></div>`).join('')}</div>` : ''}
     <section id="how" class="lp-section" aria-labelledby="howTitle"><h2 class="section-title" id="howTitle">How it works</h2>
       <ol class="lp-steps">
@@ -1007,7 +1043,7 @@ function profilePage(id) {
     ${m.bio ? `<p class="summary">${esc(m.bio)}</p>` : own ? '<p class="summary">Add a short bio so others know who you are.</p>' : ''}
     ${m.offers ? `<p><strong>Can help with:</strong> ${esc(m.offers)}</p>` : ''}${m.wants ? `<p><strong>Looking for:</strong> ${esc(m.wants)}</p>` : ''}
     ${link ? `<p><a class="member-link" href="${esc(link)}" target="_blank" rel="noopener noreferrer ugc">${esc(domain(link))} ↗</a></p>` : ''}
-    <div class="actions">${own ? `<button class="primary" data-action="edit-profile">Edit profile</button><button data-action="email-change">Change email</button><a class="btn" href="#messages">My messages</a>`
+    <div class="actions">${own ? `<button class="primary" data-action="edit-profile">Edit profile</button><button data-action="email-change">Change email</button><a class="btn" href="#messages">My messages</a><a class="btn" href="#matches">People for you</a>`
       : `<a class="btn primary" href="#messages-${esc(id)}">Message</a><button data-action="follow" data-id="${esc(id)}" aria-pressed="${followed}">${followed ? 'Following' : 'Follow'}</button>${reportBtn('member', id, id)}`}${own && isAdmin() ? `<a class="btn" href="#admin">Admin${db.reports.filter(r => r.status === 'open').length ? ' · ' + db.reports.filter(r => r.status === 'open').length + ' open reports' : ''}</a>` : ''}</div></div></article>
     ${own ? `<p class="form-note">Logged in as ${esc(me.email)}</p>` : ''}
     <div class="profile-lists"><section class="card"><h2>Followers · ${followers.length}</h2>${people(followers)}</section><section class="card"><h2>Following · ${following.length}</h2>${people(following)}</section></div>
@@ -1106,6 +1142,137 @@ function aboutPage() {
 }
 
 
+// Ask the server to email the other person (it checks their settings and only sends when email is switched on).
+function notify(type, id) {
+  if (!sb || !me || !id) return;
+  try { sb.functions?.invoke('notify', {body:{type, id}}).catch(() => {}); } catch {}
+}
+
+// ───────────────────────── Visa-sponsor checker ─────────────────────────
+const SPONSOR_CITIES = ['Any', 'London', 'Manchester', 'Edinburgh', 'Cambridge', 'Oxford', 'Bristol', 'Birmingham', 'Leeds', 'Glasgow', 'Belfast', 'Cardiff'];
+ui.sp = {q:'', city:'Any', tech:true};
+let sponsorTimer = null, sponsorRun = 0, sponsorUpdated = null;
+const plainCompany = name => name.replace(/\b(limited|ltd\.?|llp|plc|uk|\(uk\)|group|holdings|t\/a.*)\b/gi, ' ').replace(/[^\w&.\- ]+/g, ' ').replace(/\s+/g, ' ').trim();
+function sponsorsPage() {
+  return `<section class="home"><div class="page-head"><p class="eyebrow">For international students</p><h1>Visa-sponsor checker</h1>
+    <p class="section-note">Search the UK government’s official register of employers licensed to sponsor work visas, so you know which companies can hire you after your studies. <span id="sponsorUpdated"></span></p>
+    <form id="sponsorSearch" class="search-box" role="search" onsubmit="return false"><label class="visually-hidden" for="sponsorQuery">Company name</label>
+      <input id="sponsorQuery" type="search" value="${esc(ui.sp.q)}" placeholder="Try “Google”, “Monzo” or “software”" autocomplete="off" maxlength="80"></form>
+    <div class="sp-filters"><label class="visually-hidden" for="sponsorCity">City</label><select id="sponsorCity">${SPONSOR_CITIES.map(c => `<option value="${esc(c)}" ${c === ui.sp.city ? 'selected' : ''}>${c === 'Any' ? 'Any city' : esc(c)}</option>`).join('')}</select>
+      <label class="checkbox"><input type="checkbox" id="sponsorTech" ${ui.sp.tech ? 'checked' : ''}>Tech companies only</label></div></div>
+    <div id="sponsorResults"><p class="loading">Searching…</p></div>
+    <div class="card sp-note"><strong>Good to know</strong><ul>
+      <li>Being on the register means a company <em>can</em> sponsor visas, not that every job comes with sponsorship. Check the job advert, or ask the recruiter early.</li>
+      <li>“Tech companies only” is our best guess from company names, so untick it if you can’t find a company.</li>
+      <li>Just graduated? The <a href="https://www.gov.uk/graduate-visa" target="_blank" rel="noopener">Graduate visa</a> lets you work without sponsorship for a while first.</li>
+      <li>Source: <a href="https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers" target="_blank" rel="noopener">Register of licensed sponsors: workers (GOV.UK)</a>. This isn’t legal advice.</li></ul></div></section>`;
+}
+function sponsorCard(c) {
+  const q = encodeURIComponent(plainCompany(c.name));
+  return `<article class="card sp-card"><div class="sp-main"><h3>${esc(c.name)}</h3><p class="meta">${esc(c.city || 'UK')}${c.rating.includes('A rating') ? ' · A-rated sponsor' : ''}</p>
+    <div class="q-tags">${(c.routes || []).map(r => `<span class="tag">${esc(r.replace('Global Business Mobility: ', 'GBM: '))}</span>`).join('')}${c.is_tech ? '<span class="tag pick-tag">Tech</span>' : ''}</div></div>
+    <div class="actions"><a class="btn" href="https://www.linkedin.com/jobs/search/?keywords=${q}&location=United%20Kingdom" target="_blank" rel="noopener noreferrer">Open jobs on LinkedIn ↗</a><a class="btn" href="https://www.linkedin.com/jobs/search/?keywords=${q}%20graduate&location=United%20Kingdom" target="_blank" rel="noopener noreferrer">Graduate roles ↗</a></div></article>`;
+}
+async function loadSponsors() {
+  const box = document.querySelector('#sponsorResults');
+  if (!box) return;
+  if (!sb) { box.innerHTML = '<p class="empty">Open the online HerTech site to search the register.</p>'; return; }
+  const run = ++sponsorRun;
+  const q = ui.sp.q.replace(/[%_*,()\\]/g, ' ').trim();
+  let req = sb.from('sponsors').select('name,city,routes,rating,is_tech', {count:'exact'});
+  if (q) req = req.ilike('name', '%' + q + '%');
+  if (ui.sp.tech) req = req.eq('is_tech', true);
+  if (ui.sp.city !== 'Any') req = req.ilike('city', ui.sp.city);
+  const {data, count, error} = await req.order('name').limit(50);
+  if (run !== sponsorRun || !document.querySelector('#sponsorResults')) return;
+  if (error) { box.innerHTML = '<p class="empty">We couldn’t search the register right now. Try again in a moment.</p>'; return; }
+  if (!sponsorUpdated) {
+    const latest = await sb.from('sponsors').select('updated_on').order('updated_on', {ascending:false}).limit(1).maybeSingle();
+    sponsorUpdated = latest.data?.updated_on || '';
+  }
+  const stamp = document.querySelector('#sponsorUpdated');
+  if (stamp && sponsorUpdated) stamp.textContent = 'Last updated ' + new Date(sponsorUpdated + 'T12:00:00').toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'}) + '.';
+  const total = count ?? data.length;
+  box.innerHTML = data.length
+    ? `<p class="sp-count">${total.toLocaleString('en-GB')} ${total === 1 ? 'company' : 'companies'}${total > data.length ? `, showing the first ${data.length}. Type a name to narrow it down` : ''}.</p>${data.map(sponsorCard).join('')}`
+    : `<p class="empty">${q ? `No ${ui.sp.tech ? 'tech ' : ''}sponsor called “${esc(q)}” found.${ui.sp.tech ? ' Try unticking “Tech companies only”.' : ' Check the spelling, or try part of the name.'}` : 'The register is being loaded. Check back soon.'}</p>`;
+}
+document.addEventListener('input', event => {
+  if (event.target.id === 'sponsorQuery') { ui.sp.q = event.target.value; clearTimeout(sponsorTimer); sponsorTimer = setTimeout(loadSponsors, 300); }
+});
+document.addEventListener('change', event => {
+  if (event.target.id === 'sponsorCity') { ui.sp.city = event.target.value; loadSponsors(); }
+  if (event.target.id === 'sponsorTech') { ui.sp.tech = event.target.checked; loadSponsors(); }
+});
+
+// ───────────────────────── Matching ─────────────────────────
+// Turns free text like "CV reviews, Python basics" into shared topics, so offers and wants can be compared.
+const MATCH_TOPICS = [
+  ['CV & cover letters', /\b(cv|cvs|resume|résumé|cover letters?)\b/],
+  ['Interviews', /\b(interview\w*|mock|leetcode|behaviou?ral|star method)\b/],
+  ['Portfolios', /\bportfolios?\b/],
+  ['Python', /\bpython\b/],
+  ['SQL & data', /\b(sql|data|analytics?|analysis|analyst|excel|tableau|power ?bi|pandas)\b/],
+  ['AI & machine learning', /\b(ai|machine learning|ml|deep learning|llms?|nlp|computer vision)\b/],
+  ['Web development', /\b(web|html|css|javascript|js|typescript|react|front ?end|frontend|back ?end|backend|full ?stack|node)\b/],
+  ['Design & UX', /\b(design|ux|ui|figma|user research|product design)\b/],
+  ['Product management', /\b(product manag\w*|pm|roadmap)\b/],
+  ['Cloud & DevOps', /\b(cloud|aws|azure|gcp|devops|docker|kubernetes)\b/],
+  ['Cyber security', /\b(cyber|security|infosec)\b/],
+  ['Robotics & hardware', /\b(robot\w*|arduino|hardware|embedded|electronics|cad|3d print\w*)\b/],
+  ['Coding basics', /\b(cod(e|ing)|programming|git|github|java|c\+\+|c#)\b/],
+  ['Mentoring & career advice', /\b(mentor\w*|career|advice|guidance|job hunt\w*|job search\w*|grad(uate)? schemes?|internships?)\b/],
+  ['Visas & moving to the UK', /\b(visa|visas|sponsor\w*|graduate route|right to work)\b/],
+  ['Networking & events', /\b(network\w*|events?|meetups?|hackathons?|buddy|buddies)\b/],
+  ['Housing & home swaps', /\b(housing|room|flat|home swap|accommodation|stay)\b/],
+  ['English & communication', /\b(english|ielts|presentation|public speaking|communication|writing)\b/]
+];
+function matchTopics(text) {
+  const t = ' ' + String(text || '').toLowerCase() + ' ';
+  return new Set(MATCH_TOPICS.filter(([, re]) => re.test(t)).map(([name]) => name));
+}
+const overlap = (a, b) => [...a].filter(x => b.has(x));
+// People whose offers meet my wants, and whose wants I can meet. Two-way matches rank first.
+function matchesFor(id, limit = 3) {
+  const mine = profile(id);
+  if (!mine) return [];
+  const myOffers = matchTopics(mine.offers), myWants = matchTopics(mine.wants);
+  if (!myOffers.size && !myWants.size) return [];
+  return [...db.profiles.values()]
+    .filter(p => p.id !== id && !p.is_banned && !blocked(p.id) && (p.offers || p.wants))
+    .map(p => {
+      const canHelpMe = overlap(myWants, matchTopics(p.offers));
+      const iCanHelp = overlap(myOffers, matchTopics(p.wants));
+      const score = canHelpMe.length * 2 + iCanHelp.length * 1.5 + (canHelpMe.length && iCanHelp.length ? 3 : 0);
+      return {p, canHelpMe, iCanHelp, score};
+    })
+    .filter(m => m.score > 0)
+    .sort((a, b) => b.score - a.score || String(b.p.created_at).localeCompare(String(a.p.created_at)))
+    .slice(0, limit);
+}
+function matchCard(m) {
+  const {p, canHelpMe, iCanHelp} = m;
+  return `<article class="card match-card">${avatar(p.id, 'lg')}<div class="match-main">
+    <h3><a class="link" href="#member-${esc(p.id)}">${esc(p.name)}</a>${canHelpMe.length && iCanHelp.length ? '<span class="tag pick-tag">Two-way match</span>' : ''}</h3>
+    <p class="meta">${esc(p.stage || 'Member')}</p>
+    ${canHelpMe.length ? `<p><strong>Can help you with:</strong> ${canHelpMe.map(esc).join(', ')}</p>` : ''}
+    ${iCanHelp.length ? `<p><strong>You could help her with:</strong> ${iCanHelp.map(esc).join(', ')}</p>` : ''}
+    <div class="actions"><a class="btn primary" href="#messages-${esc(p.id)}">Say hello</a><a class="btn" href="#member-${esc(p.id)}">View profile</a></div></div></article>`;
+}
+function matchesPage(params) {
+  if (!me) return loginPrompt('Log in to see members who can help you.');
+  const mine = profile(me.id);
+  const all = params.get('all') === '1';
+  const list = matchesFor(me.id, all ? 12 : 3);
+  const ready = mine && (mine.offers || mine.wants);
+  return `<section class="home"><div class="page-head"><h1>People for you</h1>
+    <p class="section-note">Members who can help with what you’re looking for, and who you could help in return. Based on the “I can help with” and “I’m looking for” parts of profiles.</p></div>
+    ${!ready ? `<div class="card"><p class="summary">Tell us what you can help with and what you’re looking for, and we’ll suggest people for you.</p><div class="actions"><button class="primary" data-action="edit-profile">Fill in my profile</button></div></div>`
+      : list.length ? list.map(matchCard).join('') + (!all && matchesFor(me.id, 4).length > 3 ? `<div class="actions"><a class="btn" href="#matches?all=1">See more matches</a></div>` : '')
+      : `<div class="card"><p class="summary">No matches yet. HerTech is new, so we’ll suggest people here as more members join. Meanwhile, try asking the community or posting a swap.</p><div class="actions"><button class="primary" data-action="ask">Ask a question</button><a class="btn" href="#exchange">Post a swap</a></div></div>`}
+    ${ready ? `<p class="form-note">Not quite right? <button class="link-btn" data-action="edit-profile">Update what you can help with and what you’re looking for</button>.</p>` : ''}</section>`;
+}
+
 // ───────────────────────── Reporting, moderation & legal ─────────────────────────
 const REPORT_REASONS = ['Spam or advertising', 'Harassment or hate', 'Scam or unsafe', 'Shares personal information', 'Off-topic', 'Other'];
 const reportBtn = (type, id, authorId) => me && authorId === me.id ? '' : `<button class="link-btn subtle" data-action="report" data-type="${type}" data-id="${esc(id)}">Report</button>`;
@@ -1181,7 +1348,7 @@ function legalPage(kind) {
     privacy: ['Privacy policy', `<p>This policy explains what personal data HerTech collects, why, and your rights under UK data protection law (UK GDPR). The data controller is HerTech’s founders. To contact us, ${CONTACT_LINK}.</p>
       <h2>What we collect</h2><ul><li><strong>Account:</strong> your email address and password (stored securely by our database provider, never visible to us), display name and career stage.</li><li><strong>Profile:</strong> anything you choose to add, such as a bio, skills, a link and a photo.</li><li><strong>Community content:</strong> questions, answers, comments, swaps, resources, event groups, votes and follows. These are public on the site.</li><li><strong>Private messages:</strong> visible only to you and the person you message. The HerTech team can see a message only if its recipient reports it.</li><li><strong>Coffee Beans and bookings</strong> linked to your account.</li></ul>
       <h2>Why we use it (lawful basis)</h2><ul><li>To run your account and the community features you ask for (contract).</li><li>To keep the community safe: handling reports, removing harmful content and suspending accounts (legitimate interests).</li><li>To send essential emails such as verification and password resets (contract). We don’t send marketing emails.</li></ul>
-      <h2>Who processes it for us</h2><ul><li><strong>Supabase</strong> stores the database, accounts and photos.</li><li><strong>GitHub Pages</strong> hosts the website files.</li><li>When pages load, your browser also contacts <strong>Google Fonts</strong>, <strong>jsDelivr</strong> and <strong>unpkg</strong> (code libraries) and <strong>OpenStreetMap</strong> (event map), which receive your IP address.</li><li>Some resource cards show a preview image loaded directly from that resource’s own website, which receives your IP address when the image loads.</li><li>When the HerTech team approves a resource, its link is sent to <strong>Microlink</strong> to look up the website’s preview image. No member data is sent.</li></ul><p>We don’t sell your data and we don’t use advertising or tracking cookies. Your login is kept in your browser’s local storage so you stay signed in.</p>
+      <h2>Who processes it for us</h2><ul><li><strong>Supabase</strong> stores the database, accounts and photos.</li><li><strong>GitHub Pages</strong> hosts the website files.</li><li>When pages load, your browser also contacts <strong>Google Fonts</strong>, <strong>jsDelivr</strong> and <strong>unpkg</strong> (code libraries) and <strong>OpenStreetMap</strong> (event map), which receive your IP address.</li><li>Some resource cards show a preview image loaded directly from that resource’s own website, which receives your IP address when the image loads.</li><li>When the HerTech team approves a resource, its link is sent to <strong>Microlink</strong> to look up the website’s preview image. No member data is sent.</li><li>If you have email notifications switched on, <strong>Resend</strong> delivers our emails telling you about new answers and messages. The email includes your address and the other member’s display name, never the message itself. You can switch these emails off in your profile.</li></ul><p>We don’t sell your data and we don’t use advertising or tracking cookies. Your login is kept in your browser’s local storage so you stay signed in.</p>
       <h2>How long we keep it</h2><p>We keep your data while your account exists. If you ask us to delete your account, we delete your profile and content, except where we must keep a record of a safety report.</p>
       <h2>Your rights</h2><p>You can ask to see, correct, download or delete your data, or object to how we use it. To do this, ${CONTACT_LINK}. You can also complain to the Information Commissioner’s Office (ico.org.uk).</p>`]
   };
@@ -1217,10 +1384,10 @@ function showForm(kind, extra = {}) {
     'event-comment': [ui.eventDraft?.replyTo ? 'Reply to a comment' : ui.eventDraft?.groupId ? 'Message the group' : 'Event discussion', '<label for="body">Message</label><textarea id="body" name="body" required maxlength="1500"></textarea>', 'Post message'],
     'swap-post': ['Post a swap listing', `<label for="s-type">Listing type</label>${select('s-type', 'type', SWAP_TYPES, extra.type || (ui.swapType === 'All' ? 'Skill Swap' : ui.swapType))}<label for="s-title">Title</label><input id="s-title" name="title" required maxlength="120" placeholder="e.g. CV review in exchange for Python help"><label for="s-place">Your city or neighbourhood</label><input id="s-place" name="place" required maxlength="80" placeholder="e.g. Stratford, London"><p class="form-note">A city or neighbourhood is enough. Never post your full address.</p><div id="s-dates">${dateFields('s')}</div><label for="s-offer">What can you offer?</label><textarea id="s-offer" name="offer" required maxlength="1500" placeholder="Describe the skill, item or home you’re offering."></textarea><label for="s-want">What would you like in return?</label><textarea id="s-want" name="want" maxlength="1000" placeholder="e.g. Help with SQL, a book on UX design, or open to ideas."></textarea><label for="s-images">Photos (optional)</label><input id="s-images" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="form-note">Up to 3 images, 10 MB each.</p><p id="s-image-msg" class="form-note" aria-live="polite"></p><div id="s-preview" class="exchange-gallery exchange-preview"></div>`, 'Post listing'],
     'share-resource': ['Share a resource', `<p class="form-note">Share a course, guide, job board, tool or community that genuinely helped you. The HerTech team reviews every submission before it appears.</p><label for="r-title">Title</label><input id="r-title" name="title" required maxlength="120"><label for="r-url">Link</label><input id="r-url" name="url" type="url" required maxlength="500" placeholder="https://"><label for="r-cat">Category</label>${select('r-cat', 'category', RES_CATS, ui.resCat === 'All' ? 'Learning' : ui.resCat)}<label for="r-cost">Cost</label>${select('r-cost', 'cost', COSTS, 'Free')}<label for="r-desc">Why is it useful?</label><textarea id="r-desc" name="description" required maxlength="600" placeholder="Who is it for and what will they get out of it?"></textarea><label class="checkbox"><input type="checkbox" required>This is my honest recommendation, not a paid advert</label>`, 'Submit for review'],
-    'edit-profile': ['Edit profile', `${avatarField(p)}<label for="p-name">Display name</label><input id="p-name" name="name" required maxlength="30" value="${esc(p?.name)}"><label for="p-stage">Career stage</label>${select('p-stage', 'stage', STAGES, p?.stage)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><label for="p-link">LinkedIn or portfolio link</label><input id="p-link" name="link" type="url" maxlength="200" value="${esc(p?.link)}" placeholder="https://">`, 'Save profile'],
+    'edit-profile': ['Edit profile', `${avatarField(p)}<label for="p-name">Display name</label><input id="p-name" name="name" required maxlength="30" value="${esc(p?.name)}"><label for="p-stage">Career stage</label>${select('p-stage', 'stage', STAGES, p?.stage)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><label for="p-link">LinkedIn or portfolio link</label><input id="p-link" name="link" type="url" maxlength="200" value="${esc(p?.link)}" placeholder="https://"><label class="checkbox"><input type="checkbox" name="email_notifications" ${db.notify === false ? '' : 'checked'}>Email me when someone answers my question or sends me a message</label>`, 'Save profile'],
     report: ['Report this', `<p class="form-note">Tell the HerTech team what’s wrong. They’ll review it, and the person won’t be told who reported them.</p><label for="rep-reason">Reason</label>${select('rep-reason', 'reason', REPORT_REASONS)}<label for="rep-details">Anything else we should know? (optional)</label><textarea id="rep-details" name="details" maxlength="1000"></textarea>`, 'Send report'],
     'new-event': ['Add an event', `<label for="ev-name">Event name</label><input id="ev-name" name="name" required maxlength="140"><label for="ev-city">City</label><input id="ev-city" name="city" required maxlength="60" list="ev-cities" placeholder="e.g. London"><datalist id="ev-cities">${Object.keys(CITY_CENTRES).map(c => `<option value="${c}">`).join('')}<option value="Online"></datalist><label for="ev-date">Date as shown on the site</label><input id="ev-date" name="date_label" required maxlength="60" placeholder="e.g. 2–4 December"><label for="ev-ends">Last day of the event</label><input id="ev-ends" name="ends_on" type="date" required min="${ukDate()}"><label for="ev-venue">Venue (optional)</label><input id="ev-venue" name="venue" maxlength="120"><label for="ev-url">Organiser link</label><input id="ev-url" name="url" type="url" required maxlength="500" placeholder="https://"><label for="ev-latlng">Map position (optional)</label><input id="ev-latlng" name="latlng" maxlength="60" placeholder="e.g. 51.5074, -0.1278"><p class="form-note">Right-click the venue in Google Maps and copy the numbers. Leave empty to use the city centre.</p>`, 'Add event'],
-    welcome: ['Welcome to HerTech 👋', `<p class="form-note">Help other members get to know you. You can change this any time from your profile.</p>${avatarField(p)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science">`, 'Save and continue'],
+    welcome: ['Welcome to HerTech 👋', `<p class="form-note">Help other members get to know you. You can change this any time from your profile.</p>${avatarField(p)}<label for="p-bio">About you</label><textarea id="p-bio" name="bio" maxlength="500" placeholder="A sentence or two about you and what you’re working towards.">${esc(p?.bio)}</textarea><label for="p-offers">I can help with</label><input id="p-offers" name="offers" maxlength="300" value="${esc(p?.offers)}" placeholder="e.g. CV reviews, Python basics, UX portfolios"><label for="p-wants">I’m looking for</label><input id="p-wants" name="wants" maxlength="300" value="${esc(p?.wants)}" placeholder="e.g. Interview practice, a mentor in data science"><p class="form-note">We’ll use these two answers to suggest members who can help you, and who you can help.</p>`, 'Save and see my matches'],
     redeem: ['Confirm redemption', `<p>Use ${PRICE} Coffee Beans to book a place at the UK Tech CV Workshop?</p><p class="form-note">Your balance: ${me ? balance() : 0} ${beanUnit(me ? balance() : 0)}</p>`, 'Confirm redemption']
   };
   const [title, fields, submit] = forms[kind];
@@ -1341,7 +1508,8 @@ dialog.addEventListener('submit', async event => {
         break;
       case 'answer':
         if (!value('body')) { say('Write an answer.'); return; }
-        ok = await run(() => sb.from('answers').insert({question_id:ui.editing.id, body:value('body')}), 'Answer posted.');
+        ok = await run(() => sb.from('answers').insert({question_id:ui.editing.id, body:value('body')}).select('id').single(), 'Answer posted.');
+        if (ok) notify('answer', ok.data.id);
         break;
       case 'edit-answer':
         ok = await run(() => sb.from('answers').update({body:value('body')}).eq('id', ui.editing.id), 'Answer updated.');
@@ -1410,11 +1578,13 @@ dialog.addEventListener('submit', async event => {
           const update = {bio:value('bio'), offers:value('offers'), wants:value('wants')};
           if (avatar_url) update.avatar_url = avatar_url;
           ok = await run(() => sb.from('profiles').update(update).eq('id', me.id), 'Welcome to HerTech! 🎉');
+          if (ok && (update.offers || update.wants)) after = '#matches';
           break;
         }
         const link = value('link');
         if (link && !safeUrl(link)) { say('Links must start with https://'); return; }
         const update = {name:value('name'), stage:value('stage'), bio:value('bio'), offers:value('offers'), wants:value('wants'), link};
+        update.email_notifications = data.get('email_notifications') === 'on';
         if (avatar_url) update.avatar_url = avatar_url;
         ok = await run(() => sb.from('profiles').update(update).eq('id', me.id), 'Profile saved.');
         break;
@@ -1635,6 +1805,7 @@ async function sendMessage(form) {
   const res = await run(() => sb.from('messages').insert({recipient_id:otherId, body}).select('*').single());
   button.disabled = false;
   if (!res) return;
+  notify('message', res.data.id);
   text.value = '';
   if (!db.messages.some(m => m.id === res.data.id)) db.messages.push(res.data);
   renderThreadBody();
